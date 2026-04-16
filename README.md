@@ -1,5 +1,7 @@
 # HER2 Knowledge Graph Platform
 
+![HER2 Knowledge Graph Platform](banner.png)
+
 **DigPatho · HER2 Clinical Knowledge Module · April 2026**
 
 Plataforma de razonamiento diagnóstico HER2 de nivel productivo que combina un grafo de propiedades Neo4j, orquestación multi-agente con LangGraph, e inferencia LLM local vía Ollama.
@@ -170,18 +172,18 @@ classDiagram
 ### Fases del Pipeline
 
 ```mermaid
-flowchart LR
-    A("[INGEST 6 .md docs 266 chunks]") --> B("[CHUNK Semántico size=500 overlap=100]")
-    B --> C([EXTRACT LLM local entidades+relaciones])
-    C --> D{conf ≥ 0.75?}
-    D -- Sí --> E([RESOLVE URIs canónicas NCIt/SNOMED])
+flowchart TB
+    A(["INGEST 6 .md docs 266 chunks"]) --> B(["CHUNK Semántico size=500 overlap=100"])
+    B --> C(["EXTRACT LLM local entidades+relaciones"])
+    C --> D{"conf ≥ 0.75?"}
+    D -- Sí --> E(["RESOLVE URIs canónicas NCIt/SNOMED"])
     D -- No --> C
-    E --> F([BUILD Neo4j MERGE + seed ontológico + algoritmos])
-    F --> G([VALIDATE Reglas Cypher CRITICAL/HIGH/MEDIUM])
-    G --> H{¿Consistente?}
-    H -- Sí --> I([EXPORT RDF/OWL + stats])
+    E --> F(["BUILD Neo4j MERGE + seed ontológico + algoritmos"])
+    F --> G(["VALIDATE Reglas Cypher CRITICAL/HIGH/MEDIUM"])
+    G --> H{"¿Consistente?"}
+    H -- Sí --> I(["EXPORT RDF/OWL + stats"])
     H -- No --> G
-    I --> J([DONE])
+    I --> J(["DONE"])
 ```
 
 ### Tipos de Chunks y Estrategia
@@ -298,21 +300,21 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    E([IHC_ENTRY\nIniciar scoring IHC]) --> N1{IHC_NODE1\n¿Tinción membrana\ncompleta intensa\nen >10% células?}
+    E(["IHC_ENTRY\nIniciar scoring IHC"]) --> N1{"IHC_NODE1\n¿Tinción membrana\ncompleta intensa\nen >10% células?"}
 
     N1 -- SÍ --> R3P["✅ IHC 3+\nHER2-Positive\nASCO/CAP 2023"]
-    N1 -- NO --> N2{IHC_NODE2\n¿Tinción completa\ndébil-moderada\nen >10% células?}
+    N1 -- NO --> N2{"IHC_NODE2\n¿Tinción completa\ndébil-moderada\nen >10% células?"}
 
     N2 -- SÍ --> R2P["⚠️ IHC 2+\nHER2-Equivocal\n→ ISH REQUERIDO"]
-    N2 -- NO --> N3{IHC_NODE3\n¿Tinción incompleta\ntenue en >10%\ncélulas?}
+    N2 -- NO --> N3{"IHC_NODE3\n¿Tinción incompleta\ntenue en >10%\ncélulas?"}
 
     N3 -- SÍ --> R1P["🟡 IHC 1+\nHER2-Low\nElegible T-DXd\n(DESTINY-B04)"]
-    N3 -- NO --> N4{IHC_NODE4\n¿Tinción tenue\nincompleta en\n>0% y ≤10%?\nRakha 2026}
+    N3 -- NO --> N4{"IHC_NODE4\n¿Tinción tenue\nincompleta en\n>0% y ≤10%?\nRakha 2026"}
 
     N4 -- SÍ --> R0P["🟠 IHC 0+\nHER2-Ultralow\nElegible T-DXd HR+\n(DESTINY-B06)"]
     N4 -- NO --> R0["⚫ IHC 0\nHER2-Null\nNo elegible T-DXd"]
 
-    R2P --> ISH([ISH Algorithm\n5 grupos ASCO/CAP])
+    R2P --> ISH(["ISH Algorithm\n5 grupos ASCO/CAP"])
 ```
 
 ### ISH Groups (ASCO/CAP 2023)
