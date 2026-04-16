@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "her2-knowledge-graph"
+version = "2.0.0"
+description = "Production-ready HER2 Medical Knowledge Graph — DigPatho Clinical Knowledge Module"
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "DigPatho Research Group"}]
+keywords = ["knowledge-graph", "HER2", "breast-cancer", "neo4j", "GraphRAG", "LangGraph"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
