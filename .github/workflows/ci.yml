@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: |
+          pip install ruff --quiet
+          ruff check src/ app/ tests/ --select E,W,F --ignore E501
+
+      - name: Run unit tests (no Neo4j required)
+        env:
+          HER2_KG_LLM_MODE: ollama
+          NEO4J_URI: bolt://localhost:7687
+          NEO4J_PASSWORD: password
+          HER2_KG_EMBEDDING_MODE: ollama
+          PYTHONUTF8: "1"
+        run: |
+          python -m pytest tests/ \
+            --ignore=tests/test_integration.py \
+            -x -q --tb=short
+
+  integration:
+    name: Integration Tests (Neo4j)
+    runs-on: ubuntu-latest
+    needs: test
+    # Only run integration tests on pushes to main (not on every PR)
+    if: github.ref == 'refs/heads/main'
+
+    services:
+      neo4j:
+        image: neo4j:5.18-community
+        env:
+          NEO4J_AUTH: neo4j/password
+          NEO4J_PLUGINS: '["apoc"]'
+        ports:
+          - 7687:7687
+          - 7474:7474
+        options: >-
+          --health-cmd "wget -O- http://localhost:7474 || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run integration tests
+        env:
+          NEO4J_URI: bolt://localhost:7687
+          NEO4J_USER: neo4j
+          NEO4J_PASSWORD: password
+          HER2_KG_LLM_MODE: ollama
+          HER2_KG_EMBEDDING_MODE: ollama
+          PYTHONUTF8: "1"
+        run: |
+          python -m pytest tests/test_integration.py \
+            -x -q --tb=short -v

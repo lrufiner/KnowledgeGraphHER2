@@ -14,7 +14,14 @@ import re
 from difflib import get_close_matches
 
 from src.domain.models import EntityModel, NodeType, ResolvedEntity
-from src.domain.ontology import CANONICAL_URIS, HER2_BASE, SNOMED_URIS
+from src.domain.ontology import CANONICAL_URIS, HER2_BASE, SNOMED_URIS, SEED_ENTITIES
+
+# 2.4 — Map canonical NCIt/her2 URI → seed entity ID for stable node IDs
+_SEED_URI_TO_ID: dict[str, str] = {
+    ent["ncit_uri"]: ent["id"]
+    for ent in SEED_ENTITIES
+    if ent.get("ncit_uri")
+}
 
 
 def _safe_id(label: str) -> str:
@@ -69,14 +76,17 @@ def resolve_uri(label: str, candidate_uri: str | None = None) -> dict[str, str |
             return result
 
     # ── Tier 2: Fuzzy match (edit distance) ───────────────────────────────
+    # Also try the normalized variant (hyphen/spaces → underscore) for better
+    # biomedical-term matching.  Lower cutoff to 0.75 (was 0.80).
     all_labels = list(CANONICAL_URIS.keys())
-    close = get_close_matches(label, all_labels, n=1, cutoff=0.80)
-    if close:
-        uri = CANONICAL_URIS[close[0]]
-        result["resolved_uri"] = uri
-        if uri.startswith("NCIt:"):
-            result["ncit_uri"] = uri
-        return result
+    for candidate in [label, _normalize_label(label)]:
+        close = get_close_matches(candidate, all_labels, n=1, cutoff=0.75)
+        if close:
+            uri = CANONICAL_URIS[close[0]]
+            result["resolved_uri"] = uri
+            if uri.startswith("NCIt:"):
+                result["ncit_uri"] = uri
+            return result
 
     # Case-insensitive exact match
     label_lower = label.lower()
@@ -99,17 +109,22 @@ def resolve_entity(entity: EntityModel, source_doc: str) -> ResolvedEntity:
     """
     uris = resolve_uri(entity.label, entity.candidate_uri)
     # Normalize ID: replace spaces, slashes, hyphens and URI-unsafe chars
-    # so LLM variants like "HER2-Low" → "HER2_Low" and "Threshold >1.85" → "Threshold_gt1_85".
     _label = entity.label.strip()
     _label = _label.replace('>', 'gt').replace('<', 'lt').replace('(', '').replace(')', '').replace('%', 'pct')
     entity_id = re.sub(r'[^a-zA-Z0-9_]', '_', re.sub(r'[-\s/]+', '_', _label)).strip('_')
+
+    # 2.4: If resolved URI matches a seed entity, use the canonical seed ID
+    resolved_uri = uris["resolved_uri"] or f"her2:{_safe_id(entity.label)}"
+    if resolved_uri in _SEED_URI_TO_ID:
+        entity_id = _SEED_URI_TO_ID[resolved_uri]
+
     return ResolvedEntity(
         id=entity_id,
         label=entity.label,
         type=entity.type,
         definition=entity.definition,
         source_quote=entity.source_quote,
-        resolved_uri=uris["resolved_uri"] or f"her2:{_safe_id(entity.label)}",
+        resolved_uri=resolved_uri,
         ncit_uri=uris["ncit_uri"],
         snomed_uri=uris["snomed_uri"],
         loinc_code=uris["loinc_code"],

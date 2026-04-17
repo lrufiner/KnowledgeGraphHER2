@@ -177,16 +177,23 @@ class TestLightRAGWrapper:
 
 @pytest.fixture
 def api_client():
-    """TestClient with stubbed LLM/driver."""
+    """TestClient with stubbed LLM/driver — no real Ollama/Neo4j calls needed."""
     from fastapi.testclient import TestClient
     from app import api as api_module
 
-    # Stub driver (not connected)
-    api_module._driver_singleton = None
-    api_module._llm_singleton = None
+    # Pre-cache a mock LLM so no HTTP call to Ollama is made during tests.
+    # Individual tests that need a specific mock behaviour can override
+    # api_module._llm_singleton inside the test body.
+    mock_llm = MagicMock()
+    mock_llm.invoke.return_value = MagicMock(content='["diagnostic"]')
+    api_module._llm_singleton = mock_llm
 
-    client = TestClient(api_module.app, raise_server_exceptions=True)
-    yield client
+    # Patch _get_driver so no TCP connection is attempted to a potentially
+    # offline Neo4j during unit tests.  Individual tests that need driver
+    # behaviour can install their own patch.object inside the test body.
+    with patch.object(api_module, "_get_driver", return_value=None):
+        client = TestClient(api_module.app, raise_server_exceptions=True)
+        yield client
 
     # Cleanup
     api_module._driver_singleton = None
@@ -198,7 +205,11 @@ class TestHealthEndpoint:
         resp = api_client.get("/health")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["status"] == "ok"
+        # Status is "ok" when all deps are up, "degraded" in test/offline environment
+        assert data["status"] in ("ok", "degraded")
+        assert "version" in data
+        assert "neo4j" in data
+        assert "ollama" in data
 
 
 class TestDiagnoseEndpoint:

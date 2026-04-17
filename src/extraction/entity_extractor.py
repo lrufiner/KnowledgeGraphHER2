@@ -18,6 +18,65 @@ from src.domain.models import (
 )
 
 # ---------------------------------------------------------------------------
+# Non-clinical label blocklist (1.1 — domain filter)
+# ---------------------------------------------------------------------------
+
+# Patterns that indicate non-clinical / software / person entities
+_NON_CLINICAL_RE = re.compile(
+    r'^(?:'
+    # "Firstname Lastname" person names (two capitalised words)
+    r'[A-Z][a-záéíóúñ]+ [A-Z][a-záéíóúñ]+(?:\s+[A-Z][a-záéíóúñ]+)?|'
+    # Software/infrastructure terms
+    r'(?:Python|Java(?:Script)?|TypeScript|Docker|Git(?:Hub)?|LangChain|LangGraph|'
+    r'FastAPI|Neo4j|Ollama|OpenAI|Anthropic|Claude|GPT|LLM|RAG|Vector|Redis|'
+    r'Celery|Kafka|AWS|Azure|GCP|Kubernetes|Terraform|Grafana|Prometheus|'
+    r'Framework|Library|API|SDK|REST|GraphQL|gRPC|HTTP|HTTPS|JSON|YAML|XML|'
+    r'React|Vue|Angular|Node(?:\.js)?|npm|pip|conda|Poetry)[\s\-\w]*|'
+    # Generic geographic / organizational
+    r'(?:Ciudad|City|Country|Pa[ií]s|Region|Hospital|Universidad|University|'
+    r'Institute|Company|Corp|Inc|Ltd|GmbH)[\s\-\w]*'
+    r')$',
+    re.IGNORECASE | re.UNICODE,
+)
+
+
+def _filter_domain(
+    entities: list[EntityModel],
+    relations: list[RelationModel],
+) -> tuple[list[EntityModel], list[RelationModel]]:
+    """Drop non-clinical entities and dangling relations (1.1)."""
+    valid_ids: set[str] = set()
+    filtered_entities: list[EntityModel] = []
+    for ent in entities:
+        if _NON_CLINICAL_RE.match(ent.label):
+            continue
+        valid_ids.add(ent.id)
+        filtered_entities.append(ent)
+    filtered_relations = [
+        r for r in relations
+        if r.subject_id in valid_ids and r.object_id in valid_ids
+    ]
+    return filtered_entities, filtered_relations
+
+
+def _filter_confidence(
+    entities: list[EntityModel],
+    relations: list[RelationModel],
+    entity_threshold: float = 0.6,
+    relation_threshold: float = 0.5,
+) -> tuple[list[EntityModel], list[RelationModel]]:
+    """Drop low-confidence entities and their orphaned relations (1.5)."""
+    valid_ids: set[str] = {e.id for e in entities if e.confidence >= entity_threshold}
+    filtered_entities = [e for e in entities if e.id in valid_ids]
+    filtered_relations = [
+        r for r in relations
+        if r.confidence >= relation_threshold
+        and r.subject_id in valid_ids
+        and r.object_id in valid_ids
+    ]
+    return filtered_entities, filtered_relations
+
+# ---------------------------------------------------------------------------
 # System prompt — schema-constrained extraction
 # ---------------------------------------------------------------------------
 
@@ -65,7 +124,8 @@ CRITICAL RULES:
 4. Confidence = 1.0 only for explicit guideline statements. Use 0.7–0.9 for strong inference, 0.5–0.7 for uncertain.
 5. Include source_quote (exact text) for every entity definition.
 6. Mark fractal proposedEquivalence with lower confidence (≤0.7).
-7. Do NOT invent entities not present in the fragment."""
+7. Do NOT invent entities not present in the fragment.
+8. NEVER extract entities about: software tools, programming languages, web frameworks, tutorial examples, software libraries, general computer science concepts, persons (e.g. "Ana García"), cities, or non-biomedical institutions. Only extract entities directly related to HER2 breast cancer diagnostics and treatment."""
 
 # ---------------------------------------------------------------------------
 # Few-shot example (hardcoded HER2 clinical example)
@@ -232,6 +292,9 @@ def extract_from_chunk(chunk: DocumentChunk, llm) -> ExtractionResult:
         )
 
     entities, relations, error = _parse_extraction(raw)
+    # Apply post-extraction domain filter (1.1) and confidence filter (1.5)
+    entities, relations = _filter_domain(entities, relations)
+    entities, relations = _filter_confidence(entities, relations)
     return ExtractionResult(
         chunk_id=chunk.chunk_id,
         section=chunk.section,
@@ -253,8 +316,8 @@ def extract_batch(
     Optionally skip chunks of certain content types (e.g., pure ontology code).
     """
     if skip_types is None:
-        # Skip raw turtle/OWL code blocks — they're already in ontology.py
-        skip_types = {ContentType.ONTOLOGY}
+        # Skip raw turtle/OWL code blocks and technical appendice files
+        skip_types = {ContentType.ONTOLOGY, ContentType.TECHNICAL_APPENDIX}
 
     results: list[ExtractionResult] = []
     for i, chunk in enumerate(chunks, 1):

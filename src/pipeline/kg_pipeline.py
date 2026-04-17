@@ -87,11 +87,12 @@ class PipelineState(TypedDict):
 # ---------------------------------------------------------------------------
 
 def phase_ingest(state: PipelineState) -> dict:
-    """Phase 1: Load all .md documents from docs_dir."""
+    """Phase 1: Load all .md documents from docs_dir + PDFs from guides_dir."""
     cfg = state["config"]
-    docs_dir = Path(cfg.docs_dir)
+    docs_dir   = Path(cfg.docs_dir)
+    guides_dir = Path(cfg.guides_dir)
     print(f"\n{'='*60}")
-    print(f"[Phase 1/7] INGEST — Loading from {docs_dir}")
+    print(f"[Phase 1/7] INGEST — Loading from {docs_dir} and {guides_dir}")
 
     if not docs_dir.exists():
         return {"errors": [f"docs_dir not found: {docs_dir}"], "current_phase": "INGEST_FAILED"}
@@ -103,7 +104,7 @@ def phase_ingest(state: PipelineState) -> dict:
         "apendice_langchain_langgraph.md",
     }
 
-    # Collect file metadata
+    # Collect markdown file metadata
     raw_docs = [
         {"path": str(p), "format": "markdown", "name": p.name}
         for p in sorted(docs_dir.glob("*.md"))
@@ -114,6 +115,17 @@ def phase_ingest(state: PipelineState) -> dict:
         print(f"  Skipping {len(excluded)} non-clinical docs: {excluded}")
     print(f"  Found {len(raw_docs)} .md files")
 
+    # Collect PDF file metadata
+    if guides_dir.exists():
+        pdf_docs = [
+            {"path": str(p), "format": "pdf", "name": p.name}
+            for p in sorted(guides_dir.glob("*.pdf"))
+        ]
+        print(f"  Found {len(pdf_docs)} PDF guideline files")
+        raw_docs.extend(pdf_docs)
+    else:
+        print(f"  guides_dir not found: {guides_dir} — skipping PDF ingestion")
+
     return {
         "raw_documents": raw_docs,
         "current_phase": "INGEST_DONE",
@@ -121,9 +133,10 @@ def phase_ingest(state: PipelineState) -> dict:
 
 
 def phase_chunk(state: PipelineState) -> dict:
-    """Phase 2: Semantic-aware chunking of all loaded documents."""
+    """Phase 2: Semantic-aware chunking of all loaded documents (md + PDF)."""
     cfg = state["config"]
-    docs_dir = Path(cfg.docs_dir)
+    docs_dir   = Path(cfg.docs_dir)
+    guides_dir = Path(cfg.guides_dir)
     print(f"\n{'='*60}")
     print(f"[Phase 2/7] CHUNK — Semantic segmentation (size={cfg.chunk_size}, overlap={cfg.chunk_overlap})")
 
@@ -132,13 +145,29 @@ def phase_chunk(state: PipelineState) -> dict:
         "apendice_frameworks_graphrag.md",
         "apendice_langchain_langgraph.md",
     }
+    # Markdown chunks — technical appendices are tagged TECHNICAL_APPENDIX
     chunks = load_all_markdown_docs(
         docs_dir,
         chunk_size=cfg.chunk_size,
         overlap=cfg.chunk_overlap,
         exclude=EXCLUDED_DOCS,
     )
-    print(f"  Generated {len(chunks)} chunks")
+    md_count = len(chunks)
+    print(f"  Markdown: {md_count} chunks")
+
+    # PDF guideline chunks (5.2)
+    if guides_dir.exists():
+        pdf_chunks = load_all_pdf_docs(
+            guides_dir,
+            chunk_size=cfg.chunk_size,
+            overlap=cfg.chunk_overlap,
+        )
+        chunks.extend(pdf_chunks)
+        print(f"  PDFs:     {len(pdf_chunks)} chunks from {guides_dir.name}/")
+    else:
+        print(f"  PDFs:     guides_dir not found ({guides_dir}) — skipping")
+
+    print(f"  Total:    {len(chunks)} chunks")
 
     # Print content type distribution
     from collections import Counter

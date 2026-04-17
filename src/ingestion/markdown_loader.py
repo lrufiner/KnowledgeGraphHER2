@@ -23,6 +23,20 @@ from src.domain.models import ContentType, DocumentChunk
 # Content-type patterns
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Technical appendix docs — software/tutorial content, skip clinical extraction
+# ---------------------------------------------------------------------------
+
+TECHNICAL_APPENDIX_DOCS: frozenset[str] = frozenset({
+    "apendice_frameworks_graphrag.md",
+    "apendice_langchain_langgraph.md",
+})
+
+
+# ---------------------------------------------------------------------------
+# Content-type patterns
+# ---------------------------------------------------------------------------
+
 _CONTENT_TYPE_PATTERNS = {
     ContentType.ALGORITHM: re.compile(
         r'(?:NODO[-_]\d|ENTRADA:|ACCIÓN:|SÍ\s*→|→|algorithm|flowchart|decision|paso\s+\d)',
@@ -308,6 +322,9 @@ def load_all_markdown_docs(
         fpath = docs_dir / fname
         if fpath.exists():
             chunks = load_markdown_document(fpath, chunk_size, overlap)
+            if fname in TECHNICAL_APPENDIX_DOCS:
+                for c in chunks:
+                    c.content_type = ContentType.TECHNICAL_APPENDIX
             all_chunks.extend(chunks)
             processed.add(fname)
 
@@ -315,6 +332,9 @@ def load_all_markdown_docs(
     for fpath in sorted(docs_dir.glob("*.md")):
         if fpath.name not in processed and fpath.name not in excluded:
             chunks = load_markdown_document(fpath, chunk_size, overlap)
+            if fpath.name in TECHNICAL_APPENDIX_DOCS:
+                for c in chunks:
+                    c.content_type = ContentType.TECHNICAL_APPENDIX
             all_chunks.extend(chunks)
 
     return all_chunks

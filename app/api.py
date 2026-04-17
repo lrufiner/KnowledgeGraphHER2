@@ -28,9 +28,12 @@ _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _ROOT not in sys.path:
     sys.path.insert(0, _ROOT)
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 # ---------------------------------------------------------------------------
 # App initialization
@@ -51,9 +54,19 @@ app = FastAPI(
     license_info={"name": "MIT"},
 )
 
+# ── Rate limiter (4.4) ───────────────────────────────────────────────────────
+_query_rate = os.getenv("QUERY_RATE_LIMIT", "10")
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# ── CORS (4.2) — restrict to known frontends; override via CORS_ALLOW_ORIGINS ─
+_raw_origins = os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:8501,http://localhost:3000")
+_allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # Restrict in production
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -87,7 +100,9 @@ def _get_driver():
         password = os.getenv("NEO4J_PASSWORD", "password")
         try:
             from neo4j import GraphDatabase
-            _driver_singleton = GraphDatabase.driver(uri, auth=(user, password))
+            _driver_singleton = GraphDatabase.driver(
+                uri, auth=(user, password), connection_timeout=5
+            )
             _driver_singleton.verify_connectivity()
         except Exception:
             _driver_singleton = None  # Allow degraded mode
@@ -259,9 +274,36 @@ _STATIC_EVIDENCE: dict[str, dict] = {
 # ---------------------------------------------------------------------------
 
 
-@app.get("/health", summary="Liveness probe")
-def health() -> dict[str, str]:
-    return {"status": "ok", "version": "1.0.0"}
+@app.get("/health", summary="Liveness probe with dependency checks")
+def health() -> dict[str, Any]:
+    """Return API status plus Neo4j and Ollama connectivity (4.3)."""
+    result: dict[str, Any] = {"status": "ok", "version": "1.0.0"}
+
+    # Neo4j check
+    driver = _get_driver()
+    if driver is not None:
+        try:
+            with driver.session() as session:
+                session.run("RETURN 1")
+            result["neo4j"] = "connected"
+        except Exception as exc:
+            result["neo4j"] = f"error: {exc}"
+            result["status"] = "degraded"
+    else:
+        result["neo4j"] = "disconnected"
+        result["status"] = "degraded"
+
+    # Ollama check
+    ollama_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    try:
+        import urllib.request
+        with urllib.request.urlopen(f"{ollama_url}/api/tags", timeout=2) as resp:
+            result["ollama"] = "available" if resp.status == 200 else f"status_{resp.status}"
+    except Exception:
+        result["ollama"] = "unavailable"
+        result["status"] = "degraded"
+
+    return result
 
 
 @app.post(
@@ -326,17 +368,18 @@ def diagnose(request: DiagnoseRequest) -> DiagnoseResponse:
         "Requires Ollama running locally."
     ),
 )
-def query_endpoint(request: QueryRequest) -> QueryResponse:
+@limiter.limit(f"{_query_rate}/minute")
+def query_endpoint(request: Request, body: QueryRequest) -> QueryResponse:
     llm = _get_llm()
     driver = _get_driver()
 
     clinical_data: dict[str, Any] = {}
-    if request.ihc_score:
-        clinical_data["ihc_score"] = request.ihc_score
-    if request.ish_group:
-        clinical_data["ish_group"] = request.ish_group
-    if request.ish_ratio is not None:
-        clinical_data["ish_ratio"] = request.ish_ratio
+    if body.ihc_score:
+        clinical_data["ihc_score"] = body.ihc_score
+    if body.ish_group:
+        clinical_data["ish_group"] = body.ish_group
+    if body.ish_ratio is not None:
+        clinical_data["ish_ratio"] = body.ish_ratio
 
     from src.agents.supervisor import build_agent_graph
     from src.agents.state import EMPTY_STATE
@@ -344,21 +387,21 @@ def query_endpoint(request: QueryRequest) -> QueryResponse:
     graph = build_agent_graph(llm=llm, driver=driver, checkpointer=checkpointer)
     initial_state = {
         **EMPTY_STATE,
-        "query": request.query,
+        "query": body.query,
         "clinical_data": clinical_data,
     }
-    if request.agents:
-        initial_state["target_agents"] = list(request.agents)
+    if body.agents:
+        initial_state["target_agents"] = list(body.agents)
 
     # Thread config: enables conversation continuity via checkpointer
     import uuid
-    thread_id = request.thread_id or str(uuid.uuid4())
+    thread_id = body.thread_id or str(uuid.uuid4())
     invoke_config = {"configurable": {"thread_id": thread_id}}
     final = graph.invoke(initial_state, invoke_config)
 
     agents_invoked = [r["agent"] for r in final.get("agent_results", []) if "agent" in r]
     return QueryResponse(
-        query=request.query,
+        query=body.query,
         agents_invoked=agents_invoked,
         confidence=float(final.get("confidence", 0.0)),
         needs_human_review=bool(final.get("needs_human_review", False)),

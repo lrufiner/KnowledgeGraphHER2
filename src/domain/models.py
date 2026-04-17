@@ -16,14 +16,15 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 class ContentType(str, Enum):
-    ALGORITHM   = "algorithm"
-    CRITERIA    = "criteria"
-    RECOMMENDATION = "recommendation"
-    FRACTAL_MAPPING = "fractal_mapping"
-    QA          = "qa"
-    TABLE       = "table"
-    ONTOLOGY    = "ontology"
-    GENERAL     = "general"
+    ALGORITHM          = "algorithm"
+    CRITERIA           = "criteria"
+    RECOMMENDATION     = "recommendation"
+    FRACTAL_MAPPING    = "fractal_mapping"
+    QA                 = "qa"
+    TABLE              = "table"
+    ONTOLOGY           = "ontology"
+    GENERAL            = "general"
+    TECHNICAL_APPENDIX = "technical_appendix"  # software/tutorial docs — skip extraction
 
 
 class NodeType(str, Enum):

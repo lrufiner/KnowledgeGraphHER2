@@ -45,16 +45,36 @@ st.set_page_config(
 # ---------------------------------------------------------------------------
 
 @st.cache_resource(show_spinner=False)
-def _load_llm(model: str = "qwen3:8b"):
-    """Load LangChain Ollama LLM (cached across rerenders)."""
+def _load_llm(_mode: str = "", _model: str = ""):
+    """Load LLM via PipelineConfig (respects HER2_KG_LLM_MODE env var)."""
     try:
-        from langchain_ollama import ChatOllama
-        base_url = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-        # num_ctx=8192 prevents KV cache OOM on GPU (262144 default exceeds VRAM)
-        return ChatOllama(model=model, temperature=0, base_url=base_url, num_ctx=8192)
+        from src.pipeline.config import PipelineConfig
+        cfg = PipelineConfig.from_env()
+        if _mode:
+            cfg = cfg.model_copy(update={"llm_mode": _mode})
+        if _model:
+            key = {"ollama": "ollama_model", "openai": "openai_model", "claude": "claude_model"}.get(cfg.llm_mode, "ollama_model")
+            cfg = cfg.model_copy(update={key: _model})
+        return cfg.get_llm()
     except Exception as exc:
-        st.warning(f"Ollama not available: {exc}. Deterministic mode only.")
+        st.warning(f"LLM not available: {exc}. Deterministic mode only.")
         return None
+
+
+def _llm_provider_label() -> tuple[str, str]:
+    """Return (provider, model) strings for display in the sidebar."""
+    try:
+        from src.pipeline.config import PipelineConfig
+        cfg = PipelineConfig.from_env()
+        mode = cfg.llm_mode
+        if mode == "openai":
+            return "OpenAI", cfg.openai_model
+        elif mode == "claude":
+            return "Anthropic", cfg.claude_model
+        else:
+            return "Ollama", cfg.ollama_model
+    except Exception:
+        return "Ollama", "qwen3:8b"
 
 
 @st.cache_resource(show_spinner=False, ttl=60)
@@ -186,11 +206,9 @@ with st.sidebar:
     )
 
     st.divider()
-    ollama_model = st.selectbox(
-        "LLM Model",
-        options=["qwen3:8b", "gemma4:e4b", "gemma3:latest"],
-        index=0,
-    )
+    _provider, _model_name = _llm_provider_label()
+    st.markdown(f"**LLM Provider:** `{_provider}`")
+    st.markdown(f"**Model:** `{_model_name}`")
 
     neo4j_connected = _load_driver() is not None
     if neo4j_connected:
@@ -199,7 +217,7 @@ with st.sidebar:
         st.warning("Neo4j ✗ Not connected\n(seed data mode)")
 
 # Load shared resources
-llm = _load_llm(ollama_model)
+llm = _load_llm()
 driver = _load_driver()
 
 # ===========================================================================
@@ -505,7 +523,7 @@ elif panel == "💬 Query Interface":
     )
 
     if llm is None:
-        st.error("Ollama is not running. Start Ollama and reload the page.")
+        st.error("LLM not available. Check your provider configuration and reload the page.")
     else:
         with st.form("query_form"):
             query_text = st.text_area(
@@ -531,17 +549,40 @@ elif panel == "💬 Query Interface":
             if q_ratio > 0:
                 clinical_data["ish_ratio"] = q_ratio
 
-            with st.spinner("Running multi-agent pipeline..."):
-                graph = _build_supervisor(llm, driver)
-                from src.agents.state import EMPTY_STATE
-                init_state = {
-                    **EMPTY_STATE,
-                    "query": query_text,
-                    "clinical_data": clinical_data,
-                }
-                final = graph.invoke(init_state)
+            graph = _build_supervisor(llm, driver)
+            from src.agents.state import EMPTY_STATE
+            init_state = {
+                **EMPTY_STATE,
+                "query": query_text,
+                "clinical_data": clinical_data,
+            }
 
-            agents_used = final.get("agents_run", [])
+            # ── Streaming execution with live agent-progress feedback ─────────
+            _AGENT_ICONS = {
+                "diagnostic": "🔬", "evidence": "📚",
+                "explanation": "💡", "validation": "✅",
+            }
+            _progress = st.empty()
+            _answer = st.empty()
+            final: dict = {}
+            _prev_agents: list[str] = []
+
+            for _chunk in graph.stream(init_state, stream_mode="values"):
+                final = _chunk
+                # agents_run tracked via agent_results list
+                _running = [r.get("agent", "") for r in _chunk.get("agent_results", [])]
+                if _running != _prev_agents:
+                    _prev_agents = _running
+                    _steps = " → ".join(
+                        f"{_AGENT_ICONS.get(a, '🤖')} **{a}**" for a in _running
+                    ) or "⏳ Starting…"
+                    _progress.info(f"Pipeline: {_steps}")
+                if _partial := _chunk.get("final_response", ""):
+                    _answer.markdown(_partial)
+
+            _progress.empty()  # clear progress bar when done
+
+            agents_used = [r.get("agent", "?") for r in final.get("agent_results", [])]
             confidence = final.get("confidence", 0.0)
             needs_review = final.get("needs_human_review", False)
 
@@ -552,12 +593,12 @@ elif panel == "💬 Query Interface":
             m3.metric("Human review", "⚠️ YES" if needs_review else "✅ NO")
 
             # Final answer
-            synthesis = final.get("synthesis", "")
-            if synthesis:
+            final_response = final.get("final_response", "")
+            if final_response:
                 st.divider()
-                st.markdown(synthesis)
+                _answer.markdown(final_response)
             else:
-                st.warning("No synthesis generated.")
+                _answer.warning("No synthesis generated.")
 
             # Expand agent details
             with st.expander("Agent Results Detail"):

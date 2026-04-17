@@ -36,6 +36,7 @@ streamlit>=1.35.0
 fastapi>=0.110.0
 uvicorn>=0.27.0
 httpx>=0.27.0          # FastAPI TestClient dependency
+slowapi>=0.1.9         # Rate limiting for FastAPI
 
-# Optional: LightRAG community retrieval
-# lightrag-hku[neo4j]>=1.0.0
+# Optional: LightRAG community retrieval (5.1 — activated)
+lightrag-hku>=1.3.0    # Graph-aware RAG with Neo4j backend

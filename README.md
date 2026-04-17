@@ -30,6 +30,7 @@ Plataforma de razonamiento diagnóstico HER2 de nivel productivo que combina un 
 - [Sistema Multi-Agente](#sistema-multi-agente)
 - [Árbol de Decisión Diagnóstico](#árbol-de-decisión-diagnóstico)
 - [Quick Start](#quick-start)
+- [Deployment](#deployment)
 - [Referencia de API](#referencia-de-api)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Categorías HER2](#categorías-her2)
@@ -419,6 +420,79 @@ uvicorn app.api:app --reload --port 8000
 
 ---
 
+## Deployment
+
+### Entornos soportados
+
+| Entorno                    | Neo4j           | LLM / Embeddings      | Archivo base    |
+| -------------------------- | --------------- | --------------------- | --------------- |
+| **Local (desarrollo)**   | Docker Compose  | Ollama (local/free)   | `.env.local`  |
+| **Cloud (producción)**  | Neo4j AuraDB    | OpenAI API            | `.env`        |
+| **Cloud (alternativa)**  | Neo4j AuraDB    | Anthropic Claude      | `.env`        |
+
+### Desarrollo local (Docker + Ollama)
+
+```bash
+# 1. Copiar plantilla de configuración
+Copy-Item .env.local .env    # Windows
+# cp .env.local .env         # Linux/macOS
+
+# 2. Levantar Neo4j local
+docker compose up -d neo4j
+
+# 3. Descargar modelos Ollama (una sola vez)
+ollama pull qwen3:8b
+ollama pull nomic-embed-text
+
+# 4. Poblar el grafo
+python -m app.cli run-pipeline --llm-mode ollama
+```
+
+### Producción en la nube (AuraDB + OpenAI → Streamlit Cloud)
+
+```bash
+# 1. Configurar .env con credenciales de AuraDB y OpenAI:
+#    NEO4J_URI=neo4j+s://<id>.databases.neo4j.io
+#    NEO4J_USERNAME=<id>
+#    NEO4J_PASSWORD=<password>
+#    HER2_KG_LLM_MODE=openai
+#    HER2_KG_EMBEDDING_MODE=openai
+#    OPENAI_API_KEY=sk-...
+
+# 2. Poblar AuraDB (idempotente — seguro re-ejecutar)
+python -m app.cli run-pipeline --llm-mode openai
+
+# 3. Verificar en AuraDB Browser
+#    MATCH (n) RETURN count(n)   → ~460 nodos esperados
+```
+
+> **Streamlit Cloud:** configura las mismas variables de entorno en *Settings → Secrets* de tu app, y apunta el archivo principal a `app/streamlit_app.py`.
+
+### Sincronización local ↔ AuraDB
+
+El pipeline escribe todas las entidades con `MERGE` (idempotente). Para cambiar de entorno:
+
+```powershell
+# → Apuntar a local
+Copy-Item .env.local .env
+python -m app.cli run-pipeline --llm-mode ollama
+
+# → Apuntar a AuraDB
+# (editar .env manualmente o mantener .env.cloud con las credenciales)
+python -m app.cli run-pipeline --llm-mode openai
+```
+
+Para limpiar el grafo antes de una re-carga completa:
+
+```cypher
+-- Neo4j Browser / Cypher Shell
+MATCH (n) DETACH DELETE n
+```
+
+> ⚠️ No ejecutes `DETACH DELETE` en producción (AuraDB) sin hacer backup primero.
+
+---
+
 ## Referencia de API
 
 | Método  | Endpoint                 | Descripción                               |
@@ -591,11 +665,12 @@ KnowledgeGraphHER2/
 
 ### Neo4j
 
-| Variable           | Default                   | Descripción      |
-| ------------------ | ------------------------- | ----------------- |
-| `NEO4J_URI`      | `bolt://localhost:7687` | URI Bolt de Neo4j |
-| `NEO4J_USERNAME` | `neo4j`                 | Usuario Neo4j     |
-| `NEO4J_PASSWORD` | `password`              | Contraseña Neo4j |
+| Variable           | Local (Docker)            | Cloud (AuraDB)                        | Descripción      |
+| ------------------ | ------------------------- | ------------------------------------- | ----------------- |
+| `NEO4J_URI`      | `bolt://localhost:7687` | `neo4j+s://<id>.databases.neo4j.io` | URI de conexión  |
+| `NEO4J_USERNAME` | `neo4j`                 | `<id>`                              | Usuario Neo4j     |
+| `NEO4J_PASSWORD` | `password`              | `<password AuraDB>`                 | Contraseña Neo4j |
+| `NEO4J_DATABASE` | *(vacío)*               | `<id>`                              | Base de datos     |
 
 ### API / Docker
 
