@@ -202,6 +202,7 @@ with st.sidebar:
             "✅ Validation Check",
             "💬 Query Interface",
             "📊 Graph Stats",
+            "🌐 Graph Explorer",
         ],
         label_visibility="collapsed",
     )
@@ -655,6 +656,213 @@ elif panel == "📊 Graph Stats":
         st.divider()
         st.subheader("Raw Stats JSON")
         st.json(stats, expanded=False)
+
+# ===========================================================================
+# PANEL 7 — GRAPH EXPLORER
+# ===========================================================================
+
+elif panel == "🌐 Graph Explorer":
+    import tempfile
+    import streamlit.components.v1 as _components
+
+    st.title("🌐 Knowledge Graph Explorer")
+    st.markdown(
+        "Visualiza el grafo localmente con **pyvis** o ábrelo directamente "
+        "en el navegador de Neo4j."
+    )
+
+    # ── Neo4j Browser deep link ─────────────────────────────────────────────
+    _uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    _is_aura = "aura" in _uri or "neo4j+s://" in _uri
+    if _is_aura:
+        _host = _uri.replace("neo4j+s://", "").replace("neo4j://", "").rstrip("/")
+        _browser_url = f"https://browser.neo4j.io/?dbms=neo4j%2Bs%3A%2F%2F{_host}"
+        _browser_label = "Abrir en Neo4j Browser (AuraDB) ↗"
+    else:
+        _browser_url = "http://localhost:7474/browser/"
+        _browser_label = "Abrir en Neo4j Browser (local) ↗"
+
+    col_btn, col_info = st.columns([1, 3])
+    with col_btn:
+        st.link_button(_browser_label, _browser_url, type="secondary")
+    with col_info:
+        st.caption(
+            "Se abrirá el navegador de Neo4j. Usa las queries de abajo "
+            "para explorar el grafo completo."
+        )
+
+    with st.expander("📋 Queries Cypher para Neo4j Browser", expanded=False):
+        st.code(
+            "-- Grafo completo (sin chunks)\n"
+            "MATCH (n) WHERE NOT n:Chunk RETURN n LIMIT 300",
+            language="cypher",
+        )
+        st.code(
+            "-- Solo categorías clínicas y sus relaciones\n"
+            "MATCH p=(c:ClinicalCategory)-[r]->(m) RETURN p",
+            language="cypher",
+        )
+        st.code(
+            "-- Árbol IHC completo\n"
+            "MATCH p=(d:DiagnosticDecision)-[:leadsTo*]->(r)\n"
+            "WHERE d.id = 'IHC_ENTRY' RETURN p",
+            language="cypher",
+        )
+        st.code(
+            "-- Elegibilidad T-DXd\n"
+            "MATCH p=(c:ClinicalCategory)-[:eligibleFor]->(t:TherapeuticAgent) RETURN p",
+            language="cypher",
+        )
+
+    st.divider()
+    st.subheader("Visualización interactiva")
+
+    if driver is None:
+        st.warning(
+            "Neo4j no conectado. Conecta Neo4j para renderizar el grafo interactivo."
+        )
+    else:
+        # Controls
+        _NODE_TYPES = [
+            "Ontología clínica",
+            "ClinicalCategory",
+            "IHCScore",
+            "ISHGroup",
+            "TherapeuticAgent",
+            "ClinicalTrial",
+            "Guideline",
+            "DiagnosticDecision",
+            "Assay",
+            "FractalMetric",
+        ]
+        _NODE_COLORS = {
+            "ClinicalCategory": "#e74c3c",
+            "IHCScore": "#3498db",
+            "ISHGroup": "#9b59b6",
+            "TherapeuticAgent": "#2ecc71",
+            "ClinicalTrial": "#f39c12",
+            "Guideline": "#1abc9c",
+            "DiagnosticDecision": "#e67e22",
+            "Assay": "#95a5a6",
+            "FractalMetric": "#fd79a8",
+            "ToySpecimen": "#a29bfe",
+        }
+
+        fc1, fc2, fc3 = st.columns([2, 1, 1])
+        with fc1:
+            _sel_type = st.selectbox("Tipo de nodo", _NODE_TYPES, index=0)
+        with fc2:
+            _max_nodes = st.slider("Máx. nodos", 20, 400, 200)
+        with fc3:
+            _physics = st.checkbox("Animación física", value=True)
+
+        if st.button("🔄 Renderizar grafo", type="primary"):
+            if _sel_type == "Ontología clínica":
+                _cypher = (
+                    "MATCH (n) WHERE NOT n:Chunk "
+                    "WITH n LIMIT $lim "
+                    "OPTIONAL MATCH (n)-[r]->(m) WHERE NOT m:Chunk "
+                    "RETURN n, r, m"
+                )
+            else:
+                _cypher = (
+                    f"MATCH (n:{_sel_type}) WITH n LIMIT $lim "
+                    "OPTIONAL MATCH (n)-[r]->(m) WHERE NOT m:Chunk "
+                    "RETURN n, r, m"
+                )
+
+            with st.spinner("Consultando Neo4j y renderizando…"):
+                try:
+                    with driver.session() as _sess:
+                        _records = list(_sess.run(_cypher, lim=_max_nodes))
+
+                    from pyvis.network import Network
+
+                    _net = Network(
+                        height="650px", width="100%",
+                        bgcolor="#0e1117", font_color="white",
+                        notebook=False, directed=True,
+                    )
+                    _net.set_options("""
+                    {
+                      "nodes": {"borderWidth": 2, "shadow": true},
+                      "edges": {
+                        "arrows": {"to": {"enabled": true, "scaleFactor": 0.8}},
+                        "shadow": false, "smooth": {"type": "curvedCW", "roundness": 0.2}
+                      },
+                      "physics": {"enabled": %s,
+                        "barnesHut": {"gravitationalConstant": -8000, "springLength": 120}},
+                      "interaction": {"hover": true, "navigationButtons": true,
+                        "keyboard": {"enabled": true}}
+                    }
+                    """ % str(_physics).lower())
+
+                    _added: set = set()
+
+                    def _node_label(node) -> str:
+                        for k in ("label", "name", "id", "chunk_id"):
+                            if node.get(k):
+                                v = str(node.get(k))
+                                return v[:40] + "…" if len(v) > 40 else v
+                        return str(node.element_id)[:8]
+
+                    def _add_node(node) -> None:
+                        eid = node.element_id
+                        if eid in _added:
+                            return
+                        lbls = list(node.labels)
+                        color = _NODE_COLORS.get(lbls[0] if lbls else "", "#74b9ff")
+                        tip = "\n".join(
+                            f"{k}: {v}" for k, v in dict(node).items()
+                            if k not in ("embedding", "text") and v is not None
+                        )
+                        _net.add_node(
+                            eid, label=_node_label(node),
+                            title=tip or eid, color=color,
+                            size=20 if "Category" in (lbls[0] if lbls else "") else 14,
+                        )
+                        _added.add(eid)
+
+                    for _rec in _records:
+                        _n = _rec["n"]
+                        _m = _rec["m"]
+                        _r = _rec["r"]
+                        if _n is not None:
+                            _add_node(_n)
+                        if _m is not None:
+                            _add_node(_m)
+                        if _r is not None and _n is not None and _m is not None:
+                            _net.add_edge(
+                                _n.element_id, _m.element_id,
+                                label=_r.type, title=_r.type,
+                                color="#636e72",
+                            )
+
+                    with tempfile.NamedTemporaryFile(
+                        suffix=".html", mode="w",
+                        delete=False, encoding="utf-8"
+                    ) as _tf:
+                        _net.save_graph(_tf.name)
+                        _tmp = _tf.name
+
+                    with open(_tmp, "r", encoding="utf-8") as _f:
+                        _html = _f.read()
+
+                    _node_count = len(_added)
+                    _edge_count = len(_net.edges)
+                    st.caption(
+                        f"Renderizados **{_node_count}** nodos y "
+                        f"**{_edge_count}** relaciones. "
+                        "Arrastra, zoon con scroll, doble clic para fijar nodos."
+                    )
+                    _components.html(_html, height=660, scrolling=False)
+
+                except ImportError:
+                    st.error(
+                        "pyvis no instalado. Ejecuta: `pip install pyvis` y reinicia."
+                    )
+                except Exception as _exc:
+                    st.error(f"Error al renderizar el grafo: {_exc}")
 
 # ---------------------------------------------------------------------------
 # Footer
