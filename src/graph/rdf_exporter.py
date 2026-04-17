@@ -237,9 +237,16 @@ def export_rdf(
     driver: Driver,
     output_dir: str | Path = "./output",
     verbose: bool = True,
+    timestamp: str | None = None,
 ) -> dict[str, str]:
     """
     Export the Neo4j KG to RDF/Turtle and JSON-LD files.
+
+    Args:
+        timestamp: Optional suffix for the filename (e.g. '20260417_143022').
+                   When provided the output is saved as
+                   her2_knowledge_graph_<timestamp>.ttl to avoid overwriting
+                   previous runs.
 
     Returns:
         dict with keys 'ttl' and 'jsonld' pointing to output file paths.
@@ -252,8 +259,9 @@ def export_rdf(
 
     g = _build_rdf_graph(driver)
 
-    ttl_path    = output_dir / "her2_knowledge_graph.ttl"
-    jsonld_path = output_dir / "her2_knowledge_graph.jsonld"
+    suffix = f"_{timestamp}" if timestamp else ""
+    ttl_path    = output_dir / f"her2_knowledge_graph{suffix}.ttl"
+    jsonld_path = output_dir / f"her2_knowledge_graph{suffix}.jsonld"
 
     g.serialize(destination=str(ttl_path),    format="turtle")
     g.serialize(destination=str(jsonld_path), format="json-ld")

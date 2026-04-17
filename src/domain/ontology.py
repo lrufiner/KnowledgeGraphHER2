@@ -9,8 +9,8 @@ from __future__ import annotations
 # ---------------------------------------------------------------------------
 
 NAMESPACES = {
-    "her2":   "http://digpatho.sinc.unl.edu.ar/ontology/her2#",
-    "frac":   "http://digpatho.sinc.unl.edu.ar/ontology/fractal#",
+    "her2":   "http://digpatho.com/ontology/her2#",
+    "frac":   "http://digpatho.com/ontology/fractal#",
     "ncit":   "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#",
     "snomed": "http://snomed.info/id/",
     "loinc":  "http://loinc.org/rdf#",
@@ -208,6 +208,13 @@ SEED_ENTITIES: list[dict] = [
      "definition": "ratio <2.0 AND signals <4.0/cell → Not amplified (Negative)",
      "ncit_uri": "NCIt:C173799",
      "ratio_threshold": 2.0, "signals_per_cell_threshold": 4.0, "group_number": 5},
+    # Assays
+    {"id": "IHC", "label": "Immunohistochemistry (IHC)", "type": "Assay",
+     "definition": "IHC assay for HER2 protein overexpression scoring (0, 0+, 1+, 2+, 3+)",
+     "ncit_uri": "NCIt:C17089"},
+    {"id": "ISH", "label": "In Situ Hybridization (ISH)", "type": "Assay",
+     "definition": "ISH reflex testing (FISH/CISH/DISH) for HER2 gene amplification — mandatory for IHC 2+",
+     "ncit_uri": "NCIt:C17236"},
     # Therapeutic Agents
     {"id": "Trastuzumab",          "label": "Trastuzumab",          "type": "TherapeuticAgent",
      "definition": "Anti-HER2 monoclonal antibody", "ncit_uri": "NCIt:C1647"},

@@ -271,14 +271,15 @@ def diagnose(request: DiagnoseRequest) -> DiagnoseResponse:
                 narrative = r.get("narrative")
                 break
 
+    pathway_steps = result.get("pathway_steps", [])
     return DiagnoseResponse(
         classification=result.get("classification", "Unknown"),
         ihc_score=request.ihc_score,
         ish_group=request.ish_group,
         confidence=result.get("confidence", "UNKNOWN"),
-        guideline=result.get("guideline", ""),
-        action=result.get("action", ""),
-        pathway=result.get("pathway", ""),
+        guideline=result.get("applicable_guideline", result.get("guideline", "")),
+        action=result.get("action_required", result.get("action", "")),
+        pathway=" → ".join(pathway_steps) if pathway_steps else result.get("pathway", ""),
         narrative=narrative,
     )
 
@@ -317,12 +318,13 @@ def query_endpoint(request: QueryRequest) -> QueryResponse:
 
     final = graph.invoke(initial_state)
 
+    agents_invoked = [r["agent"] for r in final.get("agent_results", []) if "agent" in r]
     return QueryResponse(
         query=request.query,
-        agents_invoked=final.get("agents_run", []),
+        agents_invoked=agents_invoked,
         confidence=float(final.get("confidence", 0.0)),
         needs_human_review=bool(final.get("needs_human_review", False)),
-        synthesis=final.get("synthesis", ""),
+        synthesis=final.get("final_response", final.get("synthesis", "")),
         agent_results=final.get("agent_results", []),
     )
 

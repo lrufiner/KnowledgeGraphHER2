@@ -96,37 +96,50 @@ _MAX_ITERATIONS = 3
 # ---------------------------------------------------------------------------
 
 def _route_query(
-    llm: BaseChatModel,
     query: str,
     clinical_data: dict,
 ) -> list[str]:
-    """Ask the LLM to decide which agents to invoke."""
-    context = f"Query: {query}\nClinical data: {json.dumps(clinical_data) if clinical_data else 'None'}"
-    messages = [
-        SystemMessage(content=_ROUTING_PROMPT),
-        HumanMessage(content=context),
-    ]
-    try:
-        response = llm.invoke(messages)
-        text = response.content if hasattr(response, "content") else str(response)
-        # Extract JSON array from response
-        text = text.strip()
-        if text.startswith("["):
-            agents: list[str] = json.loads(text)
-        else:
-            # Fallback: find the first [...]
-            start = text.find("[")
-            end   = text.rfind("]") + 1
-            if start >= 0 and end > start:
-                agents = json.loads(text[start:end])
-            else:
-                agents = ["diagnostic"]  # safe fallback
-    except Exception:
-        agents = ["diagnostic"]
+    """Fast keyword-based routing (no LLM — avoids 4-minute waits on CPU models).
 
-    # Validate — only allow known agent names
-    valid = {"diagnostic", "evidence", "explanation", "validation"}
-    return [a for a in agents if a in valid] or ["diagnostic"]
+    Rules:
+    - Has clinical data OR classification keywords → diagnostic
+    - Evidence/trial/treatment keywords → evidence
+    - Why/explain/rationale keywords → explanation
+    - Consistency/validation keywords → validation
+    """
+    q = query.lower()
+    agents: list[str] = []
+
+    # Diagnostic
+    if clinical_data or any(w in q for w in [
+        "classify", "classification", "status", "ihc", "ish", "score",
+        "group", "what is", "her2", "biopsy", "result",
+    ]):
+        agents.append("diagnostic")
+
+    # Evidence
+    if any(w in q for w in [
+        "eligible", "approved", "trial", "treatment", "therapy",
+        "t-dxd", "trastuzumab", "evidence", "guideline", "recommendation",
+        "destiny", "cleopatra", "her2climb",
+    ]):
+        agents.append("evidence")
+
+    # Explanation
+    if any(w in q for w in [
+        "why", "explain", "explanation", "reason", "rationale",
+        "how", "equivocal", "mean", "pathway", "because",
+    ]):
+        agents.append("explanation")
+
+    # Validation
+    if any(w in q for w in [
+        "consistent", "conflict", "valid", "validation", "check",
+        "inconsistent", "compatible",
+    ]):
+        agents.append("validation")
+
+    return agents or ["diagnostic"]
 
 
 # ---------------------------------------------------------------------------
@@ -142,11 +155,15 @@ def _make_supervisor_node(llm: BaseChatModel) -> Any:
         if iteration >= _MAX_ITERATIONS:
             return {"target_agents": [], "iteration_count": iteration + 1}
 
-        target_agents = _route_query(llm, query, clinical_data)
-        return {
-            "target_agents":    target_agents,
-            "iteration_count":  iteration + 1,
-        }
+        # Only route with LLM on the first pass; subsequent passes keep existing queue
+        if iteration == 0 or not state.get("agent_results"):
+            target_agents = _route_query(query, clinical_data)
+            return {
+                "target_agents":   target_agents,
+                "iteration_count": iteration + 1,
+            }
+        # Subsequent passes: just increment counter, keep target_agents from state
+        return {"iteration_count": iteration + 1}
     return supervisor_node
 
 

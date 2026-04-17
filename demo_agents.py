@@ -177,11 +177,19 @@ def main() -> None:
                         help="Run full supervisor pipeline")
     parser.add_argument("--model", type=str, default="qwen3:8b")
     parser.add_argument("--all", action="store_true", help="Run all predefined cases")
+    parser.add_argument("--neo4j", action="store_true",
+                        help="Use real Neo4j driver instead of mock (requires running Neo4j)")
     args = parser.parse_args()
 
     print(f"Cargando modelo Ollama: {args.model} ...")
-    llm    = ChatOllama(model=args.model, temperature=0)
-    driver = _mock_driver()
+    llm = ChatOllama(model=args.model, temperature=0)
+    if args.neo4j:
+        from src.pipeline.config import PipelineConfig
+        cfg = PipelineConfig.from_env()
+        driver = cfg.get_neo4j_driver()
+        print(f"Conectado a Neo4j: {cfg.neo4j_uri}")
+    else:
+        driver = _mock_driver()
     print("Listo.\n")
 
     if args.all:

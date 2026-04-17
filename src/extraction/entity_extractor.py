@@ -190,6 +190,21 @@ def _parse_extraction(raw: str) -> tuple[list[EntityModel], list[RelationModel],
 # Public API
 # ---------------------------------------------------------------------------
 
+def _extract_with_retry(chunk: DocumentChunk, llm, messages: list) -> tuple[str, Exception | None]:
+    """Invoke the LLM; retry once on empty/None response."""
+    for attempt in range(2):
+        try:
+            response = llm.invoke(messages)
+            raw = response.content if hasattr(response, "content") else str(response)
+            raw = raw.strip() if raw else ""
+            if raw:
+                return raw, None
+        except Exception as e:
+            if attempt == 1:
+                return "", e
+    return "", None
+
+
 def extract_from_chunk(chunk: DocumentChunk, llm) -> ExtractionResult:
     """
     Extract entities and relations from a single DocumentChunk using the LLM.
@@ -202,14 +217,18 @@ def extract_from_chunk(chunk: DocumentChunk, llm) -> ExtractionResult:
         ExtractionResult with entities, relations, and optional error.
     """
     messages = _build_messages(chunk)
-    try:
-        response = llm.invoke(messages)
-        raw = response.content if hasattr(response, "content") else str(response)
-    except Exception as e:
+    raw, exc = _extract_with_retry(chunk, llm, messages)
+    if exc:
         return ExtractionResult(
             chunk_id=chunk.chunk_id,
             section=chunk.section,
-            error=f"LLM call failed: {e}",
+            error=f"LLM call failed: {exc}",
+        )
+    if not raw:
+        return ExtractionResult(
+            chunk_id=chunk.chunk_id,
+            section=chunk.section,
+            entities=[], relations=[], error=None,
         )
 
     entities, relations, error = _parse_extraction(raw)
@@ -245,11 +264,11 @@ def extract_batch(
             print(f"[{i}/{len(chunks)}] Extracting: {chunk.chunk_id} ({chunk.content_type.value})")
         result = extract_from_chunk(chunk, llm)
         if result.error and verbose:
-            print(f"  ⚠ Error: {result.error[:120]}")
+            print(f"  [!] Error: {result.error[:120]}")
         else:
             ent_count = len(result.entities)
             rel_count = len(result.relations)
             if verbose:
-                print(f"  ✓ {ent_count} entities, {rel_count} relations")
+                print(f"  [OK] {ent_count} entities, {rel_count} relations")
         results.append(result)
     return results

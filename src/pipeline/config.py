@@ -81,6 +81,9 @@ class PipelineConfig(BaseModel):
             ollama_model     = os.getenv("HER2_KG_OLLAMA_MODEL", "qwen3:8b"),
             embedding_mode   = os.getenv("HER2_KG_EMBEDDING_MODE", "openai"),
             embedding_model  = os.getenv("HER2_KG_EMBEDDING_MODEL", "text-embedding-3-small"),
+            embedding_dim    = int(os.getenv("HER2_KG_EMBEDDING_DIM",
+                                  "768" if os.getenv("HER2_KG_EMBEDDING_MODE", "openai") == "ollama"
+                                  else "1536")),
             neo4j_uri        = os.getenv("NEO4J_URI", "bolt://localhost:7687"),
             neo4j_username   = os.getenv("NEO4J_USERNAME", "neo4j"),
             neo4j_password   = os.getenv("NEO4J_PASSWORD", "password"),

@@ -288,16 +288,23 @@ def load_all_markdown_docs(
     docs_dir: Path,
     chunk_size: int = 500,
     overlap: int = 100,
+    exclude: set[str] | None = None,
 ) -> list[DocumentChunk]:
     """
     Load all .md files from docs_dir in priority order.
     Returns a flat list of DocumentChunk objects.
+
+    Args:
+        exclude: Set of filenames to skip (e.g. non-clinical appendices).
     """
+    excluded = exclude or set()
     all_chunks: list[DocumentChunk] = []
     processed: set[str] = set()
 
     # Priority files first
     for fname in PRIORITY_ORDER:
+        if fname in excluded:
+            continue
         fpath = docs_dir / fname
         if fpath.exists():
             chunks = load_markdown_document(fpath, chunk_size, overlap)
@@ -306,7 +313,7 @@ def load_all_markdown_docs(
 
     # Remaining .md files (alphabetical)
     for fpath in sorted(docs_dir.glob("*.md")):
-        if fpath.name not in processed:
+        if fpath.name not in processed and fpath.name not in excluded:
             chunks = load_markdown_document(fpath, chunk_size, overlap)
             all_chunks.extend(chunks)
 

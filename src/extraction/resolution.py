@@ -98,9 +98,11 @@ def resolve_entity(entity: EntityModel, source_doc: str) -> ResolvedEntity:
     Resolve a single extracted entity to a ResolvedEntity with canonical URI.
     """
     uris = resolve_uri(entity.label, entity.candidate_uri)
-    # Normalize ID: replace spaces, slashes, and hyphens with underscores so
-    # LLM variants like "HER2-Low" merge correctly with seed node "HER2_Low".
-    entity_id = re.sub(r'[-\s/]+', '_', entity.label.strip())
+    # Normalize ID: replace spaces, slashes, hyphens and URI-unsafe chars
+    # so LLM variants like "HER2-Low" → "HER2_Low" and "Threshold >1.85" → "Threshold_gt1_85".
+    _label = entity.label.strip()
+    _label = _label.replace('>', 'gt').replace('<', 'lt').replace('(', '').replace(')', '').replace('%', 'pct')
+    entity_id = re.sub(r'[^a-zA-Z0-9_]', '_', re.sub(r'[-\s/]+', '_', _label)).strip('_')
     return ResolvedEntity(
         id=entity_id,
         label=entity.label,

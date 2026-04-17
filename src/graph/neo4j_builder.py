@@ -118,7 +118,7 @@ def load_seed_data(driver: Driver) -> dict[str, int]:
                 )
                 stats["relations"] += 1
             except Exception as e:
-                print(f"  ⚠ Relation skipped ({rel['subject_id']}→{rel['object_id']}): {e}")
+                print(f"  [!] Relation skipped ({rel['subject_id']}->{rel['object_id']}): {e}")
 
     print(f"[Seed] Loaded {stats['nodes']} nodes, {stats['relations']} relations.")
     return stats
@@ -185,7 +185,7 @@ def upsert_entities(driver: Driver, entities: list[ResolvedEntity]) -> int:
                 session.run(query, id=ent.id, props=props)
                 count += 1
             except Exception as e:
-                print(f"  ⚠ Entity upsert failed ({ent.id}): {e}")
+                print(f"  [!] Entity upsert failed ({ent.id}): {e}")
 
     return count
 
@@ -219,8 +219,42 @@ def upsert_relations(driver: Driver, relations: list[ResolvedRelation]) -> int:
                 )
                 count += 1
             except Exception as e:
-                print(f"  ⚠ Relation upsert failed ({rel.subject_id}→{rel.object_id}): {e}")
+                print(f"  [!] Relation upsert failed ({rel.subject_id}->{rel.object_id}): {e}")
 
+    return count
+
+
+def create_mentions_edges(driver: Driver, entities: list) -> int:
+    """
+    Create (:Chunk)-[:MENTIONS]->(:Entity) edges for GraphRAG entity-centric retrieval.
+
+    Each ResolvedEntity.source_doc stores the chunk_id that produced it during
+    LLM extraction.  This function wires those provenance links into the graph so
+    that neo4j-graphrag VectorCypherRetriever can traverse chunk→entity paths.
+    """
+    count = 0
+    with driver.session() as session:
+        for ent in entities:
+            chunk_id = getattr(ent, "source_doc", None)
+            if not chunk_id:
+                continue
+            try:
+                result = session.run(
+                    """
+                    MATCH (c:Chunk {chunk_id: $chunk_id})
+                    MATCH (e {id: $entity_id})
+                    WHERE NOT e:Chunk AND NOT e:ToySpecimen
+                    MERGE (c)-[r:MENTIONS]->(e)
+                    RETURN count(r) AS merged
+                    """,
+                    chunk_id=chunk_id,
+                    entity_id=ent.id,
+                )
+                row = result.single()
+                if row and row["merged"] > 0:
+                    count += 1
+            except Exception:
+                pass
     return count
 
 

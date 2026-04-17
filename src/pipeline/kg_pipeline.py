@@ -127,10 +127,16 @@ def phase_chunk(state: PipelineState) -> dict:
     print(f"\n{'='*60}")
     print(f"[Phase 2/7] CHUNK — Semantic segmentation (size={cfg.chunk_size}, overlap={cfg.chunk_overlap})")
 
+    # Mirror the exclusion list from phase_ingest so chunks match processed docs
+    EXCLUDED_DOCS = {
+        "apendice_frameworks_graphrag.md",
+        "apendice_langchain_langgraph.md",
+    }
     chunks = load_all_markdown_docs(
         docs_dir,
         chunk_size=cfg.chunk_size,
         overlap=cfg.chunk_overlap,
+        exclude=EXCLUDED_DOCS,
     )
     print(f"  Generated {len(chunks)} chunks")
 
@@ -259,6 +265,11 @@ def phase_build(state: PipelineState) -> dict:
                 chunk.section, chunk.content, chunk.content_type.value,
             )
 
+        # Wire MENTIONS edges (Chunk → Entity) for GraphRAG retrieval
+        from src.graph.neo4j_builder import create_mentions_edges
+        n_mentions = create_mentions_edges(driver, resolved_entities)
+        print(f"  Created {n_mentions} MENTIONS edges (Chunk->Entity)")
+
         stats = get_graph_stats(driver)
         print(f"  Graph stats: {stats['total_nodes']} nodes, {stats['total_relations']} relations")
         for label, cnt in stats["node_counts"].items():
@@ -319,15 +330,19 @@ def phase_export(state: PipelineState) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     elapsed = time.time() - state.get("start_time", time.time())
 
+    import datetime as _dt
+    run_ts = _dt.datetime.utcnow()
+    ts_suffix = run_ts.strftime("%Y%m%d_%H%M%S")
+
     print(f"\n{'='*60}")
     print(f"[Phase 8/8] EXPORT — RDF export + vector indexes + pipeline log")
 
     export_paths: dict = {}
 
-    # RDF/OWL export
+    # RDF/OWL export — timestamped filename to avoid overwriting previous runs
     driver = cfg.get_neo4j_driver()
     try:
-        rdf_paths = export_rdf(driver, output_dir=output_dir, verbose=True)
+        rdf_paths = export_rdf(driver, output_dir=output_dir, verbose=True, timestamp=ts_suffix)
         export_paths.update(rdf_paths)
     except Exception as exc:
         print(f"  [EXPORT] RDF export skipped: {exc!s:.100}")
@@ -347,7 +362,7 @@ def phase_export(state: PipelineState) -> dict:
     report_data = report.summary() if report else {}
 
     log = {
-        "run_timestamp":    __import__("datetime").datetime.utcnow().isoformat(),
+        "run_timestamp":    run_ts.isoformat(),
         "llm_mode":         cfg.llm_mode,
         "active_model":     cfg._active_model(),
         "docs_dir":         cfg.docs_dir,
@@ -361,7 +376,7 @@ def phase_export(state: PipelineState) -> dict:
         "elapsed_seconds":  round(elapsed, 1),
     }
 
-    log_path = output_dir / "pipeline_log.json"
+    log_path = output_dir / f"pipeline_log_{ts_suffix}.json"
     with open(log_path, "w", encoding="utf-8") as f:
         json.dump(log, f, indent=2, default=str)
 
