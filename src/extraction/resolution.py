@@ -22,6 +22,11 @@ def _safe_id(label: str) -> str:
     return re.sub(r'[^a-z0-9_]', '_', label.lower().strip()).strip('_')
 
 
+def _normalize_label(label: str) -> str:
+    """Normalize label for lookup: replace hyphens and extra spaces with underscore."""
+    return re.sub(r'[-\s]+', '_', label.strip())
+
+
 def resolve_uri(label: str, candidate_uri: str | None = None) -> dict[str, str | None]:
     """
     Resolve a label to canonical URIs using the three-tier strategy.
@@ -49,17 +54,19 @@ def resolve_uri(label: str, candidate_uri: str | None = None) -> dict[str, str |
             result["snomed_uri"] = candidate_uri
         return result
 
-    if label in CANONICAL_URIS:
-        uri = CANONICAL_URIS[label]
-        result["resolved_uri"] = uri
-        if uri.startswith("NCIt:"):
-            result["ncit_uri"] = uri
-        elif uri.startswith("snomed:"):
-            result["snomed_uri"] = uri
-        # Also try SNOMED
-        if label in SNOMED_URIS:
-            result["snomed_uri"] = SNOMED_URIS[label]
-        return result
+    # Try exact match, then normalized variant (hyphen→underscore)
+    lookup_labels = [label, _normalize_label(label)]
+    for lbl in lookup_labels:
+        if lbl in CANONICAL_URIS:
+            uri = CANONICAL_URIS[lbl]
+            result["resolved_uri"] = uri
+            if uri.startswith("NCIt:"):
+                result["ncit_uri"] = uri
+            elif uri.startswith("snomed:"):
+                result["snomed_uri"] = uri
+            if lbl in SNOMED_URIS:
+                result["snomed_uri"] = SNOMED_URIS[lbl]
+            return result
 
     # ── Tier 2: Fuzzy match (edit distance) ───────────────────────────────
     all_labels = list(CANONICAL_URIS.keys())
@@ -91,8 +98,11 @@ def resolve_entity(entity: EntityModel, source_doc: str) -> ResolvedEntity:
     Resolve a single extracted entity to a ResolvedEntity with canonical URI.
     """
     uris = resolve_uri(entity.label, entity.candidate_uri)
+    # Normalize ID: replace spaces, slashes, and hyphens with underscores so
+    # LLM variants like "HER2-Low" merge correctly with seed node "HER2_Low".
+    entity_id = re.sub(r'[-\s/]+', '_', entity.label.strip())
     return ResolvedEntity(
-        id=entity.label.replace(" ", "_").replace("/", "_"),
+        id=entity_id,
         label=entity.label,
         type=entity.type,
         definition=entity.definition,

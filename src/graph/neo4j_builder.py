@@ -198,13 +198,15 @@ def upsert_relations(driver: Driver, relations: list[ResolvedRelation]) -> int:
     with driver.session() as session:
         for rel in relations:
             predicate = rel.predicate.value
+            # proposedEquivalence is exploratory by definition
+            is_hyp = True if predicate == "proposedEquivalence" else rel.is_hypothesis
             rprops: dict[str, Any] = {
                 "confidence":        rel.confidence,
                 "evidence":          rel.evidence or "",
                 "source_chunk":      rel.source_chunk or "",
                 "guideline_version": rel.guideline_version or "",
                 "conditions":        rel.conditions or "",
-                "is_hypothesis":     rel.is_hypothesis,
+                "is_hypothesis":     is_hyp,
                 "created_at":        now,
             }
             query = _UPSERT_REL_TEMPLATE.format(predicate=predicate)

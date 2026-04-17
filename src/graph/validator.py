@@ -36,7 +36,7 @@ def run_validation(driver: Driver, verbose: bool = True) -> ValidationReport:
             try:
                 result = session.run(cypher)
                 record = result.single()
-                valid = bool(record["valid"]) if record and "valid" in record else False
+                valid = bool(record["valid"]) if record is not None else False
             except Exception as e:
                 valid = False
                 msg_fail = f"{msg_fail} | Error: {str(e)[:120]}"

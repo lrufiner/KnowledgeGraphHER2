@@ -37,7 +37,7 @@ class PipelineConfig(BaseModel):
     openai_model:   str = "gpt-4o-mini"
     # Ollama
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model:    str = "llama3.2"
+    ollama_model:    str = "qwen3:8b"
 
     # ── Embedding settings ───────────────────────────────────────────────────
     embedding_mode:  str = "openai"   # openai | ollama
@@ -78,7 +78,7 @@ class PipelineConfig(BaseModel):
             openai_api_key   = os.getenv("OPENAI_API_KEY"),
             openai_model     = os.getenv("HER2_KG_OPENAI_MODEL", "gpt-4o-mini"),
             ollama_base_url  = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-            ollama_model     = os.getenv("HER2_KG_OLLAMA_MODEL", "llama3.2"),
+            ollama_model     = os.getenv("HER2_KG_OLLAMA_MODEL", "qwen3:8b"),
             embedding_mode   = os.getenv("HER2_KG_EMBEDDING_MODE", "openai"),
             embedding_model  = os.getenv("HER2_KG_EMBEDDING_MODEL", "text-embedding-3-small"),
             neo4j_uri        = os.getenv("NEO4J_URI", "bolt://localhost:7687"),

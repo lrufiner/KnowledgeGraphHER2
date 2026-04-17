@@ -49,15 +49,17 @@ def _load_llm(model: str = "qwen3:8b"):
     """Load LangChain Ollama LLM (cached across rerenders)."""
     try:
         from langchain_ollama import ChatOllama
-        return ChatOllama(model=model, temperature=0)
+        base_url = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        # num_ctx=8192 prevents KV cache OOM on GPU (262144 default exceeds VRAM)
+        return ChatOllama(model=model, temperature=0, base_url=base_url, num_ctx=8192)
     except Exception as exc:
         st.warning(f"Ollama not available: {exc}. Deterministic mode only.")
         return None
 
 
-@st.cache_resource(show_spinner=False)
+@st.cache_resource(show_spinner=False, ttl=60)
 def _load_driver():
-    """Load Neo4j driver (cached; returns None if not configured)."""
+    """Load Neo4j driver (cached 60 s; retries if previously unavailable)."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USER", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "password")

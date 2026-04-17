@@ -1,8 +1,8 @@
 # HER2 Knowledge Graph — Complete Implementation Plan
 
-**Project:** DigPatho – HER2 Clinical Knowledge Module  
-**Version:** 2.0 (supersedes `her2_kg_pipeline_guide.md` v1.0)  
-**Date:** April 2026  
+**Project:** DigPatho – HER2 Clinical Knowledge Module
+**Version:** 2.0 (supersedes `her2_kg_pipeline_guide.md` v1.0)
+**Date:** April 2026
 **Scope:** Architecture, pipeline, GraphRAG, multi-agent system, visualization
 
 ---
@@ -27,18 +27,18 @@ The document [her2_kg_pipeline_guide.md](file:///f:/lrufi/Downloads/ReposCodigo/
 
 ### 2.1 Identified Weaknesses
 
-| # | Issue | Severity | Proposed Solution |
-|---|-------|----------|-------------------|
-| W1 | **RDF-only storage** — rdflib + TTL files have no native vector indexing or graph traversal optimization | High | Adopt Neo4j as primary store with RDF export for interoperability |
-| W2 | **No embedding/vector layer** — the pipeline produces a pure symbolic KG with no support for semantic similarity | High | Add Neo4j vector index for entity+chunk embeddings |
-| W3 | **Linear pipeline with no error recovery** — `ingest→extract→resolve→build→serialize` has no loops or fallback | Medium | Add conditional edges, retry loops, and vector-fallback in LangGraph |
-| W4 | **Naive chunking** — 400–600 token windows with 15% overlap lose structural context of algorithms and decision trees | High | Implement semantic-aware chunking preserving algorithm blocks, tables, and section hierarchies |
-| W5 | **No algorithm-to-graph parser** — textual algorithms (§6.1–6.3) are treated as free text, not parsed into decision-tree structures | High | Build a dedicated `AlgorithmParser` that converts structured algorithm text to graph decision nodes |
-| W6 | **Confidence annotation is ad-hoc** — `rel['confidence']` stored as disconnected literal nodes | Medium | Use Neo4j relationship properties + RDF reification pattern |
-| W7 | **No GraphRAG integration** — the guide produces a static TTL file with no retrieval layer | Critical | Full GraphRAG layer with LightRAG + neo4j-graphrag |
-| W8 | **No multi-agent architecture** — the guide mentions LangGraph but only for the extraction pipeline, not for downstream querying | Critical | Design 4 specialized agents with supervisor orchestration |
-| W9 | **No PDF ingestion** — guides in `/guides/*.pdf` are not handled | Medium | Add PDF-to-text pipeline using `pymupdf`/`docling` |
-| W10 | **No visualization** — no tool for interactive graph exploration | Medium | Neo4j Browser + custom Streamlit dashboard |
+| #   | Issue                                                                                                                                        | Severity | Proposed Solution                                                                                     |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| W1  | **RDF-only storage** — rdflib + TTL files have no native vector indexing or graph traversal optimization                              | High     | Adopt Neo4j as primary store with RDF export for interoperability                                     |
+| W2  | **No embedding/vector layer** — the pipeline produces a pure symbolic KG with no support for semantic similarity                      | High     | Add Neo4j vector index for entity+chunk embeddings                                                    |
+| W3  | **Linear pipeline with no error recovery** — `ingest→extract→resolve→build→serialize` has no loops or fallback                  | Medium   | Add conditional edges, retry loops, and vector-fallback in LangGraph                                  |
+| W4  | **Naive chunking** — 400–600 token windows with 15% overlap lose structural context of algorithms and decision trees                 | High     | Implement semantic-aware chunking preserving algorithm blocks, tables, and section hierarchies        |
+| W5  | **No algorithm-to-graph parser** — textual algorithms (§6.1–6.3) are treated as free text, not parsed into decision-tree structures | High     | Build a dedicated `AlgorithmParser` that converts structured algorithm text to graph decision nodes |
+| W6  | **Confidence annotation is ad-hoc** — `rel['confidence']` stored as disconnected literal nodes                                      | Medium   | Use Neo4j relationship properties + RDF reification pattern                                           |
+| W7  | **No GraphRAG integration** — the guide produces a static TTL file with no retrieval layer                                            | Critical | Full GraphRAG layer with LightRAG + neo4j-graphrag                                                    |
+| W8  | **No multi-agent architecture** — the guide mentions LangGraph but only for the extraction pipeline, not for downstream querying      | Critical | Design 4 specialized agents with supervisor orchestration                                             |
+| W9  | **No PDF ingestion** — guides in `/guides/*.pdf` are not handled                                                                    | Medium   | Add PDF-to-text pipeline using `pymupdf`/`docling`                                                |
+| W10 | **No visualization** — no tool for interactive graph exploration                                                                      | Medium   | Neo4j Browser + custom Streamlit dashboard                                                            |
 
 ### 2.2 What to Preserve
 
@@ -54,16 +54,16 @@ The document [her2_kg_pipeline_guide.md](file:///f:/lrufi/Downloads/ReposCodigo/
 
 ### 3.1 Technology Comparison Matrix
 
-| Criterion | RDF (rdflib + SPARQL) | Neo4j Property Graph | Hybrid (Neo4j + RDF export) |
-|-----------|----------------------|---------------------|---------------------------|
-| **Ontological Expressiveness** | ★★★★★ OWL axioms, class disjunctions, property restrictions | ★★★☆☆ Labels + properties, no formal axioms | ★★★★★ Neo4j for traversal + OWL export for reasoning |
-| **Query Performance** | ★★☆☆☆ SPARQL over file-based stores is slow | ★★★★★ Native index-free adjacency, Cypher optimized | ★★★★★ Cypher for traversal, SPARQL for federation |
-| **LLM Integration** | ★★☆☆☆ Text-to-SPARQL is harder for LLMs than Cypher | ★★★★★ Mature text-to-Cypher tooling (GraphCypherQAChain) | ★★★★★ Best of both worlds |
-| **Vector/Embedding Support** | ★☆☆☆☆ Not native; requires external store | ★★★★★ Native vector index since v5.11 | ★★★★★ Native |
-| **GraphRAG Compatibility** | ★★☆☆☆ MS GraphRAG, LightRAG, HippoRAG all use property graphs | ★★★★★ `neo4j-graphrag`, `LightRAG[Neo4j]`, `ms-graphrag-neo4j` | ★★★★★ Full ecosystem |
-| **Inference/Reasoning** | ★★★★★ OWL DL reasoners (HermiT, Pellet) | ★★☆☆☆ No native reasoner; requires plugins (neosemantics) | ★★★★☆ Neo4j for runtime + periodic OWL reasoning |
-| **Community/Tooling** | ★★★☆☆ Academic focus | ★★★★★ Enterprise + research | ★★★★★ Full ecosystem |
-| **Standard Vocabulary Alignment** | ★★★★★ Native URI-based | ★★★☆☆ Needs mapping conventions | ★★★★☆ URIs stored as properties, exported to RDF |
+| Criterion                               | RDF (rdflib + SPARQL)                                              | Neo4j Property Graph                                                     | Hybrid (Neo4j + RDF export)                               |
+| --------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------- |
+| **Ontological Expressiveness**    | ★★★★★ OWL axioms, class disjunctions, property restrictions   | ★★★☆☆ Labels + properties, no formal axioms                         | ★★★★★ Neo4j for traversal + OWL export for reasoning |
+| **Query Performance**             | ★★☆☆☆ SPARQL over file-based stores is slow                   | ★★★★★ Native index-free adjacency, Cypher optimized                 | ★★★★★ Cypher for traversal, SPARQL for federation    |
+| **LLM Integration**               | ★★☆☆☆ Text-to-SPARQL is harder for LLMs than Cypher           | ★★★★★ Mature text-to-Cypher tooling (GraphCypherQAChain)            | ★★★★★ Best of both worlds                            |
+| **Vector/Embedding Support**      | ★☆☆☆☆ Not native; requires external store                     | ★★★★★ Native vector index since v5.11                               | ★★★★★ Native                                         |
+| **GraphRAG Compatibility**        | ★★☆☆☆ MS GraphRAG, LightRAG, HippoRAG all use property graphs | ★★★★★`neo4j-graphrag`, `LightRAG[Neo4j]`, `ms-graphrag-neo4j` | ★★★★★ Full ecosystem                                 |
+| **Inference/Reasoning**           | ★★★★★ OWL DL reasoners (HermiT, Pellet)                       | ★★☆☆☆ No native reasoner; requires plugins (neosemantics)           | ★★★★☆ Neo4j for runtime + periodic OWL reasoning     |
+| **Community/Tooling**             | ★★★☆☆ Academic focus                                          | ★★★★★ Enterprise + research                                         | ★★★★★ Full ecosystem                                 |
+| **Standard Vocabulary Alignment** | ★★★★★ Native URI-based                                        | ★★★☆☆ Needs mapping conventions                                     | ★★★★☆ URIs stored as properties, exported to RDF     |
 
 ### 3.2 Selected Architecture: **Hybrid — Neo4j (Primary) + RDF/OWL (Export & Reasoning)**
 
@@ -87,19 +87,20 @@ The document [her2_kg_pipeline_guide.md](file:///f:/lrufi/Downloads/ReposCodigo/
 **Justification:**
 
 1. **Neo4j as primary store** because:
+
    - All five major GraphRAG frameworks (Microsoft GraphRAG, LightRAG, HippoRAG, PathRAG, neo4j-graphrag) support Neo4j as backend
    - Native vector index eliminates the need for a separate vector DB
    - Cypher is significantly easier for LLMs to generate correctly than SPARQL (empirically validated: `GraphCypherQAChain` vs text-to-SPARQL)
    - Index-free adjacency makes multi-hop traversals (IHC → ISH → Classification) orders of magnitude faster than SPARQL over file-based stores
    - The existing `.env` already has `NEO4J_URI=bolt://localhost:7687` configured
-
 2. **RDF/OWL export** because:
+
    - Formal OWL axioms (disjunctions, property restrictions) are needed for clinical validation rules
    - NCIt/SNOMED/LOINC alignment requires URI-based identifiers
    - Potential federation with external biomedical triple stores
    - The existing ontology design (Annex A) has well-formed OWL axioms
-
 3. **Not pure RDF** because:
+
    - rdflib file-based store cannot handle the vector+graph hybrid queries needed for GraphRAG
    - SPARQL endpoints (Fuseki, Oxigraph) add deployment complexity without matching Neo4j's Cypher ergonomics for LLM integration
 
@@ -125,7 +126,7 @@ graph TD
     J -->|No| L[REPAIR]
     L --> I
     K --> M[END]
-    
+  
     style A fill:#2563eb,color:#fff
     style C fill:#7c3aed,color:#fff
     style G fill:#059669,color:#fff
@@ -137,15 +138,16 @@ graph TD
 
 #### Phase 1: INGEST — Document Loading
 
-| Source | Format | Parser | Content Type |
-|--------|--------|--------|-------------|
-| `docs/annex_ontology.md` | Markdown | Custom MD parser | Ontology definition |
-| `docs/annex_guidelines.md` | Markdown | Custom MD parser | Clinical criteria |
-| `docs/her2_kg_pipeline_guide.md` | Markdown | Custom MD parser | Pipeline guide + algorithms |
-| `docs/apendice_*.md` | Markdown | Custom MD parser | Literature review (context) |
-| `guides/*.pdf` | PDF | PyMuPDF / Docling | Clinical guidelines (ASCO/CAP, ESMO, CAP Template) |
+| Source                             | Format   | Parser            | Content Type                                       |
+| ---------------------------------- | -------- | ----------------- | -------------------------------------------------- |
+| `docs/annex_ontology.md`         | Markdown | Custom MD parser  | Ontology definition                                |
+| `docs/annex_guidelines.md`       | Markdown | Custom MD parser  | Clinical criteria                                  |
+| `docs/her2_kg_pipeline_guide.md` | Markdown | Custom MD parser  | Pipeline guide + algorithms                        |
+| `docs/apendice_*.md`             | Markdown | Custom MD parser  | Literature review (context)                        |
+| `guides/*.pdf`                   | PDF      | PyMuPDF / Docling | Clinical guidelines (ASCO/CAP, ESMO, CAP Template) |
 
 **Improvements over v1.0:**
+
 - PDF ingestion for `/guides/*.pdf` (8 guideline documents)
 - Structured metadata extraction (author, year, guideline body, version)
 
@@ -155,7 +157,7 @@ graph TD
 # Pseudocode for semantic-aware chunking strategy
 def semantic_chunk(document: Document) -> List[Chunk]:
     chunks = []
-    
+  
     # Strategy 1: Algorithm blocks (preserve complete)
     for algo_block in extract_algorithm_blocks(document):
         chunks.append(Chunk(
@@ -163,7 +165,7 @@ def semantic_chunk(document: Document) -> List[Chunk]:
             type="algorithm",
             preserve_intact=True
         ))
-    
+  
     # Strategy 2: Tables (preserve complete)
     for table in extract_tables(document):
         chunks.append(Chunk(
@@ -171,7 +173,7 @@ def semantic_chunk(document: Document) -> List[Chunk]:
             type="criteria_table",
             preserve_intact=True
         ))
-    
+  
     # Strategy 3: Section-aware text splitting
     for section in split_by_headers(document, exclude=algo_blocks+tables):
         if token_count(section) > 600:
@@ -184,7 +186,7 @@ def semantic_chunk(document: Document) -> List[Chunk]:
             chunks.extend(sub_chunks)
         else:
             chunks.append(Chunk(content=section, type="text"))
-    
+  
     return chunks
 ```
 
@@ -193,6 +195,7 @@ def semantic_chunk(document: Document) -> List[Chunk]:
 #### Phase 3: EXTRACT — LLM-Based Entity & Relation Extraction
 
 **LLM choice:** Multi-provider via LangChain abstraction:
+
 - **Production extraction:** Claude Sonnet 4 (Anthropic API)
 - **Cost-effective iteration:** OpenAI GPT-4o-mini
 - **Local/free development:** Ollama (e.g., `llama3.2`, `qwen3`)
@@ -244,6 +247,7 @@ EXTRACTION_SCHEMA = {
 ```
 
 **Extraction prompt improvements over v1.0:**
+
 - Include the **full scoring decision table** (Rakha 2026, §6.3) as a structured few-shot example
 - Add **uncertainty annotations** (`confidence`, `interobserverVariability`, `evidenceLevel`)
 - Request **explicit source_quote** for every relation (provenance tracking)
@@ -281,7 +285,7 @@ def build_neo4j_graph(entities, relations, driver):
                 """.format(type=entity.type),
                 **entity.to_dict()
             )
-        
+      
         for rel in relations:
             session.run(
                 """
@@ -306,7 +310,7 @@ def build_neo4j_graph(entities, relations, driver):
 def parse_ihc_algorithm():
     """
     Converts §6.1 IHC algorithm into Neo4j decision nodes:
-    
+  
     (:DiagnosticDecision {id: "IHC_NODE1", question: "¿Tinción circunferencial completa...?"})
         -[:IF_YES]-> (:IHCScore {id: "Score3Plus"})
         -[:IF_NO]->  (:DiagnosticDecision {id: "IHC_NODE2"})
@@ -425,32 +429,32 @@ VALIDATION_RULES = {
 class PipelineState(TypedDict):
     # Phase 1: Ingest
     raw_documents: list[dict]          # {path, format, metadata}
-    
+  
     # Phase 2: Chunk
     chunks: list[dict]                 # {chunk_id, content, type, section, source}
-    
+  
     # Phase 3: Extract
     raw_extractions: list[dict]        # LLM output per chunk
     extraction_errors: Annotated[list[str], add]
     avg_confidence: float
-    
+  
     # Phase 4: Resolve
     resolved_entities: list[dict]      # With canonical URIs
     resolved_relations: list[dict]
     unresolved_count: int
-    
+  
     # Phase 5-6: Build
     neo4j_stats: dict                  # {nodes_created, rels_created, ...}
     algorithm_nodes_created: int
-    
+  
     # Phase 7: Validate
     validation_report: dict            # {rule_id: {valid, severity, message}}
     is_consistent: bool
-    
+  
     # Phase 8: Export
     export_paths: dict                 # {ttl, jsonld, owl}
     vector_indexes_created: list[str]
-    
+  
     # Control
     errors: Annotated[list[str], add]
     current_phase: str
@@ -471,24 +475,24 @@ graph LR
         ISH[ISHGroup]
         SP[StainingPattern]
     end
-    
+  
     subgraph Therapeutic
         TA[TherapeuticAgent]
         CT[ClinicalTrial]
     end
-    
+  
     subgraph Diagnostic
         BM[Biomarker]
         AS[Assay]
         QM[QualityMeasure]
         TH[Threshold]
     end
-    
+  
     subgraph Computational
         FM[FractalMetric]
         PF[PathologicalFeature]
     end
-    
+  
     subgraph Knowledge
         GL[Guideline]
         DD[DiagnosticDecision]
@@ -498,6 +502,7 @@ graph LR
 ### 5.2 Node Properties (Common + Type-Specific)
 
 **Common properties (all nodes):**
+
 ```
 id: STRING (unique, canonical)
 label: STRING (human-readable name)
@@ -513,38 +518,38 @@ created_at: DATETIME
 
 **Type-specific properties:**
 
-| Node Type | Extra Properties |
-|-----------|-----------------|
-| `IHCScore` | `intensity: STRING`, `circumferentiality: STRING`, `percentage_threshold: FLOAT` |
-| `ISHGroup` | `ratio_threshold: FLOAT`, `signals_per_cell_threshold: FLOAT`, `group_number: INT` |
-| `Threshold` | `value: FLOAT`, `unit: STRING`, `comparator: STRING (≥, <, etc.)` |
-| `FractalMetric` | `value_range_low: FLOAT`, `value_range_high: FLOAT`, `clinical_interpretation: STRING` |
-| `ClinicalCategory` | `interobserver_variability: FLOAT`, `evidence_level: STRING` |
-| `TherapeuticAgent` | `mechanism: STRING`, `fda_approved: BOOLEAN`, `approval_date: DATE` |
-| `DiagnosticDecision` | `question: STRING`, `node_order: INT`, `algorithm_id: STRING` |
-| `QualityMeasure` | `requirement_type: STRING`, `min_value: FLOAT`, `max_value: FLOAT`, `unit: STRING` |
+| Node Type              | Extra Properties                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------------------- |
+| `IHCScore`           | `intensity: STRING`, `circumferentiality: STRING`, `percentage_threshold: FLOAT`       |
+| `ISHGroup`           | `ratio_threshold: FLOAT`, `signals_per_cell_threshold: FLOAT`, `group_number: INT`     |
+| `Threshold`          | `value: FLOAT`, `unit: STRING`, `comparator: STRING (≥, <, etc.)`                     |
+| `FractalMetric`      | `value_range_low: FLOAT`, `value_range_high: FLOAT`, `clinical_interpretation: STRING` |
+| `ClinicalCategory`   | `interobserver_variability: FLOAT`, `evidence_level: STRING`                             |
+| `TherapeuticAgent`   | `mechanism: STRING`, `fda_approved: BOOLEAN`, `approval_date: DATE`                    |
+| `DiagnosticDecision` | `question: STRING`, `node_order: INT`, `algorithm_id: STRING`                          |
+| `QualityMeasure`     | `requirement_type: STRING`, `min_value: FLOAT`, `max_value: FLOAT`, `unit: STRING`   |
 
 ### 5.3 Edge Types with Properties
 
-| Edge Type | Source → Target | Properties |
-|-----------|----------------|------------|
-| `implies` | IHCScore → ClinicalCategory | `confidence`, `guideline_source`, `conditions` |
-| `requiresReflexTest` | IHCScore → Assay | `specimen_requirement`, `urgency` |
-| `eligibleFor` | ClinicalCategory → TherapeuticAgent | `clinical_context`, `trial_source`, `hr_status_required` |
-| `notEligibleFor` | ClinicalCategory → TherapeuticAgent | `reason`, `evidence_date` |
-| `definedIn` | Entity → Guideline/Trial | `year`, `recommendation_strength` |
-| `hasQualityRequirement` | Assay → QualityMeasure | `mandatory: BOOLEAN` |
-| `proposedEquivalence` | FractalMetric → ClinicalCategory | `source: "DigPatho_Internal_2025"`, `hypothesis: TRUE` |
-| `associatedWith` | FractalMetric → PathologicalFeature | `correlation_strength`, `direction` |
-| `inconsistentWith` | FractalMetric → ClinicalCategory | `alert_level`, `requires_review: BOOLEAN` |
-| `leadsTo` | DiagnosticDecision → DiagnosticDecision | `condition: STRING (YES/NO)`, `algorithm_id` |
-| `hasThreshold` | ISHGroup/DiagnosticDecision → Threshold | `parameter`, `comparator` |
-| `overrides` | Guideline → Guideline | `effective_date`, `scope` |
-| `supportedByEvidence` | Any → ClinicalTrial | `evidence_level`, `trial_phase` |
-| `refinesCategory` | ClinicalCategory → ClinicalCategory | `introduced_in`, `year` |
-| `hasStainingPattern` | IHCScore → StainingPattern | `example_description` |
-| `contradictsIfConcurrent` | Finding → Finding | `resolution_protocol` |
-| `temporallyValid` | Relation → DateRange | `valid_from: DATE`, `valid_to: DATE` |
+| Edge Type                   | Source → Target                         | Properties                                                     |
+| --------------------------- | ---------------------------------------- | -------------------------------------------------------------- |
+| `implies`                 | IHCScore → ClinicalCategory             | `confidence`, `guideline_source`, `conditions`           |
+| `requiresReflexTest`      | IHCScore → Assay                        | `specimen_requirement`, `urgency`                          |
+| `eligibleFor`             | ClinicalCategory → TherapeuticAgent     | `clinical_context`, `trial_source`, `hr_status_required` |
+| `notEligibleFor`          | ClinicalCategory → TherapeuticAgent     | `reason`, `evidence_date`                                  |
+| `definedIn`               | Entity → Guideline/Trial                | `year`, `recommendation_strength`                          |
+| `hasQualityRequirement`   | Assay → QualityMeasure                  | `mandatory: BOOLEAN`                                         |
+| `proposedEquivalence`     | FractalMetric → ClinicalCategory        | `source: "DigPatho_Internal_2025"`, `hypothesis: TRUE`     |
+| `associatedWith`          | FractalMetric → PathologicalFeature     | `correlation_strength`, `direction`                        |
+| `inconsistentWith`        | FractalMetric → ClinicalCategory        | `alert_level`, `requires_review: BOOLEAN`                  |
+| `leadsTo`                 | DiagnosticDecision → DiagnosticDecision | `condition: STRING (YES/NO)`, `algorithm_id`               |
+| `hasThreshold`            | ISHGroup/DiagnosticDecision → Threshold | `parameter`, `comparator`                                  |
+| `overrides`               | Guideline → Guideline                   | `effective_date`, `scope`                                  |
+| `supportedByEvidence`     | Any → ClinicalTrial                     | `evidence_level`, `trial_phase`                            |
+| `refinesCategory`         | ClinicalCategory → ClinicalCategory     | `introduced_in`, `year`                                    |
+| `hasStainingPattern`      | IHCScore → StainingPattern              | `example_description`                                        |
+| `contradictsIfConcurrent` | Finding → Finding                       | `resolution_protocol`                                        |
+| `temporallyValid`         | Relation → DateRange                    | `valid_from: DATE`, `valid_to: DATE`                       |
 
 ### 5.4 Support for Uncertainty and Equivocal Cases
 
@@ -600,12 +605,12 @@ Equivocal/uncertain cases are first-class citizens:
 
 ### 6.1 Selected Framework: **neo4j-graphrag** (Primary) + **LightRAG** (Complementary)
 
-| Capability | Framework | Rationale |
-|-----------|-----------|-----------|
-| Entity-centric retrieval | `neo4j-graphrag` `VectorCypherRetriever` | Native Neo4j integration, Cypher expansion from vector results |
-| Subgraph retrieval | `neo4j-graphrag` custom Cypher | Retrieve diagnostic pathways as connected subgraphs |
-| Community-based retrieval | `LightRAG` with Neo4j backend | Dual-level (local+global) retrieval + incremental update |
-| Multi-hop reasoning | Custom PPR via Neo4j GDS | Personalized PageRank for IHC→ISH→Classification pathways |
+| Capability                | Framework                                    | Rationale                                                      |
+| ------------------------- | -------------------------------------------- | -------------------------------------------------------------- |
+| Entity-centric retrieval  | `neo4j-graphrag` `VectorCypherRetriever` | Native Neo4j integration, Cypher expansion from vector results |
+| Subgraph retrieval        | `neo4j-graphrag` custom Cypher             | Retrieve diagnostic pathways as connected subgraphs            |
+| Community-based retrieval | `LightRAG` with Neo4j backend              | Dual-level (local+global) retrieval + incremental update       |
+| Multi-hop reasoning       | Custom PPR via Neo4j GDS                     | Personalized PageRank for IHC→ISH→Classification pathways    |
 
 ### 6.2 Retrieval Patterns
 
@@ -667,31 +672,29 @@ response = rag.query(
 
 ```mermaid
 graph TD
-    Q[User Query] --> CL[Classify Query Type]
+    Q[User Query] --> CL["Classify Query Type"]
     CL -->|Structured| CYP[Generate Cypher]
     CL -->|Semantic| VEC[Vector Search]
     CL -->|Hybrid| BOTH[Both Paths]
-    
+  
     CYP --> NEO[Execute on Neo4j]
     VEC --> NEO
     BOTH --> NEO
-    
-    NEO --> CTX["Grounded Context
-    (entities + relations + provenance)"]
-    
-    CTX --> LLM["LLM Generation
-    with KG-grounded prompt"]
-    
-    LLM --> VAL{Response references
-    only KG entities?}
+  
+    NEO --> CTX["Grounded Context (entities + relations + provenance)"]
+  
+    CTX --> LLM["LLM Generation with KG-grounded prompt"]
+  
+    LLM --> VAL{Response references only KG entities?}
     VAL -->|Yes| OUT[Response + Citations]
     VAL -->|No| REJ[Reject / Flag hallucination]
-    
+  
     style CTX fill:#059669,color:#fff
     style VAL fill:#dc2626,color:#fff
 ```
 
 **Grounding mechanisms:**
+
 1. **Entity constraint**: LLM response must only reference entities present in the retrieved subgraph
 2. **Relation validation**: claimed relationships must exist in the KG (or be flagged as "inferred")
 3. **Provenance tracking**: every fact in the response is traceable to a `source_doc` + `source_quote`
@@ -706,24 +709,24 @@ graph TD
 ```mermaid
 graph TD
     USER[User Query] --> SUP[Supervisor Agent]
-    
+  
     SUP -->|"HER2 classification?"| DIAG[Diagnostic Agent]
     SUP -->|"Literature support?"| EVID[Evidence Agent]
     SUP -->|"Why this result?"| EXPL[Explanation Agent]
     SUP -->|"Is this consistent?"| VALID[Validation Agent]
-    
+  
     DIAG --> KG[(Neo4j KG)]
     EVID --> KG
     EXPL --> KG
     VALID --> KG
-    
+  
     DIAG --> SUP
     EVID --> SUP
     EXPL --> SUP
     VALID --> SUP
-    
+  
     SUP -->|Synthesize| RESP[Final Response]
-    
+  
     style SUP fill:#7c3aed,color:#fff
     style DIAG fill:#2563eb,color:#fff
     style EVID fill:#059669,color:#fff
@@ -734,6 +737,7 @@ graph TD
 ### 7.2 Agent Specifications
 
 #### Supervisor Agent
+
 - **Role:** Route incoming queries to specialized agents, synthesize multi-agent responses
 - **Tools:** Agent dispatching, response synthesis
 - **State:** Tracks which agents have been consulted, convergence status
@@ -760,6 +764,7 @@ You may invoke multiple agents sequentially. Respond with agent name(s).
 ```
 
 #### Diagnostic Agent
+
 - **Role:** Traverse IHC/ISH decision trees to determine HER2 classification
 - **Tools:** `execute_cypher`, `traverse_decision_tree`, `get_ihc_algorithm`, `get_ish_algorithm`
 - **Key capability:** Given IHC score + ISH results, walks the algorithm graph nodes to determine final classification
@@ -779,16 +784,19 @@ def classify_her2(ihc_score: str, ish_group: str = None,
 ```
 
 #### Evidence Agent
+
 - **Role:** Retrieve clinical evidence from guidelines and trials
 - **Tools:** `lightrag_hybrid_search`, `vector_search_guidelines`, `get_guideline_recommendations`
 - **Key capability:** Answer evidence-based questions with source citations
 
 #### Explanation Agent
+
 - **Role:** Generate human-readable explanations of diagnostic reasoning
 - **Tools:** `get_diagnostic_pathway`, `get_scoring_criteria`, `explain_fractal_correlation`
 - **Key capability:** Take a graph pathway and generate a clinical explanation with supporting evidence
 
 #### Validation Agent
+
 - **Role:** Check clinical consistency and detect conflicts
 - **Tools:** `run_validation_rules`, `check_fractal_clinical_consistency`, `detect_temporal_conflicts`
 - **Key capability:** Run ASCO/CAP validation rules against a case or against the KG itself
@@ -800,19 +808,19 @@ class HER2AgentState(TypedDict):
     # Input
     query: str
     clinical_data: dict  # Optional: {ihc_score, ish_group, ...}
-    
+  
     # Routing
     target_agents: list[str]
     current_agent: str
-    
+  
     # Agent outputs (accumulate)
     agent_results: Annotated[list[dict], add]
-    
+  
     # Synthesis
     final_response: str
     citations: list[dict]
     confidence: float
-    
+  
     # Control
     iteration_count: int
     needs_human_review: bool
@@ -827,16 +835,16 @@ stateDiagram-v2
     Supervisor --> Evidence: Evidence query
     Supervisor --> Explanation: Explanation query
     Supervisor --> Validation: Validation query
-    
+  
     Diagnostic --> Supervisor: Result + pathway
     Evidence --> Supervisor: Result + citations
     Explanation --> Supervisor: Result + reasoning chain
     Validation --> Supervisor: Result + issues found
-    
+  
     Supervisor --> Supervisor: Need more agents?
     Supervisor --> Synthesize: All agents done
     Synthesize --> [*]: Final response
-    
+  
     state Diagnostic {
         [*] --> LoadAlgorithm
         LoadAlgorithm --> TraverseTree
@@ -844,7 +852,7 @@ stateDiagram-v2
         TraverseTree --> ReturnResult: Not IHC 2+
         CheckISH --> ReturnResult
     }
-    
+  
     state Validation {
         [*] --> RunRules
         RunRules --> CheckFractal
@@ -1060,7 +1068,7 @@ flowchart LR
         MD[Markdown Docs]
         PDF[PDF Guidelines]
     end
-    
+  
     subgraph Pipeline ["KG Construction Pipeline (LangGraph)"]
         ING[Ingest] --> CHK[Chunk]
         CHK --> EXT[Extract<br/>Claude Sonnet 4]
@@ -1070,17 +1078,17 @@ flowchart LR
         PAR --> VAL[Validate]
         VAL --> EXP[Export RDF + Index Vectors]
     end
-    
+  
     subgraph Storage
         N4J[(Neo4j<br/>KG + Vectors)]
         RDF[(RDF/OWL<br/>Export)]
     end
-    
+  
     subgraph Retrieval
         NR[neo4j-graphrag<br/>Entity + Pathway]
         LR2[LightRAG<br/>Community + Global]
     end
-    
+  
     subgraph Agents ["Multi-Agent System (LangGraph)"]
         SUP[Supervisor]
         DA[Diagnostic]
@@ -1088,13 +1096,13 @@ flowchart LR
         XA[Explanation]
         VA[Validation]
     end
-    
+  
     subgraph Interface
         CLI2[CLI]
         ST[Streamlit]
         API[FastAPI]
     end
-    
+  
     MD --> ING
     PDF --> ING
     EXP --> N4J
@@ -1170,29 +1178,29 @@ flowchart LR
 
 ### 11.1 Graph Quality Metrics
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| **Consistency** | 0 critical rule violations | Run all VALIDATION_RULES, count failures |
-| **Completeness** | All 5 HER2 categories + 5 ISH groups present | Cypher count query |
-| **Entity Coverage** | ≥95% of ontology entities (Annex A) represented | Compare to class hierarchy |
-| **Relation Coverage** | ≥90% of predicates used | Compare to predicate list |
-| **Provenance** | 100% of entities have `source_doc` | Cypher property check |
-| **Algorithm Fidelity** | Decision paths match guideline algorithms exactly | Manual comparison with §6.1–6.3 |
+| Metric                       | Target                                            | Measurement                              |
+| ---------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| **Consistency**        | 0 critical rule violations                        | Run all VALIDATION_RULES, count failures |
+| **Completeness**       | All 5 HER2 categories + 5 ISH groups present      | Cypher count query                       |
+| **Entity Coverage**    | ≥95% of ontology entities (Annex A) represented  | Compare to class hierarchy               |
+| **Relation Coverage**  | ≥90% of predicates used                          | Compare to predicate list                |
+| **Provenance**         | 100% of entities have `source_doc`              | Cypher property check                    |
+| **Algorithm Fidelity** | Decision paths match guideline algorithms exactly | Manual comparison with §6.1–6.3        |
 
 ### 11.2 Clinical Test Cases
 
-| Test Case | Input | Expected Output |
-|-----------|-------|-----------------|
-| TC1 | IHC 3+ | HER2-Positive |
-| TC2 | IHC 2+, ISH Group 1 (ratio ≥2.0, signals ≥4.0) | HER2-Positive |
-| TC3 | IHC 2+, ISH Group 5 (ratio <2.0, signals <4.0) | HER2-Negative (HER2-Low) |
-| TC4 | IHC 1+ | HER2-Negative, HER2-Low, eligible for T-DXd (metastatic) |
-| TC5 | IHC 0+ (faint ≤10%) | HER2-Negative, HER2-Ultralow, eligible for T-DXd (HR+, metastatic) |
-| TC6 | IHC 0 (no membrane staining) | HER2-Null, NOT eligible for T-DXd |
-| TC7 | IHC 2+, ISH Group 2, re-count IHC 0+ | HER2-Negative (Comment-A) |
-| TC8 | IHC 2+, ISH Group 3, re-count confirms | HER2-Positive |
-| TC9 | D0=1.9, IHC 0 | Inconsistency alert (fractal-clinical) |
-| TC10 | IHC 2+, ISH Group 4, IHC concurrent 3+ | HER2-Positive |
+| Test Case | Input                                            | Expected Output                                                    |
+| --------- | ------------------------------------------------ | ------------------------------------------------------------------ |
+| TC1       | IHC 3+                                           | HER2-Positive                                                      |
+| TC2       | IHC 2+, ISH Group 1 (ratio ≥2.0, signals ≥4.0) | HER2-Positive                                                      |
+| TC3       | IHC 2+, ISH Group 5 (ratio <2.0, signals <4.0)   | HER2-Negative (HER2-Low)                                           |
+| TC4       | IHC 1+                                           | HER2-Negative, HER2-Low, eligible for T-DXd (metastatic)           |
+| TC5       | IHC 0+ (faint ≤10%)                             | HER2-Negative, HER2-Ultralow, eligible for T-DXd (HR+, metastatic) |
+| TC6       | IHC 0 (no membrane staining)                     | HER2-Null, NOT eligible for T-DXd                                  |
+| TC7       | IHC 2+, ISH Group 2, re-count IHC 0+             | HER2-Negative (Comment-A)                                          |
+| TC8       | IHC 2+, ISH Group 3, re-count confirms           | HER2-Positive                                                      |
+| TC9       | D0=1.9, IHC 0                                    | Inconsistency alert (fractal-clinical)                             |
+| TC10      | IHC 2+, ISH Group 4, IHC concurrent 3+           | HER2-Positive                                                      |
 
 ---
 
@@ -1219,12 +1227,14 @@ flowchart LR
 ## Verification Plan
 
 ### Automated Tests
+
 - `pytest` for all domain models, ingestion, chunking, URI resolution
 - Integration tests against a test Neo4j instance
 - Agent workflow tests with mocked KG responses
 - Validation rule tests against expected clinical outcomes
 
 ### Manual Verification
+
 - Visual inspection of KG in Neo4j Browser (exploratory queries from §8.1)
 - Clinical test cases (§11.2) validated against guideline documents
 - Agent response quality assessed against expert-curated Q&A pairs

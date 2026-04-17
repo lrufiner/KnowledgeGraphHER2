@@ -96,11 +96,22 @@ def phase_ingest(state: PipelineState) -> dict:
     if not docs_dir.exists():
         return {"errors": [f"docs_dir not found: {docs_dir}"], "current_phase": "INGEST_FAILED"}
 
+    # Technical appendices contain non-clinical tutorial content (GraphRAG/LangChain
+    # examples with synthetic entities like Ana García, Ciudad, etc.) that pollute the KG.
+    EXCLUDED_DOCS = {
+        "apendice_frameworks_graphrag.md",
+        "apendice_langchain_langgraph.md",
+    }
+
     # Collect file metadata
     raw_docs = [
         {"path": str(p), "format": "markdown", "name": p.name}
         for p in sorted(docs_dir.glob("*.md"))
+        if p.name not in EXCLUDED_DOCS
     ]
+    excluded = [p.name for p in sorted(docs_dir.glob("*.md")) if p.name in EXCLUDED_DOCS]
+    if excluded:
+        print(f"  Skipping {len(excluded)} non-clinical docs: {excluded}")
     print(f"  Found {len(raw_docs)} .md files")
 
     return {
