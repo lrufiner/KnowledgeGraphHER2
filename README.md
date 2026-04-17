@@ -424,11 +424,11 @@ uvicorn app.api:app --reload --port 8000
 
 ### Entornos soportados
 
-| Entorno                    | Neo4j           | LLM / Embeddings      | Archivo base    |
-| -------------------------- | --------------- | --------------------- | --------------- |
-| **Local (desarrollo)**   | Docker Compose  | Ollama (local/free)   | `.env.local`  |
-| **Cloud (producción)**  | Neo4j AuraDB    | OpenAI API            | `.env`        |
-| **Cloud (alternativa)**  | Neo4j AuraDB    | Anthropic Claude      | `.env`        |
+| Entorno                       | Neo4j          | LLM / Embeddings    | Archivo base   |
+| ----------------------------- | -------------- | ------------------- | -------------- |
+| **Local (desarrollo)**  | Docker Compose | Ollama (local/free) | `.env.local` |
+| **Cloud (producción)** | Neo4j AuraDB   | OpenAI API          | `.env`       |
+| **Cloud (alternativa)** | Neo4j AuraDB   | Anthropic Claude    | `.env`       |
 
 ### Desarrollo local (Docker + Ollama)
 
@@ -670,7 +670,7 @@ KnowledgeGraphHER2/
 | `NEO4J_URI`      | `bolt://localhost:7687` | `neo4j+s://<id>.databases.neo4j.io` | URI de conexión  |
 | `NEO4J_USERNAME` | `neo4j`                 | `<id>`                              | Usuario Neo4j     |
 | `NEO4J_PASSWORD` | `password`              | `<password AuraDB>`                 | Contraseña Neo4j |
-| `NEO4J_DATABASE` | *(vacío)*               | `<id>`                              | Base de datos     |
+| `NEO4J_DATABASE` | *(vacío)*              | `<id>`                              | Base de datos     |
 
 ### API / Docker
 

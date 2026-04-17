@@ -312,16 +312,15 @@ def upsert_chunk_node(driver: Driver, chunk_id: str, source_doc: str,
 # ---------------------------------------------------------------------------
 
 def get_graph_stats(driver: Driver) -> dict[str, Any]:
-    """Return basic stats about the current KG state."""
+    """Return basic stats about the current KG state (all node types, dynamic)."""
     with driver.session() as session:
-        node_counts = {}
-        for label in [
-            "ClinicalCategory", "IHCScore", "ISHGroup", "TherapeuticAgent",
-            "ClinicalTrial", "Guideline", "FractalMetric", "Assay",
-            "DiagnosticDecision", "Chunk", "ToySpecimen",
-        ]:
-            res = session.run(f"MATCH (n:{label}) RETURN count(n) AS c")
-            node_counts[label] = res.single()["c"]
+        res = session.run("""
+            MATCH (n)
+            WITH labels(n)[0] AS label, count(n) AS cnt
+            RETURN label, cnt
+            ORDER BY cnt DESC
+        """)
+        node_counts = {row["label"]: row["cnt"] for row in res if row["label"]}
 
         rel_res = session.run("MATCH ()-[r]->() RETURN count(r) AS c")
         total_rels = rel_res.single()["c"]
