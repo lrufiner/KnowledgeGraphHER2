@@ -96,7 +96,7 @@ def _get_driver():
     global _driver_singleton
     if _driver_singleton is None:
         uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-        user = os.getenv("NEO4J_USER", "neo4j")
+        user = os.getenv("NEO4J_USERNAME", os.getenv("NEO4J_USER", "neo4j"))
         password = os.getenv("NEO4J_PASSWORD", "password")
         try:
             from neo4j import GraphDatabase

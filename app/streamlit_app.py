@@ -81,8 +81,9 @@ def _llm_provider_label() -> tuple[str, str]:
 def _load_driver():
     """Load Neo4j driver (cached 60 s; retries if previously unavailable)."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USER", "neo4j")
+    user = os.getenv("NEO4J_USERNAME", os.getenv("NEO4J_USER", "neo4j"))
     password = os.getenv("NEO4J_PASSWORD", "password")
+    database = os.getenv("NEO4J_DATABASE") or None
     try:
         from neo4j import GraphDatabase
         driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -615,7 +616,7 @@ elif panel == "📊 Graph Stats":
 
     if driver is None:
         st.warning(
-            "Neo4j is not connected. Set `NEO4J_URI`, `NEO4J_USER`, and "
+            "Neo4j is not connected. Set `NEO4J_URI`, `NEO4J_USERNAME`, and "
             "`NEO4J_PASSWORD` environment variables and restart Streamlit."
         )
         st.info(

@@ -45,9 +45,10 @@ class PipelineConfig(BaseModel):
     embedding_dim:   int = 1536
 
     # ── Neo4j settings ───────────────────────────────────────────────────────
-    neo4j_uri:      str = "bolt://localhost:7687"
-    neo4j_username: str = "neo4j"
-    neo4j_password: str = "password"
+    neo4j_uri:       str = "bolt://localhost:7687"
+    neo4j_username:  str = "neo4j"
+    neo4j_password:  str = "password"
+    neo4j_database:  Optional[str] = None
 
     # ── Document paths ───────────────────────────────────────────────────────
     docs_dir:   str = "./docs"
@@ -87,6 +88,7 @@ class PipelineConfig(BaseModel):
             neo4j_uri        = os.getenv("NEO4J_URI", "bolt://localhost:7687"),
             neo4j_username   = os.getenv("NEO4J_USERNAME", "neo4j"),
             neo4j_password   = os.getenv("NEO4J_PASSWORD", "password"),
+            neo4j_database   = os.getenv("NEO4J_DATABASE") or None,
             docs_dir         = os.getenv("HER2_KG_DOCS_DIR", "./docs"),
             guides_dir       = os.getenv("HER2_KG_GUIDES_DIR", "./guides"),
             output_dir       = os.getenv("HER2_KG_OUTPUT_DIR", "./output"),
@@ -145,7 +147,7 @@ class PipelineConfig(BaseModel):
             raise ValueError(f"Unknown embedding mode: {self.embedding_mode!r}")
 
     def get_neo4j_driver(self):
-        """Return a Neo4j driver."""
+        """Return a Neo4j driver configured for local or AuraDB."""
         from neo4j import GraphDatabase
         return GraphDatabase.driver(
             self.neo4j_uri,
