@@ -250,6 +250,7 @@ sequenceDiagram
     API->>SUP: invoke(state)
     SUP->>ROUTE: ¿qué agentes activar?
     ROUTE-->>SUP: ["diagnostic","evidence","validation"]
+    Note over ROUTE: LLM (Ollama/API) primario<br/>Keyword-routing como fallback
 
     SUP->>DA: run(state)
     DA-->>SUP: {classification, pathway, confidence}
@@ -428,6 +429,8 @@ uvicorn app.api:app --reload --port 8000
 | `POST` | `/validate`            | Verificación de consistencia clínica     |
 | `GET`  | `/evidence/{category}` | Elegibilidad terapéutica por categoría   |
 | `GET`  | `/stats`               | Conteo de nodos y relaciones en el KG      |
+
+> **Conversaciones multi-turn:** el endpoint `/query` acepta un campo opcional `thread_id`. Si se reutiliza el mismo `thread_id`, el estado de la conversación se recupera automáticamente desde `output/checkpoints.db` (SQLite). Omitir `thread_id` genera un UUID privado por solicitud.
 
 ### Ejemplos
 
@@ -615,13 +618,13 @@ KnowledgeGraphHER2/
 ## Desarrollo y Tests
 
 ```bash
-# Suite completa (105 tests)
+# Suite completa (107 tests)
 pytest -v
 
 # Por módulo
 pytest tests/test_domain.py -v       # 12 tests — modelos y ontología
-pytest tests/test_agents.py -v       # 25 tests — agentes
-pytest tests/test_api.py -v          # 34 tests — API endpoints
+pytest tests/test_agents.py -v       # 26 tests — agentes
+pytest tests/test_api.py -v          # 35 tests — API endpoints
 
 # Lint y formato
 ruff check src/ app/ tests/

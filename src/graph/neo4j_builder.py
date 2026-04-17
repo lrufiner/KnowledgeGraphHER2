@@ -85,40 +85,69 @@ def _node_props(entity_dict: dict) -> dict:
 def load_seed_data(driver: Driver) -> dict[str, int]:
     """
     Load all seed entities and relations from ontology.py into Neo4j.
-    Returns stats dict.
+
+    Uses UNWIND-based batch writes (one round-trip per node-type and one per
+    relation-type) instead of per-row ``session.run()`` calls — significantly
+    faster for large seed datasets.  Returns stats dict.
     """
     stats: dict[str, int] = {"nodes": 0, "relations": 0}
     now = datetime.utcnow().isoformat()
 
     with driver.session() as session:
-        # Nodes
+        # ── Batch nodes by label ──────────────────────────────────────────
+        from collections import defaultdict
+        nodes_by_label: dict[str, list[dict]] = defaultdict(list)
         for ent in SEED_ENTITIES:
             label = ent.get("type", "Entity")
             props = _node_props(ent)
             props["source_doc"] = "ontology:seed"
             props["created_at"] = now
             props["confidence"] = 1.0
-            query = _UPSERT_NODE_TEMPLATE.format(label=label)
-            session.run(query, id=ent["id"], props=props)
-            stats["nodes"] += 1
+            nodes_by_label[label].append({"id": ent["id"], "props": props})
 
-        # Relations
+        for label, rows in nodes_by_label.items():
+            batch_q = f"""
+UNWIND $rows AS row
+MERGE (n:{label} {{id: row.id}})
+SET n += row.props
+"""
+            session.run(batch_q, rows=rows)
+            stats["nodes"] += len(rows)
+
+        # ── Batch relations by predicate ──────────────────────────────────
+        rels_by_pred: dict[str, list[dict]] = defaultdict(list)
         for rel in SEED_RELATIONS:
             predicate = rel["predicate"]
             rprops = {k: v for k, v in rel.items()
                       if k not in {"subject_id", "object_id", "predicate"} and v is not None}
             rprops["created_at"] = now
-            query = _UPSERT_REL_TEMPLATE.format(predicate=predicate)
+            rels_by_pred[predicate].append({
+                "sid": rel["subject_id"],
+                "oid": rel["object_id"],
+                "rprops": rprops,
+            })
+
+        for predicate, rows in rels_by_pred.items():
+            batch_q = f"""
+UNWIND $rows AS row
+MATCH (s {{id: row.sid}})
+MATCH (o {{id: row.oid}})
+MERGE (s)-[r:{predicate}]->(o)
+SET r += row.rprops
+"""
             try:
-                session.run(
-                    query,
-                    sid=rel["subject_id"],
-                    oid=rel["object_id"],
-                    rprops=rprops,
-                )
-                stats["relations"] += 1
+                session.run(batch_q, rows=rows)
+                stats["relations"] += len(rows)
             except Exception as e:
-                print(f"  [!] Relation skipped ({rel['subject_id']}->{rel['object_id']}): {e}")
+                # Fall back to row-by-row for this predicate to surface bad rows
+                q_single = _UPSERT_REL_TEMPLATE.format(predicate=predicate)
+                for row in rows:
+                    try:
+                        session.run(q_single, sid=row["sid"], oid=row["oid"], rprops=row["rprops"])
+                        stats["relations"] += 1
+                    except Exception as e2:
+                        print(f"  [!] Relation skipped ({row['sid']}->{row['oid']}): {e2}")
+                _ = e  # suppress outer exception reference
 
     print(f"[Seed] Loaded {stats['nodes']} nodes, {stats['relations']} relations.")
     return stats

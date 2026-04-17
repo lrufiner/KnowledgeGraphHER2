@@ -64,6 +64,7 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 _llm_singleton = None
 _driver_singleton = None
+_checkpointer_singleton = None
 
 
 def _get_llm():
@@ -91,6 +92,28 @@ def _get_driver():
         except Exception:
             _driver_singleton = None  # Allow degraded mode
     return _driver_singleton
+
+
+def _get_checkpointer():
+    """Return a persistent SqliteSaver for multi-turn conversation threads.
+
+    Stored in ``./output/checkpoints.db``; created on first access.
+    Falls back to an in-memory ``MemorySaver`` if SQLite is unavailable.
+    """
+    global _checkpointer_singleton
+    if _checkpointer_singleton is None:
+        try:
+            import sqlite3
+            import pathlib
+            from langgraph.checkpoint.sqlite import SqliteSaver
+            db_path = str(pathlib.Path(__file__).parent.parent / "output" / "checkpoints.db")
+            pathlib.Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+            conn = sqlite3.connect(db_path, check_same_thread=False)
+            _checkpointer_singleton = SqliteSaver(conn)
+        except Exception:
+            from langgraph.checkpoint.memory import MemorySaver
+            _checkpointer_singleton = MemorySaver()
+    return _checkpointer_singleton
 
 
 # ---------------------------------------------------------------------------
@@ -126,6 +149,15 @@ class QueryRequest(BaseModel):
         None,
         description="Optional list of agents to invoke: diagnostic, evidence, explanation, validation",
     )
+    thread_id: str | None = Field(
+        None,
+        description=(
+            "Conversation thread ID for multi-turn sessions. "
+            "Re-use the same thread_id to continue a previous conversation. "
+            "Leave unset for a one-shot query."
+        ),
+        examples=["session-abc123"],
+    )
 
 
 class QueryResponse(BaseModel):
@@ -135,6 +167,7 @@ class QueryResponse(BaseModel):
     needs_human_review: bool
     synthesis: str
     agent_results: list[dict[str, Any]]
+    thread_id: str | None = None
 
 
 class ValidateRequest(BaseModel):
@@ -278,7 +311,7 @@ def diagnose(request: DiagnoseRequest) -> DiagnoseResponse:
         ish_group=request.ish_group,
         confidence=result.get("confidence", "UNKNOWN"),
         guideline=result.get("applicable_guideline", result.get("guideline", "")),
-        action=result.get("action_required", result.get("action", "")),
+        action=result.get("action_required") or result.get("action") or "",
         pathway=" → ".join(pathway_steps) if pathway_steps else result.get("pathway", ""),
         narrative=narrative,
     )
@@ -307,7 +340,8 @@ def query_endpoint(request: QueryRequest) -> QueryResponse:
 
     from src.agents.supervisor import build_agent_graph
     from src.agents.state import EMPTY_STATE
-    graph = build_agent_graph(llm=llm, driver=driver)
+    checkpointer = _get_checkpointer()
+    graph = build_agent_graph(llm=llm, driver=driver, checkpointer=checkpointer)
     initial_state = {
         **EMPTY_STATE,
         "query": request.query,
@@ -316,7 +350,11 @@ def query_endpoint(request: QueryRequest) -> QueryResponse:
     if request.agents:
         initial_state["target_agents"] = list(request.agents)
 
-    final = graph.invoke(initial_state)
+    # Thread config: enables conversation continuity via checkpointer
+    import uuid
+    thread_id = request.thread_id or str(uuid.uuid4())
+    invoke_config = {"configurable": {"thread_id": thread_id}}
+    final = graph.invoke(initial_state, invoke_config)
 
     agents_invoked = [r["agent"] for r in final.get("agent_results", []) if "agent" in r]
     return QueryResponse(
@@ -326,6 +364,7 @@ def query_endpoint(request: QueryRequest) -> QueryResponse:
         needs_human_review=bool(final.get("needs_human_review", False)),
         synthesis=final.get("final_response", final.get("synthesis", "")),
         agent_results=final.get("agent_results", []),
+        thread_id=thread_id,
     )
 
 

@@ -282,22 +282,34 @@ def _make_route_after_supervisor(
 # Public: build the multi-agent LangGraph
 # ---------------------------------------------------------------------------
 
-def build_agent_graph(llm: BaseChatModel, driver: Driver) -> Any:
+def build_agent_graph(
+    llm: BaseChatModel,
+    driver: "Driver",
+    checkpointer: Any = None,
+) -> Any:
     """
     Build and compile the HER2 multi-agent LangGraph.
 
-    Returns a compiled LangGraph `App` (callable with invoke / stream).
+    Returns a compiled LangGraph ``App`` (callable with invoke / stream).
+
+    Args:
+        llm:          The language model to use for routing and synthesis.
+        driver:       Neo4j driver for KG access.
+        checkpointer: Optional LangGraph checkpointer for conversation
+                      persistence (e.g. ``SqliteSaver``).  When provided,
+                      callers must pass ``{"configurable": {"thread_id": ...}}``
+                      as the *config* argument to ``invoke()``.
 
     Usage::
 
-        graph = build_agent_graph(llm, driver)
-        result = graph.invoke({
-            "query": "What is the HER2 status for IHC 2+, ratio 1.8, 4.2 signals/cell?",
-            "clinical_data": {"ihc_score": "2+", "ish_group": "Group3",
-                              "ish_ratio": 1.8, "signals_per_cell": 4.2},
-            **EMPTY_STATE,
-        })
-        print(result["final_response"])
+        from langgraph.checkpoint.sqlite import SqliteSaver
+        checkpointer = SqliteSaver.from_conn_string("./output/checkpoints.db")
+        graph = build_agent_graph(llm, driver, checkpointer=checkpointer)
+
+        result = graph.invoke(
+            {"query": "IHC 2+, ISH ratio 1.8 — classify", **EMPTY_STATE},
+            config={"configurable": {"thread_id": "session-abc123"}},
+        )
     """
     diagnostic  = DiagnosticAgent(llm, driver)
     evidence    = EvidenceAgent(llm, driver)
@@ -337,4 +349,4 @@ def build_agent_graph(llm: BaseChatModel, driver: Driver) -> Any:
 
     builder.add_edge("synthesize", END)
 
-    return builder.compile()
+    return builder.compile(checkpointer=checkpointer)
