@@ -95,18 +95,8 @@ _MAX_ITERATIONS = 3
 # Routing helper
 # ---------------------------------------------------------------------------
 
-def _route_query(
-    query: str,
-    clinical_data: dict,
-) -> list[str]:
-    """Fast keyword-based routing (no LLM — avoids 4-minute waits on CPU models).
-
-    Rules:
-    - Has clinical data OR classification keywords → diagnostic
-    - Evidence/trial/treatment keywords → evidence
-    - Why/explain/rationale keywords → explanation
-    - Consistency/validation keywords → validation
-    """
+def _keyword_route(query: str, clinical_data: dict) -> list[str]:
+    """Fast keyword-based fallback routing (no LLM)."""
     q = query.lower()
     agents: list[str] = []
 
@@ -142,6 +132,46 @@ def _route_query(
     return agents or ["diagnostic"]
 
 
+def _route_query(
+    llm: BaseChatModel,
+    query: str,
+    clinical_data: dict,
+) -> list[str]:
+    """Route via LLM (primary), fall back to keyword routing on any failure.
+
+    Uses the configured LLM (local Ollama or remote API) for intelligent
+    multi-agent routing. If the LLM fails, returns invalid JSON, or raises
+    any exception, keyword-based routing is used as the guaranteed fallback.
+    """
+    import re as _re
+    context = f"Query: {query}\nClinical data: {json.dumps(clinical_data) if clinical_data else 'None'}"
+    messages = [
+        SystemMessage(content=_ROUTING_PROMPT),
+        HumanMessage(content=context),
+    ]
+    try:
+        response = llm.invoke(messages)
+        raw = response.content if hasattr(response, "content") else str(response)
+        text: str = raw if isinstance(raw, str) else str(raw)
+        # Strip <think>...</think> blocks (qwen3 / gemma thinking mode)
+        text = _re.sub(r"<think>.*?</think>", "", text, flags=_re.DOTALL).strip()
+        # Find the last valid JSON array in the response
+        for m in reversed(list(_re.finditer(r"\[.*?\]", text, _re.DOTALL))):
+            try:
+                agents: list[str] = json.loads(m.group())
+                if isinstance(agents, list):
+                    valid = {"diagnostic", "evidence", "explanation", "validation"}
+                    result = [a for a in agents if a in valid]
+                    if result:
+                        return result
+            except json.JSONDecodeError:
+                continue
+    except Exception:
+        pass
+    # Fallback: keyword routing
+    return _keyword_route(query, clinical_data)
+
+
 # ---------------------------------------------------------------------------
 # LangGraph node functions
 # ---------------------------------------------------------------------------
@@ -157,7 +187,7 @@ def _make_supervisor_node(llm: BaseChatModel) -> Any:
 
         # Only route with LLM on the first pass; subsequent passes keep existing queue
         if iteration == 0 or not state.get("agent_results"):
-            target_agents = _route_query(query, clinical_data)
+            target_agents = _route_query(llm, query, clinical_data)
             return {
                 "target_agents":   target_agents,
                 "iteration_count": iteration + 1,
@@ -187,8 +217,15 @@ def _make_synthesize_node(llm: BaseChatModel) -> Any:
             SystemMessage(content=_SYNTHESIS_SYSTEM_PROMPT),
             HumanMessage(content=context_text),
         ]
-        response = llm.invoke(messages)
-        final_response = response.content if hasattr(response, "content") else str(response)
+        try:
+            response = llm.invoke(messages)
+            final_response = response.content if hasattr(response, "content") else str(response)
+        except Exception:
+            # Fallback: concatenate agent narratives directly
+            final_response = "\n\n".join(
+                f"**{r.get('agent', 'Agent').upper()}:**\n{r.get('narrative', '')}"
+                for r in agent_results
+            ) or "(no agent results)"
 
         # Overall confidence: lowest of individual agent confidences
         confidences = []

@@ -185,7 +185,7 @@ def embed_all_chunks(
     _FETCH_CHUNKS = """
     MATCH (n:Chunk)
     WHERE n.embedding IS NULL
-    RETURN n.chunk_id AS chunk_id, n.content AS content
+    RETURN n.chunk_id AS chunk_id, coalesce(n.text, n.content, '') AS content
     LIMIT 5000
     """
     with driver.session() as session:

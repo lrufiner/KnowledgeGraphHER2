@@ -225,8 +225,21 @@ class DiagnosticAgent:
             SystemMessage(content=_DIAGNOSTIC_SYSTEM_PROMPT),
             HumanMessage(content=context_text),
         ]
-        llm_response = self._llm.invoke(messages)
-        narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        try:
+            llm_response = self._llm.invoke(messages)
+            narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        except Exception:
+            # Fallback: deterministic text from classification dict
+            cls = classification
+            narrative = (
+                f"**Classification:** {cls.get('classification','').replace('_','-')}\n"
+                f"**IHC Score:** {cls.get('ihc_score','')}\n"
+                f"**Confidence:** {cls.get('confidence','')}\n"
+                f"**Guideline:** {cls.get('applicable_guideline','')}\n"
+                f"**Pathway:** {' → '.join(cls.get('pathway_steps',[]))}\n"
+                + (f"**Action required:** {cls.get('action_required')}\n" if cls.get('action_required') else "")
+                + "*(LLM narration unavailable)*"
+            )
 
         result = {
             "agent": "diagnostic",

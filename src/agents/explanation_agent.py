@@ -114,8 +114,16 @@ class ExplanationAgent:
             SystemMessage(content=_EXPLANATION_SYSTEM_PROMPT),
             HumanMessage(content=context_text),
         ]
-        llm_response = self._llm.invoke(messages)
-        narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        try:
+            llm_response = self._llm.invoke(messages)
+            narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        except Exception:
+            # Fallback: format scoring criteria as plain text
+            lines = [f"- {c.get('criterion','')}: {c.get('definition','')[:100]}" for c in scoring_criteria[:5]]
+            narrative = (
+                "**IHC Scoring criteria from KG:**\n" + "\n".join(lines)
+                + "\n\n*(LLM explanation unavailable)*"
+            )
 
         result = {
             "agent": "explanation",

@@ -116,8 +116,20 @@ class ValidationAgent:
             SystemMessage(content=_VALIDATION_SYSTEM_PROMPT),
             HumanMessage(content=context_text),
         ]
-        llm_response = self._llm.invoke(messages)
-        narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        try:
+            llm_response = self._llm.invoke(messages)
+            narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        except Exception:
+            # Fallback: format validation issues as plain text
+            lines = [
+                f"- [{i.get('severity','')}] {i.get('rule_id','')} — {i.get('description','')}"
+                for i in all_issues
+            ]
+            narrative = (
+                f"**Validation status:** {status}\n"
+                + ("\n".join(lines) if lines else "No issues found.")
+                + "\n*(LLM narrative unavailable)*"
+            )
 
         result = {
             "agent": "validation",

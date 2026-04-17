@@ -246,9 +246,9 @@ if panel == "🔬 Case Simulator":
 
             category = result.get("classification", "Unknown")
             confidence = result.get("confidence", "UNKNOWN")
-            guideline = result.get("guideline", "")
-            action = result.get("action", "")
-            pathway = result.get("pathway", "")
+            guideline = result.get("applicable_guideline", result.get("guideline", ""))
+            action = result.get("action_required", result.get("action", ""))
+            pathway = " → ".join(result.get("pathway_steps", [])) or result.get("pathway", "")
 
             color = _category_color(category)
             st.markdown(
@@ -315,7 +315,7 @@ elif panel == "🗺️ Pathway Viewer":
 
     with col2:
         result = _classify_only(viewer_ihc, viewer_ish, None, None)
-        pathway = result.get("pathway", "")
+        pathway = " → ".join(result.get("pathway_steps", [])) or result.get("pathway", "")
         category = result.get("classification", "Unknown")
         color = _category_color(category)
 

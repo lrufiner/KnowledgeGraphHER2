@@ -358,6 +358,19 @@ def phase_export(state: PipelineState) -> dict:
     finally:
         driver2.close()
 
+    # Compute embeddings for entities and chunks (batch, idempotent)
+    driver3 = cfg.get_neo4j_driver()
+    try:
+        embedder = cfg.get_embedder()
+        from src.graph.vector_indexer import embed_all_entities, embed_all_chunks
+        n_ent = embed_all_entities(driver3, embedder, verbose=True)
+        n_chk = embed_all_chunks(driver3, embedder, verbose=True)
+        print(f"  [EXPORT] Embeddings: {n_ent} entities + {n_chk} chunks")
+    except Exception as exc:
+        print(f"  [EXPORT] Embeddings skipped: {exc!s:.120}")
+    finally:
+        driver3.close()
+
     report = state.get("validation_report")
     report_data = report.summary() if report else {}
 

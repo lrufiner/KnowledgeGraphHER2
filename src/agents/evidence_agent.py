@@ -125,8 +125,17 @@ class EvidenceAgent:
             SystemMessage(content=_EVIDENCE_SYSTEM_PROMPT),
             HumanMessage(content=context_text),
         ]
-        llm_response = self._llm.invoke(messages)
-        narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        try:
+            llm_response = self._llm.invoke(messages)
+            narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+        except Exception:
+            # Fallback: format retrieved rows as plain text
+            lines = ["**Evidence retrieved from KG:**"]
+            for r in evidence_rows[:5]:
+                lines.append(f"- [{r.get('source_doc','')}] {r.get('context','')[:150]}")
+            for r in eligibility_rows[:5]:
+                lines.append(f"- {r.get('category','')} {r.get('eligibility','')} {r.get('drug','')}")
+            narrative = "\n".join(lines) or "*(no evidence found — LLM unavailable)*"
 
         # Build citations list
         citations = [
