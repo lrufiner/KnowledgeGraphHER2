@@ -46,18 +46,23 @@ st.set_page_config(
 
 @st.cache_resource(show_spinner=False)
 def _load_llm(_mode: str = "", _model: str = ""):
-    """Load LLM via PipelineConfig (respects HER2_KG_LLM_MODE env var)."""
+    """Load LLM via PipelineConfig and verify connectivity with a minimal invoke."""
     try:
         from src.pipeline.config import PipelineConfig
+        from langchain_core.messages import HumanMessage
         cfg = PipelineConfig.from_env()
         if _mode:
             cfg = cfg.model_copy(update={"llm_mode": _mode})
         if _model:
             key = {"ollama": "ollama_model", "openai": "openai_model", "claude": "claude_model"}.get(cfg.llm_mode, "ollama_model")
             cfg = cfg.model_copy(update={key: _model})
-        return cfg.get_llm()
+        # Use plain-text LLM (no json format) for narration
+        llm = cfg.get_llm(json_mode=False)
+        # Connectivity test — fails fast if credentials/server are wrong
+        llm.invoke([HumanMessage(content="1+1=")], config={"max_tokens": 2})
+        return llm
     except Exception as exc:
-        st.warning(f"LLM not available: {exc}. Deterministic mode only.")
+        st.warning(f"LLM not available: {exc}. Narration disabled.")
         return None
 
 
@@ -290,27 +295,32 @@ if panel == "🔬 Case Simulator":
             # LLM narration
             if use_llm and llm is not None:
                 st.subheader("Clinical Narration (LLM)")
-                clinical_data = {"ihc_score": ihc_score}
+                clinical_data_llm = {"ihc_score": ihc_score}
                 if ish_group:
-                    clinical_data["ish_group"] = ish_group
+                    clinical_data_llm["ish_group"] = ish_group
                 if ish_ratio is not None:
-                    clinical_data["ish_ratio"] = ish_ratio
+                    clinical_data_llm["ish_ratio"] = ish_ratio
                 if signals is not None:
-                    clinical_data["signals_per_cell"] = signals
+                    clinical_data_llm["signals_per_cell"] = signals
 
-                from src.agents.state import EMPTY_STATE
-                state = {**EMPTY_STATE, "clinical_data": clinical_data, "query": f"Classify IHC {ihc_score}"}
-                agent = _get_diagnostic_agent(llm, driver)
                 with st.spinner("LLM narrating..."):
-                    new_state = agent(state)
-                results = new_state.get("agent_results", [])
-                narrative = ""
-                for r in results:
-                    if r.get("agent") == "diagnostic":
-                        narrative = r.get("narrative", "")
-                        break
-                if narrative:
-                    st.markdown(narrative)
+                    try:
+                        from langchain_core.messages import HumanMessage, SystemMessage
+                        from src.agents.diagnostic_agent import _DIAGNOSTIC_SYSTEM_PROMPT
+                        context_text = (
+                            f"Clinical data: {clinical_data_llm}\n"
+                            f"Rule-based classification: {result}\n"
+                            f"User query: Classify IHC {ihc_score}"
+                        )
+                        messages = [
+                            SystemMessage(content=_DIAGNOSTIC_SYSTEM_PROMPT),
+                            HumanMessage(content=context_text),
+                        ]
+                        llm_response = llm.invoke(messages)
+                        narrative = llm_response.content if hasattr(llm_response, "content") else str(llm_response)
+                        st.markdown(narrative)
+                    except Exception as exc:
+                        st.error(f"LLM error: {exc}")
         else:
             st.info("Fill in the case data and click **▶ Classify**.")
 

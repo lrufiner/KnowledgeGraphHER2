@@ -97,8 +97,13 @@ class PipelineConfig(BaseModel):
             langsmith_project= os.getenv("LANGCHAIN_PROJECT", "her2-kg"),
         )
 
-    def get_llm(self):
-        """Return a LangChain BaseChatModel for the configured provider."""
+    def get_llm(self, json_mode: bool = True):
+        """Return a LangChain BaseChatModel for the configured provider.
+
+        Args:
+            json_mode: For Ollama only — forces JSON output format.
+                       Set False for free-text tasks like narration.
+        """
         if self.llm_mode == "claude":
             from langchain_anthropic import ChatAnthropic
             return ChatAnthropic(
@@ -117,14 +122,16 @@ class PipelineConfig(BaseModel):
             )
         elif self.llm_mode == "ollama":
             from langchain_ollama import ChatOllama
-            return ChatOllama(
-                model=self.ollama_model,
-                base_url=self.ollama_base_url,
-                temperature=self.llm_temperature,
-                num_predict=3000,
-                num_ctx=8192,
-                format="json",
-            )
+            kwargs: dict = {
+                "model": self.ollama_model,
+                "base_url": self.ollama_base_url,
+                "temperature": self.llm_temperature,
+                "num_predict": 3000,
+                "num_ctx": 8192,
+            }
+            if json_mode:
+                kwargs["format"] = "json"
+            return ChatOllama(**kwargs)
         else:
             raise ValueError(f"Unknown LLM mode: {self.llm_mode!r}. "
                              f"Valid options: claude | openai | ollama")
