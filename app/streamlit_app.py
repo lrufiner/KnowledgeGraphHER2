@@ -46,23 +46,19 @@ st.set_page_config(
 
 @st.cache_resource(show_spinner=False)
 def _load_llm(_mode: str = "", _model: str = ""):
-    """Load LLM via PipelineConfig and verify connectivity with a minimal invoke."""
+    """Load LLM via PipelineConfig (respects HER2_KG_LLM_MODE env var)."""
     try:
         from src.pipeline.config import PipelineConfig
-        from langchain_core.messages import HumanMessage
         cfg = PipelineConfig.from_env()
         if _mode:
             cfg = cfg.model_copy(update={"llm_mode": _mode})
         if _model:
             key = {"ollama": "ollama_model", "openai": "openai_model", "claude": "claude_model"}.get(cfg.llm_mode, "ollama_model")
             cfg = cfg.model_copy(update={key: _model})
-        # Use plain-text LLM (no json format) for narration
-        llm = cfg.get_llm(json_mode=False)
-        # Connectivity test — fails fast if credentials/server are wrong
-        llm.invoke([HumanMessage(content="1+1=")], config={"max_tokens": 2})
-        return llm
+        # json_mode=False: narración libre, no JSON estricto
+        return cfg.get_llm(json_mode=False)
     except Exception as exc:
-        st.warning(f"LLM not available: {exc}. Narration disabled.")
+        st.warning(f"LLM not available: {exc}. Deterministic mode only.")
         return None
 
 
