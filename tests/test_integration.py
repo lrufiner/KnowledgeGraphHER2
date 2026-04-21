@@ -42,10 +42,10 @@ class TestNeo4jSchema:
 
         with neo4j_driver.session() as session:
             result = session.run(
-                "MATCH ()-[r:ELIGIBLE_FOR]->() RETURN count(r) AS cnt"
+                "MATCH ()-[r:eligibleFor]->() RETURN count(r) AS cnt"
             )
             rels = result.single()["cnt"]
-        assert rels >= 1, "Expected at least 1 ELIGIBLE_FOR relation"
+        assert rels >= 1, "Expected at least 1 eligibleFor relation"
 
     def test_idempotent_seed_double_load(self, neo4j_driver):
         """Calling load_seed_data twice should not duplicate nodes."""
@@ -117,16 +117,17 @@ class TestValidationPipeline:
         report = run_validation(neo4j_driver)
         assert report is not None
         # After seed load all validation rules should pass
-        passed = [r for r in report.results if r["status"] == "PASS"]
+        from src.domain.models import ValidationSeverity
+        passed = [r for r in report.results if r.valid]
         failed_critical = [
             r for r in report.results
-            if r["status"] == "FAIL" and r.get("severity") == "CRITICAL"
+            if not r.valid and r.severity == ValidationSeverity.CRITICAL
         ]
         assert len(failed_critical) == 0, (
             f"Critical validation failures after seed load: "
-            f"{[r['rule'] for r in failed_critical]}"
+            f"{[r.rule_id for r in failed_critical]}"
         )
-        assert len(passed) >= 10, f"Expected ≥10 passing rules, got {len(passed)}"
+        assert len(passed) >= 10, f"Expected >=10 passing rules, got {len(passed)}"
 
 
 # ---------------------------------------------------------------------------

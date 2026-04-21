@@ -294,33 +294,43 @@ SEED_RELATIONS: list[dict] = [
     {"subject_id": "Score0", "predicate": "implies",
      "object_id": "HER2_Null", "confidence": 1.0,
      "evidence": "No membrane staining", "guideline_version": "ASCO_CAP_2023"},
-    # IHC 2+ requires ISH reflex
+    # IHC 2+ requires FISH reflex; outcomes after FISH
     {"subject_id": "Score2Plus", "predicate": "requiresReflexTest",
      "object_id": "ISH", "confidence": 1.0,
-     "evidence": "ASCO/CAP 2023 — mandatory reflex ISH for IHC 2+",
+     "evidence": "ASCO/CAP 2023 — mandatory reflex FISH for IHC 2+",
      "guideline_version": "ASCO_CAP_2023"},
-    # ISH Group 1 → Positive
+    # IHC 2+ + FISH positive → HER2-Positive
+    {"subject_id": "Score2Plus", "predicate": "impliesIfISHAmplified",
+     "object_id": "HER2_Positive", "confidence": 1.0,
+     "evidence": "IHC 2+/FISH-positive → HER2-Positive (ASCO/CAP 2023)",
+     "guideline_version": "ASCO_CAP_2023"},
+    # IHC 2+ + FISH negative → HER2-Low (NOT HER2-Negative)
+    {"subject_id": "Score2Plus", "predicate": "impliesIfISHNonAmplified",
+     "object_id": "HER2_Low", "confidence": 1.0,
+     "evidence": "IHC 2+/FISH-negative → HER2-Low (ASCO/CAP 2023; Wolff 2023)",
+     "guideline_version": "ASCO_CAP_2023"},
+    # ISH Group 1 → Positive (amplified: ratio ≥2.0 AND signals ≥4.0)
     {"subject_id": "Group1", "predicate": "implies",
      "object_id": "HER2_Positive", "confidence": 1.0,
-     "evidence": "ratio ≥2.0 AND signals ≥4.0 → amplified",
+     "evidence": "ratio ≥2.0 AND signals ≥4.0 → amplified → HER2-Positive",
      "guideline_version": "ASCO_CAP_2023"},
-    # ISH Groups 2, 3, 4 → Equivocal (require IHC workup)
-    {"subject_id": "Group2", "predicate": "implies",
+    # ISH Groups 2, 3, 4 → require IHC reflex workup before final call
+    {"subject_id": "Group2", "predicate": "requiresIHCWorkup",
      "object_id": "HER2_Equivocal", "confidence": 1.0,
-     "evidence": "ratio ≥2.0 AND signals <4.0 → requires IHC workup",
+     "evidence": "ratio ≥2.0 AND signals <4.0 → concurrent IHC review required",
      "guideline_version": "ASCO_CAP_2023"},
-    {"subject_id": "Group3", "predicate": "implies",
+    {"subject_id": "Group3", "predicate": "requiresIHCWorkup",
      "object_id": "HER2_Equivocal", "confidence": 1.0,
-     "evidence": "ratio <2.0 AND signals ≥6.0 → requires IHC workup",
+     "evidence": "ratio <2.0 AND signals ≥6.0 → concurrent IHC review required",
      "guideline_version": "ASCO_CAP_2023"},
-    {"subject_id": "Group4", "predicate": "implies",
+    {"subject_id": "Group4", "predicate": "requiresIHCWorkup",
      "object_id": "HER2_Equivocal", "confidence": 1.0,
-     "evidence": "ratio <2.0 AND signals ≥4.0,<6.0 → requires IHC workup",
+     "evidence": "ratio <2.0 AND signals ≥4.0,<6.0 → concurrent IHC review required",
      "guideline_version": "ASCO_CAP_2023"},
-    # ISH Group 5 → Negative
+    # ISH Group 5 → HER2-Low (non-amplified in IHC 2+ context = HER2-Low)
     {"subject_id": "Group5", "predicate": "implies",
-     "object_id": "HER2_Negative", "confidence": 1.0,
-     "evidence": "ratio <2.0 AND signals <4.0 → not amplified",
+     "object_id": "HER2_Low", "confidence": 1.0,
+     "evidence": "IHC 2+/FISH non-amplified (ratio <2.0, signals <4.0) → HER2-Low (ASCO/CAP 2023)",
      "guideline_version": "ASCO_CAP_2023"},
     # Therapeutic eligibility
     {"subject_id": "HER2_Low", "predicate": "eligibleFor",
@@ -357,16 +367,17 @@ SEED_RELATIONS: list[dict] = [
     {"subject_id": "HER2_Ultralow", "predicate": "supportedByEvidence",
      "object_id": "DESTINY_Breast06", "confidence": 1.0,
      "evidence": "Phase 3 RCT; primary evidence source"},
-    # Fractal–clinical proposed equivalences (HYPOTHESIS — marked as is_hypothesis=True)
-    {"subject_id": "FractalDimension_D0", "predicate": "proposedEquivalence",
+    # Fractal–clinical proposed correlations (HYPOTHESIS — requires clinical validation)
+    # Kept for research tracking; not used in clinical decision logic.
+    {"subject_id": "FractalDimension_D0", "predicate": "proposedCorrelation",
      "object_id": "HER2_Positive", "confidence": 0.6,
      "evidence": "D0 >1.85 associated with complex architecture (DigPatho Internal 2025)",
      "is_hypothesis": True, "conditions": "D0 > 1.85"},
-    {"subject_id": "FractalDimension_D0", "predicate": "proposedEquivalence",
+    {"subject_id": "FractalDimension_D0", "predicate": "proposedCorrelation",
      "object_id": "HER2_Null", "confidence": 0.6,
      "evidence": "D0 <1.45 associated with minimal architecture (DigPatho Internal 2025)",
      "is_hypothesis": True, "conditions": "D0 < 1.45"},
-    {"subject_id": "Lacunarity", "predicate": "proposedEquivalence",
+    {"subject_id": "Lacunarity", "predicate": "proposedCorrelation",
      "object_id": "Score3Plus", "confidence": 0.55,
      "evidence": "Low lacunarity (<0.15) associated with dense IHC 3+ pattern",
      "is_hypothesis": True, "conditions": "Lacunarity < 0.15"},
@@ -374,33 +385,6 @@ SEED_RELATIONS: list[dict] = [
      "object_id": "HER2_Null", "confidence": 0.65,
      "evidence": "High Δα (>0.80) implies spatial heterogeneity, unlikely in HER2-null",
      "is_hypothesis": True, "conditions": "Δα > 0.80"},
-]
-
-# ---------------------------------------------------------------------------
-# Toy / artificial fractal examples for system testing
-# (DigPatho_Internal_2025 — purely synthetic data)
-# ---------------------------------------------------------------------------
-
-TOY_FRACTAL_SPECIMENS: list[dict] = [
-    {"specimen_id": "TOY_001", "ihc_score": "Score3Plus",
-     "D0": 1.91, "D1": 1.78, "Lacunarity": 0.08, "DeltaAlpha": 0.42, "MultiscaleEntropy": 1.62,
-     "note": "Toy example: high D0, low Lacunarity → consistent with IHC 3+"},
-    {"specimen_id": "TOY_002", "ihc_score": "Score2Plus",
-     "D0": 1.72, "D1": 1.61, "Lacunarity": 0.28, "DeltaAlpha": 0.61, "MultiscaleEntropy": 1.31,
-     "note": "Toy example: intermediate D0 → consistent with IHC 2+ (equivocal)"},
-    {"specimen_id": "TOY_003", "ihc_score": "Score1Plus",
-     "D0": 1.57, "D1": 1.48, "Lacunarity": 0.44, "DeltaAlpha": 0.55, "MultiscaleEntropy": 1.05,
-     "note": "Toy example: low-intermediate D0 → consistent with IHC 1+"},
-    {"specimen_id": "TOY_004", "ihc_score": "Score0Plus",
-     "D0": 1.43, "D1": 1.35, "Lacunarity": 0.62, "DeltaAlpha": 0.39, "MultiscaleEntropy": 0.88,
-     "note": "Toy example: low D0, high Lacunarity → consistent with IHC 0+ (ultralow)"},
-    {"specimen_id": "TOY_005", "ihc_score": "Score0",
-     "D0": 1.31, "D1": 1.24, "Lacunarity": 0.74, "DeltaAlpha": 0.28, "MultiscaleEntropy": 0.62,
-     "note": "Toy example: very low D0 → consistent with IHC 0 (null)"},
-    # Inconsistency example: high D0 but IHC 0 — should trigger alert
-    {"specimen_id": "TOY_006_INCONSISTENT", "ihc_score": "Score0",
-     "D0": 1.88, "D1": 1.75, "Lacunarity": 0.09, "DeltaAlpha": 0.82, "MultiscaleEntropy": 1.71,
-     "note": "Toy INCONSISTENCY: high D0 with IHC 0 — fractal-clinical alert should be raised"},
 ]
 
 # ---------------------------------------------------------------------------

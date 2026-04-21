@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from neo4j import Driver
 
 from src.domain.models import ResolvedEntity, ResolvedRelation
-from src.domain.ontology import SEED_ENTITIES, SEED_RELATIONS, TOY_FRACTAL_SPECIMENS
+from src.domain.ontology import SEED_ENTITIES, SEED_RELATIONS
 
 
 # ---------------------------------------------------------------------------
@@ -151,48 +151,6 @@ SET r += row.rprops
 
     print(f"[Seed] Loaded {stats['nodes']} nodes, {stats['relations']} relations.")
     return stats
-
-
-# ---------------------------------------------------------------------------
-# Toy fractal specimens
-# ---------------------------------------------------------------------------
-
-def load_toy_fractal_specimens(driver: Driver) -> int:
-    """
-    Load toy/artificial fractal specimens into Neo4j for testing.
-    Creates ToySpecimen nodes linked to IHCScore via HAS_FRACTAL_PROFILE relation.
-    """
-    count = 0
-    now = datetime.utcnow().isoformat()
-
-    with driver.session() as session:
-        for spec in TOY_FRACTAL_SPECIMENS:
-            sid = spec["specimen_id"]
-            session.run(
-                """
-                MERGE (s:ToySpecimen {id: $id})
-                SET s.D0 = $D0, s.D1 = $D1, s.Lacunarity = $lac,
-                    s.DeltaAlpha = $da, s.MultiscaleEntropy = $me,
-                    s.note = $note, s.created_at = $ts,
-                    s.source = 'DigPatho_Internal_2025'
-                """,
-                id=sid, D0=spec["D0"], D1=spec["D1"],
-                lac=spec["Lacunarity"], da=spec["DeltaAlpha"],
-                me=spec["MultiscaleEntropy"], note=spec["note"], ts=now,
-            )
-            # Link to IHCScore
-            session.run(
-                """
-                MATCH (spec:ToySpecimen {id: $sid})
-                MATCH (ihc:IHCScore {id: $ihc_id})
-                MERGE (spec)-[:HAS_IHC_SCORE]->(ihc)
-                """,
-                sid=sid, ihc_id=spec["ihc_score"],
-            )
-            count += 1
-
-    print(f"[Toy] Loaded {count} toy fractal specimens.")
-    return count
 
 
 # ---------------------------------------------------------------------------

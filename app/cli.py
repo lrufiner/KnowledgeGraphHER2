@@ -26,14 +26,13 @@ def cmd_seed_only(args):
     """Load only seed data (no LLM extraction). Fast and free."""
     from src.pipeline.config import PipelineConfig
     from src.graph.neo4j_builder import (
-        initialize_schema, load_seed_data, load_toy_fractal_specimens
+        initialize_schema, load_seed_data
     )
     cfg = PipelineConfig.from_env()
     driver = cfg.get_neo4j_driver()
     try:
         initialize_schema(driver)
         load_seed_data(driver)
-        load_toy_fractal_specimens(driver)
         print("\n[Seed] Done! Explore at http://localhost:7474")
         print("  Query: MATCH (n) RETURN n LIMIT 80")
     finally:

@@ -1,0 +1,2542 @@
+[
+  {
+    "@id": "http://digpatho.com/ontology/her2#ClinicalTrial",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "ClinicalTrial"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#contradictsIfConcurrent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "contradictsIfConcurrent"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Low_supportedByEvidence_http://digpatho.com/ontology/her2#DESTINY_Breast04_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#supportedByEvidence"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast04"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#MultiscaleEntropy",
+    "@type": [
+      "http://digpatho.com/ontology/her2#FractalMetric"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Temporal complexity measure; high values indicate complex dynamics"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Multiscale Entropy"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_high": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "3.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_low": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.0"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score1Plus_refinesCategory_http://digpatho.com/ontology/her2#HER2_Low_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score1Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score3Plus_implies_http://digpatho.com/ontology/her2#HER2_Positive_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score3Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#proposedCorrelation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "proposedCorrelation"
+      },
+      {
+        "@value": "proposedEquivalence"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow_supportedByEvidence_http://digpatho.com/ontology/her2#DESTINY_Breast06_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#supportedByEvidence"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast06"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group3_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#requiresIHCWorkup"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Group3"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#TDM1",
+    "@type": [
+      "http://digpatho.com/ontology/her2#TherapeuticAgent"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Anti-HER2 antibody-drug conjugate with microtubule inhibitor payload"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "T-DM1 (Ado-Trastuzumab Emtansine)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C82492"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#supersededBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "SUPERSEDED_BY"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#FractalDimension_D0_proposedCorrelation_http://digpatho.com/ontology/her2#HER2_Null_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.6"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#proposedCorrelation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#FractalDimension_D0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#associatedWith",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "associatedWith"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score0Plus_implies_http://digpatho.com/ontology/her2#HER2_Negative_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score0Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#PathologicalFeature",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "PathologicalFeature"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Negative",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 0, 0+, or 1+ OR IHC 2+/ISH non-amplified"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Negative"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C68749"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Low_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 0+ (faint/incomplete ≤10% cells); eligible for T-DXd (HR+)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#eligibleFor": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#interobserver_variability": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.37"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Ultralow"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#supportedByEvidence": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast06"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173792"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#requiresReflexTest",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "requiresReflexTest"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score2Plus_implies_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score2Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group5_implies_http://digpatho.com/ontology/her2#HER2_Low_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Group5"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group4_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#requiresIHCWorkup"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Group4"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#MultifractalSpread",
+    "@type": [
+      "http://digpatho.com/ontology/her2#FractalMetric"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Width of the multifractal spectrum; high values indicate high spatial variability"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#inconsistentWith": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Multifractal Spread (Δα)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_high": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_low": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173801"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#FractalMetric",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "FractalMetric"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Low",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 1+ OR IHC 2+/ISH non-amplified; eligible for T-DXd"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#eligibleFor": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#interobserver_variability": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.25"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Low"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#supportedByEvidence": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast04"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173791"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#definedIn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "definedIn"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#MultifractalSpread_inconsistentWith_http://digpatho.com/ontology/her2#HER2_Null_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.65"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#inconsistentWith"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#MultifractalSpread"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Null",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 0 / no membrane staining; not eligible for T-DXd"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Null"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#notEligibleFor": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173793"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#FractalDimension_D0_proposedCorrelation_http://digpatho.com/ontology/her2#HER2_Positive_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.6"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#proposedCorrelation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#FractalDimension_D0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast06",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalTrial"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Phase 3 RCT extending T-DXd benefit to HER2-ultralow in HR+ metastatic breast cancer"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "DESTINY-Breast06"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#supportedByEvidence",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "supportedByEvidence"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Biomarker",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Biomarker"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#IHCScore",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "IHCScore"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#DAISY_Trial",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalTrial"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Phase 2 trial showing T-DXd activity across HER2 expression spectrum including HER2-null"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "DAISY Trial"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#notEligibleFor",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "notEligibleFor"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#eligibleFor",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "eligibleFor"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ISHGroup",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "ISHGroup"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Positive",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 3+ or ISH-amplified (Group 1 or workup-confirmed)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Positive"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#notEligibleFor": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointWith": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C68748"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Guideline",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Guideline"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow_eligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#eligibleFor"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Lacunarity",
+    "@type": [
+      "http://digpatho.com/ontology/her2#FractalMetric"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Measure of spatial texture; low values = dense, high values = porous"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Lacunarity"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#proposedCorrelation": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score3Plus"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_high": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_low": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173800"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score2Plus_requiresReflexTest_http://digpatho.com/ontology/her2#ISH_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#requiresReflexTest"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score2Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#ISH"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group4",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ISHGroup"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ratio <2.0 AND signals ≥4.0 and <6.0/cell → Requires IHC workup"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#group_number": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 4
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ISH Group 4"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#ratio_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#requiresIHCWorkup": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#signals_per_cell_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "4.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173798"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#StainingPattern",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "StainingPattern"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score1Plus",
+    "@type": [
+      "http://digpatho.com/ontology/her2#IHCScore"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Incomplete, faint/barely perceptible membrane staining in >10% of tumor cells (HER2-Low)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "IHC Score 1+"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173788"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score1Plus_implies_http://digpatho.com/ontology/her2#HER2_Negative_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score1Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#conditionedOn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "conditionedOn"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#TherapeuticAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "TherapeuticAgent"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalCategory"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC 2+ — requires ISH reflex testing for definitive status"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "HER2-Equivocal"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173794"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Positive_notEligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#notEligibleFor"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Trastuzumab",
+    "@type": [
+      "http://digpatho.com/ontology/her2#TherapeuticAgent"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Anti-HER2 monoclonal antibody"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Trastuzumab"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C1647"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#DocumentChunk",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Chunk"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score0Plus_refinesCategory_http://digpatho.com/ontology/her2#HER2_Ultralow_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score0Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group1_implies_http://digpatho.com/ontology/her2#HER2_Positive_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Group1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#implies",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "implies"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#DiagnosticDecision",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "DiagnosticDecision"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ClinicalCategory",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "ClinicalCategory"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#hasThreshold",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasThreshold"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#impliesIfISHNonAmplified",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "impliesIfISHNonAmplified"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#CAP_Biomarker_2025",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Guideline"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "CAP reporting template v1.6.0.0 (March 2025) for breast biomarkers"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "CAP Biomarker Template 2025"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan",
+    "@type": [
+      "http://digpatho.com/ontology/her2#TherapeuticAgent"
+    ],
+    "http://digpatho.com/ontology/her2#approval_date": [
+      {
+        "@value": "2025"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Anti-HER2 antibody-drug conjugate with topoisomerase I inhibitor payload"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#fda_approved": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Trastuzumab Deruxtecan (T-DXd)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C155379"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score0Plus",
+    "@type": [
+      "http://digpatho.com/ontology/her2#IHCScore"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Faint/barely perceptible incomplete membrane staining in >0% to ≤10% of tumor cells (HER2-Ultralow)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "IHC Score 0+"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Ultralow"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173787"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Null_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Negative"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#hasQualityRequirement",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasQualityRequirement"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score2Plus_impliesIfISHAmplified_http://digpatho.com/ontology/her2#HER2_Positive_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#impliesIfISHAmplified"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score2Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group2_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#requiresIHCWorkup"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Group2"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score2Plus_impliesIfISHNonAmplified_http://digpatho.com/ontology/her2#HER2_Low_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#impliesIfISHNonAmplified"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score2Plus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#IHC",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Assay"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "IHC assay for HER2 protein overexpression scoring (0, 0+, 1+, 2+, 3+)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Immunohistochemistry (IHC)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17089"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Null_notEligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#notEligibleFor"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#HER2_Low_eligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#eligibleFor"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#DESTINY_Breast04",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ClinicalTrial"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Phase 3 RCT demonstrating T-DXd efficacy in HER2-low metastatic breast cancer"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "DESTINY-Breast04"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#impliesIfISHAmplified",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "impliesIfISHAmplified"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ASCO_CAP_2023",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Guideline"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Wolff et al. 2023 — Updates IHC/ISH criteria for HER2-low/ultralow"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ASCO/CAP HER2 Guideline 2023"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#supersededBy": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Rakha_International_2026"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#FractalDimension_D0",
+    "@type": [
+      "http://digpatho.com/ontology/her2#FractalMetric"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Box-counting fractal dimension; high values indicate complex glandular architecture"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Fractal Dimension D0 (Capacity)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#proposedCorrelation": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      },
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_high": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_low": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25730"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group2",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ISHGroup"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ratio ≥2.0 AND signals <4.0/cell → Requires IHC workup"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#group_number": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 2
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ISH Group 2"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#ratio_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#requiresIHCWorkup": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#signals_per_cell_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "4.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173796"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score0_implies_http://digpatho.com/ontology/her2#HER2_Null_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#implies"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Rakha_International_2026",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Guideline"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Rakha et al. 2026 — International expert consensus on HER2 reporting including ultralow"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Rakha International Consensus 2026"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#overrides",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "overrides"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#inconsistentWith",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "inconsistentWith"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#requiresIHCWorkup",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "requiresIHCWorkup"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group5",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ISHGroup"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ratio <2.0 AND signals <4.0/cell → Not amplified (Negative)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#group_number": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 5
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ISH Group 5"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#ratio_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#signals_per_cell_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "4.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173799"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#hasStainingPattern",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "hasStainingPattern"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score3Plus",
+    "@type": [
+      "http://digpatho.com/ontology/her2#IHCScore"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Complete, intense circumferential membrane staining in >10% of tumor cells (HER2-Positive)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "IHC Score 3+"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173790"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Pertuzumab",
+    "@type": [
+      "http://digpatho.com/ontology/her2#TherapeuticAgent"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Anti-HER2 monoclonal antibody targeting domain II"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Pertuzumab"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C64636"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score2Plus",
+    "@type": [
+      "http://digpatho.com/ontology/her2#IHCScore"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Complete membrane staining of weak-to-moderate intensity in >10% of tumor cells (Equivocal — requires ISH)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#impliesIfISHAmplified": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#impliesIfISHNonAmplified": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Low"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "IHC Score 2+"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#requiresReflexTest": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#ISH"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173789"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group1",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ISHGroup"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ratio ≥2.0 AND signals ≥4.0/cell → Amplified (Positive)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#group_number": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 1
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Positive"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ISH Group 1"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#ratio_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#signals_per_cell_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "4.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173795"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#QualityMeasure",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "QualityMeasure"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Group3",
+    "@type": [
+      "http://digpatho.com/ontology/her2#ISHGroup"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ratio <2.0 AND signals ≥6.0/cell → Requires IHC workup"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#group_number": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 3
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ISH Group 3"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#ratio_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#requiresIHCWorkup": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Equivocal"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#signals_per_cell_threshold": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "6.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173797"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ASCO_CAP_2023_SUPERSEDED_BY_http://digpatho.com/ontology/her2#Rakha_International_2026_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.8"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#supersededBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#ASCO_CAP_2023"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Rakha_International_2026"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Lacunarity_proposedCorrelation_http://digpatho.com/ontology/her2#Score3Plus_stmt",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Axiom"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "0.55"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedProperty": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#proposedCorrelation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedSource": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Lacunarity"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#annotatedTarget": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#Score3Plus"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ISH",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Assay"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "ISH reflex testing (FISH/CISH/DISH) for HER2 gene amplification — mandatory for IHC 2+"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "In Situ Hybridization (ISH)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17236"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#ESMO_2023",
+    "@type": [
+      "http://digpatho.com/ontology/her2#Guideline"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Tarantino et al. 2023 — ESMO expert consensus on HER2-low definition and management"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "ESMO HER2-Low Expert Consensus 2023"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Assay",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Assay"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#FractalDimension_D1",
+    "@type": [
+      "http://digpatho.com/ontology/her2#FractalMetric"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "Information dimension; high values indicate heterogeneous information distribution"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "Fractal Dimension D1 (Information)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_high": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "2.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#value_range_low": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25731"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#leadsTo",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "leadsTo"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Score0",
+    "@type": [
+      "http://digpatho.com/ontology/her2#IHCScore"
+    ],
+    "http://digpatho.com/ontology/her2#confidence": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal",
+        "@value": "1.0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#definition": [
+      {
+        "@value": "No membrane staining in tumor cells (HER2-Null)"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#implies": [
+      {
+        "@id": "http://digpatho.com/ontology/her2#HER2_Null"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#label": [
+      {
+        "@value": "IHC Score 0"
+      }
+    ],
+    "http://digpatho.com/ontology/her2#source_doc": [
+      {
+        "@value": "ontology:seed"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#sameAs": [
+      {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173786"
+      }
+    ]
+  },
+  {
+    "@id": "http://digpatho.com/ontology/her2#Threshold",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Threshold"
+      }
+    ]
+  }
+]

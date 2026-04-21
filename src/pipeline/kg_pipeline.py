@@ -36,7 +36,7 @@ from src.extraction.resolution import resolve_all_entities
 from src.extraction.algorithm_parser import parse_and_load_all_algorithms
 from src.graph.neo4j_builder import (
     get_graph_stats, initialize_schema, load_seed_data,
-    load_toy_fractal_specimens, upsert_chunk_node,
+    upsert_chunk_node,
     upsert_entities, upsert_relations,
 )
 from src.graph.rdf_exporter import export_rdf
@@ -273,9 +273,6 @@ def phase_build(state: PipelineState) -> dict:
 
         # Seed entities from ontology
         seed_stats = load_seed_data(driver)
-
-        # Toy fractal specimens
-        load_toy_fractal_specimens(driver)
 
         # Extracted entities
         resolved_entities = state.get("resolved_entities", [])

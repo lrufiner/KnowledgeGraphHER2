@@ -6,7 +6,7 @@ from src.domain.models import (
     ValidationReport, ValidationResult, ValidationSeverity,
 )
 from src.domain.ontology import (
-    CANONICAL_URIS, SEED_ENTITIES, SEED_RELATIONS, TOY_FRACTAL_SPECIMENS,
+    CANONICAL_URIS, SEED_ENTITIES, SEED_RELATIONS,
 )
 
 
@@ -85,19 +85,6 @@ class TestOntology:
             assert "subject_id" in rel
             assert "predicate" in rel
             assert "object_id" in rel
-
-    def test_toy_fractal_specimens_have_metrics(self):
-        for spec in TOY_FRACTAL_SPECIMENS:
-            assert "D0" in spec
-            assert "D1" in spec
-            assert "Lacunarity" in spec
-            assert "ihc_score" in spec
-
-    def test_inconsistent_specimen_present(self):
-        """Ensure toy data includes at least one inconsistent specimen for alert testing."""
-        inconsistent = [s for s in TOY_FRACTAL_SPECIMENS
-                        if "INCONSISTENT" in s["specimen_id"]]
-        assert len(inconsistent) >= 1
 
     def test_all_ihc_scores_present_in_seeds(self):
         seed_ids = {e["id"] for e in SEED_ENTITIES}

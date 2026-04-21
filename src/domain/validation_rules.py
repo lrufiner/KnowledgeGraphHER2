@@ -60,14 +60,14 @@ VALIDATION_RULES: list[dict] = [
     {
         "rule_id":  "ISH_Group5_negative",
         "severity": ValidationSeverity.CRITICAL,
-        "source":   "ASCO/CAP 2023",
+        "source":   "ASCO/CAP 2023 (Wolff 2023)",
         "cypher": """
             MATCH (g:ISHGroup {id: 'Group5'})-[:implies]->(c:ClinicalCategory)
-            WHERE c.id = 'HER2_Negative'
+            WHERE c.id = 'HER2_Low'
             RETURN count(*) > 0 AS valid
         """,
-        "message_pass": "ISH Group 5 correctly implies HER2-Negative",
-        "message_fail": "CRITICAL: ISH Group 5 does not imply HER2-Negative",
+        "message_pass": "ISH Group 5 correctly implies HER2-Low (IHC 2+/FISH non-amplified)",
+        "message_fail": "CRITICAL: ISH Group 5 does not imply HER2-Low (should be HER2-Low per ASCO/CAP 2023)",
     },
     # ── HIGH rules ───────────────────────────────────────────────────────────
     {
