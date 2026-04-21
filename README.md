@@ -140,18 +140,21 @@ classDiagram
 
 ### Predicados del Grafo
 
-| Predicado               | Sujeto → Objeto                         | Ejemplo                                   |
-| ----------------------- | ---------------------------------------- | ----------------------------------------- |
-| `implies`             | IHCScore/ISHGroup → ClinicalCategory    | Score3Plus → HER2_Positive               |
-| `requiresReflexTest`  | IHCScore → Assay                        | Score2Plus → ISH                         |
-| `eligibleFor`         | ClinicalCategory → TherapeuticAgent     | HER2_Low → T-DXd                         |
-| `notEligibleFor`      | ClinicalCategory → TherapeuticAgent     | HER2_Null → T-DXd                        |
-| `definedIn`           | Entity → Guideline/ClinicalTrial        | HER2_Ultralow → DESTINY_Breast06         |
-| `supportedByEvidence` | Entity → ClinicalTrial                  | HER2_Low → DESTINY_Breast04              |
-| `proposedEquivalence` | FractalMetric → ClinicalCategory        | FractalDimension_D0>1.85 → HER2_Positive |
-| `leadsTo`             | DiagnosticDecision → DiagnosticDecision | IHC_NODE2 → ISH_NODE_ENTRY               |
-| `overrides`           | new Guideline → old Guideline           | Rakha_2026 → ASCO_CAP_2018               |
-| `hasThreshold`        | ISHGroup/Decision → Threshold           | Group1 → ratio≥2.0                      |
+| Predicado                     | Sujeto → Objeto                         | Ejemplo                                       |
+| ----------------------------- | ---------------------------------------- | --------------------------------------------- |
+| `implies`                   | IHCScore/ISHGroup → ClinicalCategory    | Score3Plus → HER2_Positive                   |
+| `requiresReflexTest`        | IHCScore → Assay                        | Score2Plus → ISH                             |
+| `impliesIfISHAmplified`     | IHCScore → ClinicalCategory             | Score2Plus → HER2_Positive (ISH+)            |
+| `impliesIfISHNonAmplified`  | IHCScore → ClinicalCategory             | Score2Plus → HER2_Low (ISH−)                |
+| `requiresIHCWorkup`         | ISHGroup → ClinicalCategory             | Group2 → HER2_Equivocal                      |
+| `eligibleFor`               | ClinicalCategory → TherapeuticAgent     | HER2_Low → T-DXd                             |
+| `notEligibleFor`            | ClinicalCategory → TherapeuticAgent     | HER2_Null → T-DXd                            |
+| `definedIn`                 | Entity → Guideline/ClinicalTrial        | HER2_Ultralow → DESTINY_Breast06             |
+| `supportedByEvidence`       | Entity → ClinicalTrial                  | HER2_Low → DESTINY_Breast04                  |
+| `proposedCorrelation`       | FractalMetric → ClinicalCategory        | FractalDimension_D0>1.85 → HER2_Positive     |
+| `leadsTo`                   | DiagnosticDecision → DiagnosticDecision | IHC_NODE2 → ISH_NODE_ENTRY                   |
+| `overrides`                 | new Guideline → old Guideline           | Rakha_2026 → ASCO_CAP_2018                   |
+| `hasThreshold`              | ISHGroup/Decision → Threshold           | Group1 → ratio≥2.0                          |
 
 ### Métricas Fractales DigPatho
 
@@ -164,7 +167,7 @@ classDiagram
 | Lacunaridad         | HER2-Positive   | < 0.10          |
 | MultifractalSpread  | HER2-Positive   | > 0.40          |
 
-> ⚠️ Las equivalencias fractales son **hipótesis experimentales** (`proposedEquivalence`, confidence ≤ 0.70), no criterios diagnósticos validados.
+> ⚠️ Las correlaciones fractales son **hipótesis experimentales** (`proposedCorrelation`, confidence ≤ 0.70), no criterios diagnósticos validados.
 
 ---
 
@@ -327,7 +330,7 @@ flowchart TD
 | **Group 2** | ≥ 2.0           | < 4.0             | Equívoco → IHC    | Correlacionar con IHC   |
 | **Group 3** | < 2.0            | ≥ 6.0            | Equívoco → workup | Reconteo + correlación |
 | **Group 4** | < 2.0            | ≥ 4.0 y < 6.0    | Equívoco → IHC    | Correlacionar con IHC   |
-| **Group 5** | < 2.0            | < 4.0             | HER2-Negative/Low   | —                      |
+| **Group 5** | < 2.0            | < 4.0             | HER2-Low            | —                      |
 
 | Combinación especial | Resultado                 |
 | --------------------- | ------------------------- |
@@ -482,6 +485,16 @@ python -m app.cli run-pipeline --llm-mode ollama
 python -m app.cli run-pipeline --llm-mode openai
 ```
 
+Para exportar el grafo local a RDF y sincronizar AuraDB en un solo paso:
+
+```bash
+# Exporta output/her2_knowledge_graph_<timestamp>.ttl y .jsonld
+# y siembra AuraDB con el grafo ontológico corregido (idempotente)
+python scripts/export_and_sync_aura.py
+```
+
+> El script lee las credenciales de AuraDB directamente desde `.env`, independientemente de las variables de entorno del shell.
+
 Para limpiar el grafo antes de una re-carga completa:
 
 ```cypher
@@ -597,12 +610,13 @@ KnowledgeGraphHER2/
 │       └── config.py           # PipelineConfig Pydantic — ollama/openai/claude
 │
 ├── tests/
-│   ├── test_domain.py          # 12 tests — modelos y ontología
+│   ├── test_domain.py          # 11 tests — modelos y ontología
 │   ├── test_ingestion.py       # 9 tests  — loaders
-│   ├── test_resolution.py      # 9 tests  — resolución de URIs
+│   ├── test_resolution.py      # 8 tests  — resolución de URIs
 │   ├── test_extraction.py      # 16 tests — extractor + parser
 │   ├── test_agents.py          # 25 tests — agentes y supervisor
-│   └── test_api.py             # 34 tests — endpoints FastAPI
+│   ├── test_api.py             # 35 tests — endpoints FastAPI
+│   └── test_integration.py     # 7 tests  — integración Neo4j (seed, validación)
 │
 ├── docs/                       # Fuentes clínicas Markdown (6 archivos)
 │   ├── annex_guidelines.md     # Criterios IHC integrados (todas las guías)
@@ -613,8 +627,14 @@ KnowledgeGraphHER2/
 │   └── apendice_langchain_langgraph.md
 │
 ├── guides/                     # PDFs de guías clínicas
-├── output/                     # Salidas del pipeline (RDF, stats)
+├── output/                     # Salidas del pipeline: RDF/Turtle, JSON-LD, logs
 ├── config/prompts/             # Prompts de sistema
+├── scripts/
+│   ├── export_and_sync_aura.py # Exporta grafo local a RDF + siembra AuraDB
+│   ├── compute_embeddings.py   # Genera embeddings vectoriales en Neo4j
+│   ├── recreate_indexes.py     # Recrea índices vectoriales
+│   └── check_mentions.py       # Verifica menciones y coherencia de entidades
+├── her2_lightrag/              # Índice LightRAG persistente (generado al correr pipeline)
 │
 ├── demo_agents.py              # Demo script — casos predefinidos
 ├── docker-compose.yml          # Neo4j + API + Streamlit
@@ -693,13 +713,14 @@ KnowledgeGraphHER2/
 ## Desarrollo y Tests
 
 ```bash
-# Suite completa (107 tests)
+# Suite completa (111 tests)
 pytest -v
 
 # Por módulo
-pytest tests/test_domain.py -v       # 12 tests — modelos y ontología
-pytest tests/test_agents.py -v       # 26 tests — agentes
+pytest tests/test_domain.py -v       # 11 tests — modelos y ontología
+pytest tests/test_agents.py -v       # 25 tests — agentes
 pytest tests/test_api.py -v          # 35 tests — API endpoints
+pytest tests/test_integration.py -v  # 7 tests  — integración Neo4j
 
 # Lint y formato
 ruff check src/ app/ tests/
