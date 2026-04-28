@@ -62,10 +62,10 @@ htmlcov/
 logs/
 
 # Output (generated artifacts)
-output/*.ttl
-output/*.json
-output/*.csv
-output/*.txt
+# output/*.ttl
+# output/*.json
+# output/*.csv
+# output/*.txt
 
 # Neo4j data (Docker volume, no commitear)
 neo4j_data/

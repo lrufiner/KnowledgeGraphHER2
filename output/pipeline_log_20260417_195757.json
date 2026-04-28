@@ -1,0 +1,38 @@
+{
+  "run_timestamp": "2026-04-17T19:57:57.026331",
+  "llm_mode": "openai",
+  "active_model": "gpt-4o-mini",
+  "docs_dir": "./docs",
+  "chunks_processed": 275,
+  "entities_resolved": 791,
+  "relations_resolved": 479,
+  "neo4j_stats": {
+    "node_counts": {
+      "ClinicalCategory": 29,
+      "IHCScore": 16,
+      "ISHGroup": 17,
+      "TherapeuticAgent": 12,
+      "ClinicalTrial": 21,
+      "Guideline": 49,
+      "FractalMetric": 6,
+      "Assay": 27,
+      "DiagnosticDecision": 2,
+      "Chunk": 275,
+      "ToySpecimen": 6
+    },
+    "total_nodes": 460,
+    "total_relations": 1389,
+    "algorithm_nodes": 27,
+    "algorithm_edges": 44
+  },
+  "validation": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "critical": 0,
+    "is_consistent": true
+  },
+  "is_consistent": true,
+  "errors": [],
+  "elapsed_seconds": 2765.5
+}

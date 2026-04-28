@@ -140,21 +140,21 @@ classDiagram
 
 ### Predicados del Grafo
 
-| Predicado                     | Sujeto → Objeto                         | Ejemplo                                       |
-| ----------------------------- | ---------------------------------------- | --------------------------------------------- |
-| `implies`                   | IHCScore/ISHGroup → ClinicalCategory    | Score3Plus → HER2_Positive                   |
-| `requiresReflexTest`        | IHCScore → Assay                        | Score2Plus → ISH                             |
-| `impliesIfISHAmplified`     | IHCScore → ClinicalCategory             | Score2Plus → HER2_Positive (ISH+)            |
-| `impliesIfISHNonAmplified`  | IHCScore → ClinicalCategory             | Score2Plus → HER2_Low (ISH−)                |
-| `requiresIHCWorkup`         | ISHGroup → ClinicalCategory             | Group2 → HER2_Equivocal                      |
-| `eligibleFor`               | ClinicalCategory → TherapeuticAgent     | HER2_Low → T-DXd                             |
-| `notEligibleFor`            | ClinicalCategory → TherapeuticAgent     | HER2_Null → T-DXd                            |
-| `definedIn`                 | Entity → Guideline/ClinicalTrial        | HER2_Ultralow → DESTINY_Breast06             |
-| `supportedByEvidence`       | Entity → ClinicalTrial                  | HER2_Low → DESTINY_Breast04                  |
-| `proposedCorrelation`       | FractalMetric → ClinicalCategory        | FractalDimension_D0>1.85 → HER2_Positive     |
-| `leadsTo`                   | DiagnosticDecision → DiagnosticDecision | IHC_NODE2 → ISH_NODE_ENTRY                   |
-| `overrides`                 | new Guideline → old Guideline           | Rakha_2026 → ASCO_CAP_2018                   |
-| `hasThreshold`              | ISHGroup/Decision → Threshold           | Group1 → ratio≥2.0                          |
+| Predicado                    | Sujeto → Objeto                         | Ejemplo                                   |
+| ---------------------------- | ---------------------------------------- | ----------------------------------------- |
+| `implies`                  | IHCScore/ISHGroup → ClinicalCategory    | Score3Plus → HER2_Positive               |
+| `requiresReflexTest`       | IHCScore → Assay                        | Score2Plus → ISH                         |
+| `impliesIfISHAmplified`    | IHCScore → ClinicalCategory             | Score2Plus → HER2_Positive (ISH+)        |
+| `impliesIfISHNonAmplified` | IHCScore → ClinicalCategory             | Score2Plus → HER2_Low (ISH−)            |
+| `requiresIHCWorkup`        | ISHGroup → ClinicalCategory             | Group2 → HER2_Equivocal                  |
+| `eligibleFor`              | ClinicalCategory → TherapeuticAgent     | HER2_Low → T-DXd                         |
+| `notEligibleFor`           | ClinicalCategory → TherapeuticAgent     | HER2_Null → T-DXd                        |
+| `definedIn`                | Entity → Guideline/ClinicalTrial        | HER2_Ultralow → DESTINY_Breast06         |
+| `supportedByEvidence`      | Entity → ClinicalTrial                  | HER2_Low → DESTINY_Breast04              |
+| `proposedCorrelation`      | FractalMetric → ClinicalCategory        | FractalDimension_D0>1.85 → HER2_Positive |
+| `leadsTo`                  | DiagnosticDecision → DiagnosticDecision | IHC_NODE2 → ISH_NODE_ENTRY               |
+| `overrides`                | new Guideline → old Guideline           | Rakha_2026 → ASCO_CAP_2018               |
+| `hasThreshold`             | ISHGroup/Decision → Threshold           | Group1 → ratio≥2.0                      |
 
 ### Métricas Fractales DigPatho
 

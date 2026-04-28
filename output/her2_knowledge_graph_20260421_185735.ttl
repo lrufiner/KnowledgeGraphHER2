@@ -1,0 +1,575 @@
+@prefix her2: <http://digpatho.com/ontology/her2#> .
+@prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_SUPERSEDED_BY_http://digpatho.com/ontology/her2#Rakha_International_2026_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:supersededBy ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:Rakha_International_2026 .
+
+her2:Biomarker a owl:Class ;
+    rdfs:label "Biomarker" .
+
+her2:CAP_Biomarker_2025 a her2:Guideline ;
+    her2:confidence 1.0 ;
+    her2:definition "CAP reporting template v1.6.0.0 (March 2025) for breast biomarkers" ;
+    her2:label "CAP Biomarker Template 2025" ;
+    her2:source_doc "ontology:seed" .
+
+her2:DAISY_Trial a her2:ClinicalTrial ;
+    her2:confidence 1.0 ;
+    her2:definition "Phase 2 trial showing T-DXd activity across HER2 expression spectrum including HER2-null" ;
+    her2:label "DAISY Trial" ;
+    her2:source_doc "ontology:seed" .
+
+her2:DiagnosticDecision a owl:Class ;
+    rdfs:label "DiagnosticDecision" .
+
+her2:DocumentChunk a owl:Class ;
+    rdfs:label "Chunk" .
+
+her2:ESMO_2023 a her2:Guideline ;
+    her2:confidence 1.0 ;
+    her2:definition "Tarantino et al. 2023 — ESMO expert consensus on HER2-low definition and management" ;
+    her2:label "ESMO HER2-Low Expert Consensus 2023" ;
+    her2:source_doc "ontology:seed" .
+
+<http://digpatho.com/ontology/her2#FractalDimension_D0_proposedCorrelation_http://digpatho.com/ontology/her2#HER2_Null_stmt> a owl:Axiom ;
+    her2:confidence 0.6 ;
+    owl:annotatedProperty her2:proposedCorrelation ;
+    owl:annotatedSource her2:FractalDimension_D0 ;
+    owl:annotatedTarget her2:HER2_Null .
+
+<http://digpatho.com/ontology/her2#FractalDimension_D0_proposedCorrelation_http://digpatho.com/ontology/her2#HER2_Positive_stmt> a owl:Axiom ;
+    her2:confidence 0.6 ;
+    owl:annotatedProperty her2:proposedCorrelation ;
+    owl:annotatedSource her2:FractalDimension_D0 ;
+    owl:annotatedTarget her2:HER2_Positive .
+
+her2:FractalDimension_D1 a her2:FractalMetric ;
+    her2:confidence 1.0 ;
+    her2:definition "Information dimension; high values indicate heterogeneous information distribution" ;
+    her2:label "Fractal Dimension D1 (Information)" ;
+    her2:source_doc "ontology:seed" ;
+    her2:value_range_high 2.0 ;
+    her2:value_range_low 1.0 ;
+    owl:sameAs ncit:C25731 .
+
+<http://digpatho.com/ontology/her2#Group1_implies_http://digpatho.com/ontology/her2#HER2_Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Group1 ;
+    owl:annotatedTarget her2:HER2_Positive .
+
+<http://digpatho.com/ontology/her2#Group2_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:requiresIHCWorkup ;
+    owl:annotatedSource her2:Group2 ;
+    owl:annotatedTarget her2:HER2_Equivocal .
+
+<http://digpatho.com/ontology/her2#Group3_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:requiresIHCWorkup ;
+    owl:annotatedSource her2:Group3 ;
+    owl:annotatedTarget her2:HER2_Equivocal .
+
+<http://digpatho.com/ontology/her2#Group4_requiresIHCWorkup_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:requiresIHCWorkup ;
+    owl:annotatedSource her2:Group4 ;
+    owl:annotatedTarget her2:HER2_Equivocal .
+
+<http://digpatho.com/ontology/her2#Group5_implies_http://digpatho.com/ontology/her2#HER2_Low_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Group5 ;
+    owl:annotatedTarget her2:HER2_Low .
+
+<http://digpatho.com/ontology/her2#HER2_Low_eligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:eligibleFor ;
+    owl:annotatedSource her2:HER2_Low ;
+    owl:annotatedTarget her2:TrastuzumabDeruxtecan .
+
+<http://digpatho.com/ontology/her2#HER2_Low_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:HER2_Low ;
+    owl:annotatedTarget her2:HER2_Negative .
+
+<http://digpatho.com/ontology/her2#HER2_Low_supportedByEvidence_http://digpatho.com/ontology/her2#DESTINY_Breast04_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:supportedByEvidence ;
+    owl:annotatedSource her2:HER2_Low ;
+    owl:annotatedTarget her2:DESTINY_Breast04 .
+
+<http://digpatho.com/ontology/her2#HER2_Null_notEligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:notEligibleFor ;
+    owl:annotatedSource her2:HER2_Null ;
+    owl:annotatedTarget her2:TrastuzumabDeruxtecan .
+
+<http://digpatho.com/ontology/her2#HER2_Null_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:HER2_Null ;
+    owl:annotatedTarget her2:HER2_Negative .
+
+<http://digpatho.com/ontology/her2#HER2_Positive_notEligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:notEligibleFor ;
+    owl:annotatedSource her2:HER2_Positive ;
+    owl:annotatedTarget her2:TrastuzumabDeruxtecan .
+
+<http://digpatho.com/ontology/her2#HER2_Ultralow_eligibleFor_http://digpatho.com/ontology/her2#TrastuzumabDeruxtecan_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:eligibleFor ;
+    owl:annotatedSource her2:HER2_Ultralow ;
+    owl:annotatedTarget her2:TrastuzumabDeruxtecan .
+
+<http://digpatho.com/ontology/her2#HER2_Ultralow_refinesCategory_http://digpatho.com/ontology/her2#HER2_Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:HER2_Ultralow ;
+    owl:annotatedTarget her2:HER2_Negative .
+
+<http://digpatho.com/ontology/her2#HER2_Ultralow_supportedByEvidence_http://digpatho.com/ontology/her2#DESTINY_Breast06_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:supportedByEvidence ;
+    owl:annotatedSource her2:HER2_Ultralow ;
+    owl:annotatedTarget her2:DESTINY_Breast06 .
+
+her2:IHC a her2:Assay ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC assay for HER2 protein overexpression scoring (0, 0+, 1+, 2+, 3+)" ;
+    her2:label "Immunohistochemistry (IHC)" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C17089 .
+
+<http://digpatho.com/ontology/her2#Lacunarity_proposedCorrelation_http://digpatho.com/ontology/her2#Score3Plus_stmt> a owl:Axiom ;
+    her2:confidence 0.55 ;
+    owl:annotatedProperty her2:proposedCorrelation ;
+    owl:annotatedSource her2:Lacunarity ;
+    owl:annotatedTarget her2:Score3Plus .
+
+<http://digpatho.com/ontology/her2#MultifractalSpread_inconsistentWith_http://digpatho.com/ontology/her2#HER2_Null_stmt> a owl:Axiom ;
+    her2:confidence 0.65 ;
+    owl:annotatedProperty her2:inconsistentWith ;
+    owl:annotatedSource her2:MultifractalSpread ;
+    owl:annotatedTarget her2:HER2_Null .
+
+her2:MultiscaleEntropy a her2:FractalMetric ;
+    her2:confidence 1.0 ;
+    her2:definition "Temporal complexity measure; high values indicate complex dynamics" ;
+    her2:label "Multiscale Entropy" ;
+    her2:source_doc "ontology:seed" ;
+    her2:value_range_high 3.0 ;
+    her2:value_range_low 0.0 .
+
+her2:PathologicalFeature a owl:Class ;
+    rdfs:label "PathologicalFeature" .
+
+her2:Pertuzumab a her2:TherapeuticAgent ;
+    her2:confidence 1.0 ;
+    her2:definition "Anti-HER2 monoclonal antibody targeting domain II" ;
+    her2:label "Pertuzumab" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C64636 .
+
+her2:QualityMeasure a owl:Class ;
+    rdfs:label "QualityMeasure" .
+
+<http://digpatho.com/ontology/her2#Score0Plus_implies_http://digpatho.com/ontology/her2#HER2_Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Score0Plus ;
+    owl:annotatedTarget her2:HER2_Negative .
+
+<http://digpatho.com/ontology/her2#Score0Plus_refinesCategory_http://digpatho.com/ontology/her2#HER2_Ultralow_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:Score0Plus ;
+    owl:annotatedTarget her2:HER2_Ultralow .
+
+<http://digpatho.com/ontology/her2#Score0_implies_http://digpatho.com/ontology/her2#HER2_Null_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Score0 ;
+    owl:annotatedTarget her2:HER2_Null .
+
+<http://digpatho.com/ontology/her2#Score1Plus_implies_http://digpatho.com/ontology/her2#HER2_Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Score1Plus ;
+    owl:annotatedTarget her2:HER2_Negative .
+
+<http://digpatho.com/ontology/her2#Score1Plus_refinesCategory_http://digpatho.com/ontology/her2#HER2_Low_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:Score1Plus ;
+    owl:annotatedTarget her2:HER2_Low .
+
+<http://digpatho.com/ontology/her2#Score2Plus_impliesIfISHAmplified_http://digpatho.com/ontology/her2#HER2_Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:impliesIfISHAmplified ;
+    owl:annotatedSource her2:Score2Plus ;
+    owl:annotatedTarget her2:HER2_Positive .
+
+<http://digpatho.com/ontology/her2#Score2Plus_impliesIfISHNonAmplified_http://digpatho.com/ontology/her2#HER2_Low_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:impliesIfISHNonAmplified ;
+    owl:annotatedSource her2:Score2Plus ;
+    owl:annotatedTarget her2:HER2_Low .
+
+<http://digpatho.com/ontology/her2#Score2Plus_implies_http://digpatho.com/ontology/her2#HER2_Equivocal_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Score2Plus ;
+    owl:annotatedTarget her2:HER2_Equivocal .
+
+<http://digpatho.com/ontology/her2#Score2Plus_requiresReflexTest_http://digpatho.com/ontology/her2#ISH_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:requiresReflexTest ;
+    owl:annotatedSource her2:Score2Plus ;
+    owl:annotatedTarget her2:ISH .
+
+<http://digpatho.com/ontology/her2#Score3Plus_implies_http://digpatho.com/ontology/her2#HER2_Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:implies ;
+    owl:annotatedSource her2:Score3Plus ;
+    owl:annotatedTarget her2:HER2_Positive .
+
+her2:StainingPattern a owl:Class ;
+    rdfs:label "StainingPattern" .
+
+her2:TDM1 a her2:TherapeuticAgent ;
+    her2:confidence 1.0 ;
+    her2:definition "Anti-HER2 antibody-drug conjugate with microtubule inhibitor payload" ;
+    her2:label "T-DM1 (Ado-Trastuzumab Emtansine)" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C82492 .
+
+her2:Threshold a owl:Class ;
+    rdfs:label "Threshold" .
+
+her2:Trastuzumab a her2:TherapeuticAgent ;
+    her2:confidence 1.0 ;
+    her2:definition "Anti-HER2 monoclonal antibody" ;
+    her2:label "Trastuzumab" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C1647 .
+
+her2:associatedWith a owl:ObjectProperty ;
+    rdfs:label "associatedWith" .
+
+her2:conditionedOn a owl:ObjectProperty ;
+    rdfs:label "conditionedOn" .
+
+her2:contradictsIfConcurrent a owl:ObjectProperty ;
+    rdfs:label "contradictsIfConcurrent" .
+
+her2:definedIn a owl:ObjectProperty ;
+    rdfs:label "definedIn" .
+
+her2:hasQualityRequirement a owl:ObjectProperty ;
+    rdfs:label "hasQualityRequirement" .
+
+her2:hasStainingPattern a owl:ObjectProperty ;
+    rdfs:label "hasStainingPattern" .
+
+her2:hasThreshold a owl:ObjectProperty ;
+    rdfs:label "hasThreshold" .
+
+her2:leadsTo a owl:ObjectProperty ;
+    rdfs:label "leadsTo" .
+
+her2:overrides a owl:ObjectProperty ;
+    rdfs:label "overrides" .
+
+her2:ASCO_CAP_2023 a her2:Guideline ;
+    her2:confidence 1.0 ;
+    her2:definition "Wolff et al. 2023 — Updates IHC/ISH criteria for HER2-low/ultralow" ;
+    her2:label "ASCO/CAP HER2 Guideline 2023" ;
+    her2:source_doc "ontology:seed" ;
+    her2:supersededBy her2:Rakha_International_2026 .
+
+her2:Group1 a her2:ISHGroup ;
+    her2:confidence 1.0 ;
+    her2:definition "ratio ≥2.0 AND signals ≥4.0/cell → Amplified (Positive)" ;
+    her2:group_number 1 ;
+    her2:implies her2:HER2_Positive ;
+    her2:label "ISH Group 1" ;
+    her2:ratio_threshold 2.0 ;
+    her2:signals_per_cell_threshold 4.0 ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173795 .
+
+her2:Group2 a her2:ISHGroup ;
+    her2:confidence 1.0 ;
+    her2:definition "ratio ≥2.0 AND signals <4.0/cell → Requires IHC workup" ;
+    her2:group_number 2 ;
+    her2:label "ISH Group 2" ;
+    her2:ratio_threshold 2.0 ;
+    her2:requiresIHCWorkup her2:HER2_Equivocal ;
+    her2:signals_per_cell_threshold 4.0 ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173796 .
+
+her2:Group3 a her2:ISHGroup ;
+    her2:confidence 1.0 ;
+    her2:definition "ratio <2.0 AND signals ≥6.0/cell → Requires IHC workup" ;
+    her2:group_number 3 ;
+    her2:label "ISH Group 3" ;
+    her2:ratio_threshold 2.0 ;
+    her2:requiresIHCWorkup her2:HER2_Equivocal ;
+    her2:signals_per_cell_threshold 6.0 ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173797 .
+
+her2:Group4 a her2:ISHGroup ;
+    her2:confidence 1.0 ;
+    her2:definition "ratio <2.0 AND signals ≥4.0 and <6.0/cell → Requires IHC workup" ;
+    her2:group_number 4 ;
+    her2:label "ISH Group 4" ;
+    her2:ratio_threshold 2.0 ;
+    her2:requiresIHCWorkup her2:HER2_Equivocal ;
+    her2:signals_per_cell_threshold 4.0 ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173798 .
+
+her2:Group5 a her2:ISHGroup ;
+    her2:confidence 1.0 ;
+    her2:definition "ratio <2.0 AND signals <4.0/cell → Not amplified (Negative)" ;
+    her2:group_number 5 ;
+    her2:implies her2:HER2_Low ;
+    her2:label "ISH Group 5" ;
+    her2:ratio_threshold 2.0 ;
+    her2:signals_per_cell_threshold 4.0 ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173799 .
+
+her2:Lacunarity a her2:FractalMetric ;
+    her2:confidence 1.0 ;
+    her2:definition "Measure of spatial texture; low values = dense, high values = porous" ;
+    her2:label "Lacunarity" ;
+    her2:proposedCorrelation her2:Score3Plus ;
+    her2:source_doc "ontology:seed" ;
+    her2:value_range_high 1.0 ;
+    her2:value_range_low 0.0 ;
+    owl:sameAs ncit:C173800 .
+
+her2:MultifractalSpread a her2:FractalMetric ;
+    her2:confidence 1.0 ;
+    her2:definition "Width of the multifractal spectrum; high values indicate high spatial variability" ;
+    her2:inconsistentWith her2:HER2_Null ;
+    her2:label "Multifractal Spread (Δα)" ;
+    her2:source_doc "ontology:seed" ;
+    her2:value_range_high 2.0 ;
+    her2:value_range_low 0.0 ;
+    owl:sameAs ncit:C173801 .
+
+her2:Score0 a her2:IHCScore ;
+    her2:confidence 1.0 ;
+    her2:definition "No membrane staining in tumor cells (HER2-Null)" ;
+    her2:implies her2:HER2_Null ;
+    her2:label "IHC Score 0" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173786 .
+
+her2:impliesIfISHAmplified a owl:ObjectProperty ;
+    rdfs:label "impliesIfISHAmplified" .
+
+her2:impliesIfISHNonAmplified a owl:ObjectProperty ;
+    rdfs:label "impliesIfISHNonAmplified" .
+
+her2:inconsistentWith a owl:ObjectProperty ;
+    rdfs:label "inconsistentWith" .
+
+her2:requiresReflexTest a owl:ObjectProperty ;
+    rdfs:label "requiresReflexTest" .
+
+her2:supersededBy a owl:ObjectProperty ;
+    rdfs:label "SUPERSEDED_BY" .
+
+her2:Assay a owl:Class ;
+    rdfs:label "Assay" .
+
+her2:DESTINY_Breast04 a her2:ClinicalTrial ;
+    her2:confidence 1.0 ;
+    her2:definition "Phase 3 RCT demonstrating T-DXd efficacy in HER2-low metastatic breast cancer" ;
+    her2:label "DESTINY-Breast04" ;
+    her2:source_doc "ontology:seed" .
+
+her2:DESTINY_Breast06 a her2:ClinicalTrial ;
+    her2:confidence 1.0 ;
+    her2:definition "Phase 3 RCT extending T-DXd benefit to HER2-ultralow in HR+ metastatic breast cancer" ;
+    her2:label "DESTINY-Breast06" ;
+    her2:source_doc "ontology:seed" .
+
+her2:FractalDimension_D0 a her2:FractalMetric ;
+    her2:confidence 1.0 ;
+    her2:definition "Box-counting fractal dimension; high values indicate complex glandular architecture" ;
+    her2:label "Fractal Dimension D0 (Capacity)" ;
+    her2:proposedCorrelation her2:HER2_Null,
+        her2:HER2_Positive ;
+    her2:source_doc "ontology:seed" ;
+    her2:value_range_high 2.0 ;
+    her2:value_range_low 1.0 ;
+    owl:sameAs ncit:C25730 .
+
+her2:ISH a her2:Assay ;
+    her2:confidence 1.0 ;
+    her2:definition "ISH reflex testing (FISH/CISH/DISH) for HER2 gene amplification — mandatory for IHC 2+" ;
+    her2:label "In Situ Hybridization (ISH)" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C17236 .
+
+her2:Rakha_International_2026 a her2:Guideline ;
+    her2:confidence 1.0 ;
+    her2:definition "Rakha et al. 2026 — International expert consensus on HER2 reporting including ultralow" ;
+    her2:label "Rakha International Consensus 2026" ;
+    her2:source_doc "ontology:seed" .
+
+her2:Score0Plus a her2:IHCScore ;
+    her2:confidence 1.0 ;
+    her2:definition "Faint/barely perceptible incomplete membrane staining in >0% to ≤10% of tumor cells (HER2-Ultralow)" ;
+    her2:implies her2:HER2_Negative ;
+    her2:label "IHC Score 0+" ;
+    her2:source_doc "ontology:seed" ;
+    rdfs:subClassOf her2:HER2_Ultralow ;
+    owl:sameAs ncit:C173787 .
+
+her2:Score1Plus a her2:IHCScore ;
+    her2:confidence 1.0 ;
+    her2:definition "Incomplete, faint/barely perceptible membrane staining in >10% of tumor cells (HER2-Low)" ;
+    her2:implies her2:HER2_Negative ;
+    her2:label "IHC Score 1+" ;
+    her2:source_doc "ontology:seed" ;
+    rdfs:subClassOf her2:HER2_Low ;
+    owl:sameAs ncit:C173788 .
+
+her2:eligibleFor a owl:ObjectProperty ;
+    rdfs:label "eligibleFor" .
+
+her2:notEligibleFor a owl:ObjectProperty ;
+    rdfs:label "notEligibleFor" .
+
+her2:supportedByEvidence a owl:ObjectProperty ;
+    rdfs:label "supportedByEvidence" .
+
+her2:ClinicalTrial a owl:Class ;
+    rdfs:label "ClinicalTrial" .
+
+her2:Score3Plus a her2:IHCScore ;
+    her2:confidence 1.0 ;
+    her2:definition "Complete, intense circumferential membrane staining in >10% of tumor cells (HER2-Positive)" ;
+    her2:implies her2:HER2_Positive ;
+    her2:label "IHC Score 3+" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173790 .
+
+her2:proposedCorrelation a owl:ObjectProperty ;
+    rdfs:label "proposedCorrelation",
+        "proposedEquivalence" .
+
+her2:requiresIHCWorkup a owl:ObjectProperty ;
+    rdfs:label "requiresIHCWorkup" .
+
+her2:Guideline a owl:Class ;
+    rdfs:label "Guideline" .
+
+her2:Score2Plus a her2:IHCScore ;
+    her2:confidence 1.0 ;
+    her2:definition "Complete membrane staining of weak-to-moderate intensity in >10% of tumor cells (Equivocal — requires ISH)" ;
+    her2:implies her2:HER2_Equivocal ;
+    her2:impliesIfISHAmplified her2:HER2_Positive ;
+    her2:impliesIfISHNonAmplified her2:HER2_Low ;
+    her2:label "IHC Score 2+" ;
+    her2:requiresReflexTest her2:ISH ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173789 .
+
+her2:TherapeuticAgent a owl:Class ;
+    rdfs:label "TherapeuticAgent" .
+
+her2:FractalMetric a owl:Class ;
+    rdfs:label "FractalMetric" .
+
+her2:HER2_Ultralow a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 0+ (faint/incomplete ≤10% cells); eligible for T-DXd (HR+)" ;
+    her2:eligibleFor her2:TrastuzumabDeruxtecan ;
+    her2:interobserver_variability 0.37 ;
+    her2:label "HER2-Ultralow" ;
+    her2:source_doc "ontology:seed" ;
+    her2:supportedByEvidence her2:DESTINY_Breast06 ;
+    rdfs:subClassOf her2:HER2_Negative ;
+    owl:sameAs ncit:C173792 .
+
+her2:IHCScore a owl:Class ;
+    rdfs:label "IHCScore" .
+
+her2:ISHGroup a owl:Class ;
+    rdfs:label "ISHGroup" .
+
+her2:ClinicalCategory a owl:Class ;
+    rdfs:label "ClinicalCategory" .
+
+her2:implies a owl:ObjectProperty ;
+    rdfs:label "implies" .
+
+her2:HER2_Equivocal a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 2+ — requires ISH reflex testing for definitive status" ;
+    her2:label "HER2-Equivocal" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C173794 .
+
+her2:HER2_Null a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 0 / no membrane staining; not eligible for T-DXd" ;
+    her2:label "HER2-Null" ;
+    her2:notEligibleFor her2:TrastuzumabDeruxtecan ;
+    her2:source_doc "ontology:seed" ;
+    rdfs:subClassOf her2:HER2_Negative ;
+    owl:sameAs ncit:C173793 .
+
+her2:TrastuzumabDeruxtecan a her2:TherapeuticAgent ;
+    her2:approval_date "2025" ;
+    her2:confidence 1.0 ;
+    her2:definition "Anti-HER2 antibody-drug conjugate with topoisomerase I inhibitor payload" ;
+    her2:fda_approved true ;
+    her2:label "Trastuzumab Deruxtecan (T-DXd)" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C155379 .
+
+her2:HER2_Low a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 1+ OR IHC 2+/ISH non-amplified; eligible for T-DXd" ;
+    her2:eligibleFor her2:TrastuzumabDeruxtecan ;
+    her2:interobserver_variability 0.25 ;
+    her2:label "HER2-Low" ;
+    her2:source_doc "ontology:seed" ;
+    her2:supportedByEvidence her2:DESTINY_Breast04 ;
+    rdfs:subClassOf her2:HER2_Negative ;
+    owl:sameAs ncit:C173791 .
+
+her2:HER2_Positive a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 3+ or ISH-amplified (Group 1 or workup-confirmed)" ;
+    her2:label "HER2-Positive" ;
+    her2:notEligibleFor her2:TrastuzumabDeruxtecan ;
+    her2:source_doc "ontology:seed" ;
+    owl:disjointWith her2:HER2_Negative ;
+    owl:sameAs ncit:C68748 .
+
+her2:HER2_Negative a her2:ClinicalCategory ;
+    her2:confidence 1.0 ;
+    her2:definition "IHC 0, 0+, or 1+ OR IHC 2+/ISH non-amplified" ;
+    her2:label "HER2-Negative" ;
+    her2:source_doc "ontology:seed" ;
+    owl:sameAs ncit:C68749 .
+

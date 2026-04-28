@@ -1,0 +1,114 @@
+@prefix her2: <http://digpatho.com/ontology/her2#> .
+@prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://digpatho.com/ontology/her2#2+_Equivocal_contradictsIfConcurrent_http://digpatho.com/ontology/her2#HER2_Positivo_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:contradictsIfConcurrent ;
+    owl:annotatedSource <http://digpatho.com/ontology/her2#2+_Equivocal> ;
+    owl:annotatedTarget her2:HER2_Positivo .
+
+<http://digpatho.com/ontology/her2#2+_Equivocal_proposedEquivalence_http://digpatho.com/ontology/her2#HER2_Positivo_stmt> a owl:Axiom ;
+    her2:confidence 0.5 ;
+    owl:annotatedProperty her2:proposedEquivalence ;
+    owl:annotatedSource <http://digpatho.com/ontology/her2#2+_Equivocal> ;
+    owl:annotatedTarget her2:HER2_Positivo .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_SUPERSEDED_BY_http://digpatho.com/ontology/her2#Rakha_International_2026_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:supersededBy ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:Rakha_International_2026 .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.com/ontology/her2#HER2_low_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:HER2_low .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_hasThreshold_http://digpatho.com/ontology/her2#ratio_≥2.0_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.com/ontology/her2#ratio_≥2.0> .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_hasThreshold_http://digpatho.com/ontology/her2#señales_≥4.0_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.com/ontology/her2#señales_≥4.0> .
+
+<http://digpatho.com/ontology/her2#ASCO_CAP_2023_hasThreshold_http://digpatho.com/ontology/her2#señales_≥6.0_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.com/ontology/her2#señales_≥6.0> .
+
+her2:Additional_ISH_Count_Required a her2:DiagnosticDecision ;
+    her2:confidence 1.0 ;
+    her2:definition "Additional ISH count required" ;
+    her2:evidence_level "" ;
+    her2:label "Additional ISH Count Required" ;
+    her2:loinc_code "" ;
+    her2:source_doc "her2_kg_pipeline_guide_c0023" ;
+    her2:source_quote "AdditionalISHCountRequired" .
+
+<http://digpatho.com/ontology/her2#Alta_variabilidad_espacial_multiescala_hasThreshold_http://digpatho.com/ontology/her2#Heterogeneidad_intratumoral_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:Alta_variabilidad_espacial_multiescala ;
+    owl:annotatedTarget her2:Heterogeneidad_intratumoral .
+
+<http://digpatho.com/ontology/her2#Alta_variabilidad_espacial_multiescala_proposedEquivalence_http://digpatho.com/ontology/her2#Entropía_multiscala_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:proposedEquivalence ;
+    owl:annotatedSource her2:Alta_variabilidad_espacial_multiescala ;
+    owl:annotatedTarget her2:Entropía_multiscala .
+
+<http://digpatho.com/ontology/her2#Autofluorescencia_intensa_inconsistentWith_http://digpatho.com/ontology/her2#Indeterminado_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:inconsistentWith ;
+    owl:annotatedSource her2:Autofluorescencia_intensa ;
+    owl:annotatedTarget her2:Indeterminado .
+
+<http://digpatho.com/ontology/her2#BUILD_leadsTo_http://digpatho.com/ontology/her2#VALIDATE_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:BUILD ;
+    owl:annotatedTarget her2:VALIDATE .
+
+her2:Biomarker a owl:Class ;
+    rdfs:label "Biomarker" .
+
+<http://digpatho.com/ontology/her2#CAP_Biomarker_2025_definedIn_http://digpatho.com/ontology/her2#HER2_ultralow_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:CAP_Biomarker_2025 ;
+    owl:annotatedTarget her2:HER2_ultralow .
+
+<http://digpatho.com/ontology/her2#Circunferencialidad_definedIn_http://digpatho.com/ontology/her2#Rakha_International_2026_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Circunferencialidad ;
+    owl:annotatedTarget her2:Rakha_International_2026 .
+
+<http://digpatho.com/ontology/her2#Complejidad_temporal_alta_hasThreshold_http://digpatho.com/ontology/her2#Tumor_de_alto_grado_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:Complejidad_temporal_alta ;
+    owl:annotatedTarget her2:Tumor_de_alto_grado .
+
+<http://digpatho.com/ontology/her2#Complejidad_temporal_alta_proposedEquivalence_http://digpatho.com/ontology/her2#D1_(dimensión_de_información)_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:proposedEquivalence ;
+    owl:annotatedSource her2:Complejidad_temporal_alta ;
+    owl:annotatedTarget her2:D1_\(dimensión_de_información\) .
+
+<http://digpatho.com/ontology/her2#Controles_no_son_como_se_esperaban_inconsistentWith_http://digpatho.com/ontology/her2#Indeterminado_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:inconsistentWith ;
+    owl:annotatedSource her2:Controles_no_son_como_se_esperaban ;
+    owl:annotatedTarget her2:Indeterminado .
+

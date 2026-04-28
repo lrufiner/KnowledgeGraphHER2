@@ -1,0 +1,555 @@
+@prefix her2: <http://digpatho.sinc.unl.edu.ar/ontology/her2#> .
+@prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+her2:2015 a her2:Threshold ;
+    her2:confidence 0.7 ;
+    her2:definition "Year Ana García became CEO of TechCorp" ;
+    her2:evidence_level "" ;
+    her2:label "2015" ;
+    her2:loinc_code "" ;
+    her2:source_doc "apendice_frameworks_graphrag_c0016" ;
+    her2:source_quote "Ana García es la CEO de TechCorp desde 2015" .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AI_Scoring_Algorithm_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#Rakha_International_2026_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AI_Scoring_Algorithm ;
+    owl:annotatedTarget her2:Rakha_International_2026 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AI_Scoring_Algorithm_eligibleFor_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Low_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:eligibleFor ;
+    owl:annotatedSource her2:AI_Scoring_Algorithm ;
+    owl:annotatedTarget her2:HER2-Low .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AI_Scoring_Algorithm_eligibleFor_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Ultralow_stmt> a owl:Axiom ;
+    her2:confidence 0.6 ;
+    owl:annotatedProperty her2:eligibleFor ;
+    owl:annotatedSource her2:AI_Scoring_Algorithm ;
+    owl:annotatedTarget her2:HER2-Ultralow .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AI_Scoring_Algorithm_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Digital_Pathology_Infrastructure_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:AI_Scoring_Algorithm ;
+    owl:annotatedTarget her2:Digital_Pathology_Infrastructure .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AI_Scoring_Algorithm_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Pathologist_Supervision_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:AI_Scoring_Algorithm ;
+    owl:annotatedTarget her2:Pathologist_Supervision .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_Guidelines_overrides_http://digpatho.sinc.unl.edu.ar/ontology/her2#Rakha_International_2026_Consensus_stmt> a owl:Axiom ;
+    her2:confidence 0.6 ;
+    owl:annotatedProperty her2:overrides ;
+    owl:annotatedSource her2:ASCO_CAP_2023_Guidelines ;
+    owl:annotatedTarget her2:Rakha_International_2026_Consensus .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_SUPERSEDED_BY_http://digpatho.sinc.unl.edu.ar/ontology/her2#Rakha_International_2026_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:supersededBy ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:Rakha_International_2026 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:ASCO_CAP_2023 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Low_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:HER2-Low .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Negative_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:HER2-Negative .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:HER2-Positive .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positivo_(IHC_3+)_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positivo_(IHC_3+)> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#IHC_Score_2+_(Equívoco)_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#IHC_Score_2+_(Equívoco)> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#IHC_Score_3+_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#IHC_Score_3+> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#IHC_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:IHC .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#QualityMeasure_FixationTime_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:QualityMeasure_FixationTime .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#QualityMeasure_SectionAge_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:QualityMeasure_SectionAge .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#Ratio_≥2.0_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#Ratio_≥2.0> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#Signals_≥4.0_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#Signals_≥4.0> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_overrides_http://digpatho.sinc.unl.edu.ar/ontology/her2#CAP_Biomarker_2025_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:overrides ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:CAP_Biomarker_2025 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_overrides_http://digpatho.sinc.unl.edu.ar/ontology/her2#DigPatho_Fractal-Clinical_Mapping_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:overrides ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:DigPatho_Fractal-Clinical_Mapping .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_2023_overrides_http://digpatho.sinc.unl.edu.ar/ontology/her2#UK_Guidelines_(Rakha_2026)_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:overrides ;
+    owl:annotatedSource her2:ASCO_CAP_2023 ;
+    owl:annotatedTarget her2:UK_Guidelines_\(Rakha_2026\) .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_Algorithms_2023_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_Summary_Recommendations_2023_stmt> a owl:Axiom ;
+    her2:confidence 0.95 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:ASCO_CAP_Algorithms_2023 ;
+    owl:annotatedTarget her2:ASCO_CAP_Summary_Recommendations_2023 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_Teaching_Presentation_2023_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#ASCO_CAP_Summary_Recommendations_2023_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:ASCO_CAP_Teaching_Presentation_2023 ;
+    owl:annotatedTarget her2:ASCO_CAP_Summary_Recommendations_2023 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Active_Research_Lines_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#ACL_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Active_Research_Lines ;
+    owl:annotatedTarget her2:ACL .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Active_Research_Lines_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#EMNLP_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Active_Research_Lines ;
+    owl:annotatedTarget her2:EMNLP .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Active_Research_Lines_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#ICLR_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Active_Research_Lines ;
+    owl:annotatedTarget her2:ICLR .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Active_Research_Lines_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#NeurIPS_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Active_Research_Lines ;
+    owl:annotatedTarget her2:NeurIPS .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Active_Research_Lines_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#arXiv_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Active_Research_Lines ;
+    owl:annotatedTarget her2:arXiv .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#LLM_(Large_Language_Model)_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:LLM_\(Large_Language_Model\) .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#cypher_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:cypher .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#intentos_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:intentos .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#neo4j_result_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:neo4j_result .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#pregunta_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:pregunta .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#respuesta_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:respuesta .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#subqueries_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:subqueries .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgentState_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#vector_docs_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:AgentState ;
+    owl:annotatedTarget her2:vector_docs .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgenteConMemoria_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#BiomedicalKnowledge_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:AgenteConMemoria ;
+    owl:annotatedTarget her2:BiomedicalKnowledge .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgenteConMemoria_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#LLM_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:AgenteConMemoria ;
+    owl:annotatedTarget her2:LLM .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgenteConMemoria_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Neo4j_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:AgenteConMemoria ;
+    owl:annotatedTarget her2:Neo4j .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgenteConMemoria_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#ContextRetrieval_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:AgenteConMemoria ;
+    owl:annotatedTarget her2:ContextRetrieval .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#AgenteConMemoria_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#GraphMemory_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:AgenteConMemoria ;
+    owl:annotatedTarget her2:GraphMemory .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Amplified_(ISH)_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:Amplified_\(ISH\) ;
+    owl:annotatedTarget her2:HER2-Positive .
+
+her2:Ana_García a her2:ClinicalCategory ;
+    her2:confidence 0.9 ;
+    her2:definition "CEO of TechCorp since 2015" ;
+    her2:evidence_level "" ;
+    her2:label "Ana García" ;
+    her2:loinc_code "" ;
+    her2:source_doc "apendice_frameworks_graphrag_c0016" ;
+    her2:source_quote "Ana García es la CEO de TechCorp desde 2015" .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Anthropic_supportedByEvidence_http://digpatho.sinc.unl.edu.ar/ontology/her2#claude-sonnet-4-20250514_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:supportedByEvidence ;
+    owl:annotatedSource her2:Anthropic ;
+    owl:annotatedTarget her2:claude-sonnet-4-20250514 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Approval_State_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Query_Execution_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Approval_State ;
+    owl:annotatedTarget her2:Query_Execution .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Approval_State_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Rejection_State_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Approval_State ;
+    owl:annotatedTarget her2:Rejection_State .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ArchitecturalComplexity_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#IHCScore3Plus_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:ArchitecturalComplexity ;
+    owl:annotatedTarget her2:IHCScore3Plus .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Architectural_Complexity_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2_Positive_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:Architectural_Complexity ;
+    owl:annotatedTarget her2:HER2_Positive .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Arquitectura_interna_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#Community_detection_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:Arquitectura_interna ;
+    owl:annotatedTarget her2:Community_detection .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Assay_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#QualityMeasure_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Assay ;
+    owl:annotatedTarget her2:QualityMeasure .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Autofluorescence_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Indeterminate_ISH_Result_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Autofluorescence ;
+    owl:annotatedTarget her2:Indeterminate_ISH_Result .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Automated_Metadata_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Normalization_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Automated_Metadata ;
+    owl:annotatedTarget her2:Normalization .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Average_HER2_Signals_Per_Cell_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#Percentage_Stained_Cells_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:Average_HER2_Signals_Per_Cell ;
+    owl:annotatedTarget her2:Percentage_Stained_Cells .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#BUILD_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#VALIDATE_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:BUILD ;
+    owl:annotatedTarget her2:VALIDATE .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Build_Graph_Node_associatedWith_http://digpatho.sinc.unl.edu.ar/ontology/her2#Fractal-Clinical_Rules_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:associatedWith ;
+    owl:annotatedSource her2:Build_Graph_Node ;
+    owl:annotatedTarget her2:Fractal-Clinical_Rules .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Build_Graph_Node_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Serialize_Node_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Build_Graph_Node ;
+    owl:annotatedTarget her2:Serialize_Node .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#CAP_Biomarker_2025_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positivo_(IHC_3+)_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:CAP_Biomarker_2025 ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#HER2-Positivo_(IHC_3+)> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#CAP_Biomarker_2025_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#ISH_Group1_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:CAP_Biomarker_2025 ;
+    owl:annotatedTarget her2:ISH_Group1 .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ChatOpenAI_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#GlobalCommunityContext_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:ChatOpenAI ;
+    owl:annotatedTarget her2:GlobalCommunityContext .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ChatOpenAI_eligibleFor_http://digpatho.sinc.unl.edu.ar/ontology/her2#temperature=0_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:eligibleFor ;
+    owl:annotatedSource her2:ChatOpenAI ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#temperature=0> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ChatOpenAI_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#gpt-4o_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:ChatOpenAI ;
+    owl:annotatedTarget her2:gpt-4o .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ChatOpenAI_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#validate_cypher=True_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:ChatOpenAI ;
+    owl:annotatedTarget <http://digpatho.sinc.unl.edu.ar/ontology/her2#validate_cypher=True> .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ChatOpenAI_hasThreshold_http://digpatho.sinc.unl.edu.ar/ontology/her2#Temperature_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:hasThreshold ;
+    owl:annotatedSource her2:ChatOpenAI ;
+    owl:annotatedTarget her2:Temperature .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Chunk_Size_refinesCategory_http://digpatho.sinc.unl.edu.ar/ontology/her2#Algorithm_Table_Chunking_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource her2:Chunk_Size ;
+    owl:annotatedTarget her2:Algorithm_Table_Chunking .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Chunk_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#RDF_Graph_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Chunk ;
+    owl:annotatedTarget her2:RDF_Graph .
+
+her2:Ciudad a her2:ClinicalCategory ;
+    her2:confidence 0.7 ;
+    her2:definition "Entity type restricted to cities (not a clinical HER2 category)" ;
+    her2:evidence_level "" ;
+    her2:label "Ciudad" ;
+    her2:loinc_code "" ;
+    her2:source_doc "apendice_langchain_langgraph_c0016" ;
+    her2:source_quote "\"Ciudad\"" .
+
+her2:CleanArchitecture a her2:QualityMeasure ;
+    her2:confidence 0.85 ;
+    her2:definition "Software design principle ensuring separation of domain logic from infrastructure" ;
+    her2:evidence_level "" ;
+    her2:label "CleanArchitecture" ;
+    her2:loinc_code "" ;
+    her2:source_doc "her2_kg_pipeline_guide_c0002" ;
+    her2:source_quote "principios de **Clean Architecture**" .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cold_Ischemia_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Cold_Ischemia_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Cold_Ischemia ;
+    owl:annotatedTarget her2:Cold_Ischemia .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Community_detection_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Community_summaries_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Community_detection ;
+    owl:annotatedTarget her2:Community_summaries .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Community_summaries_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Global_search_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Community_summaries ;
+    owl:annotatedTarget her2:Global_search .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Community_summaries_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Local_search_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Community_summaries ;
+    owl:annotatedTarget her2:Local_search .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#ContextRetrieval_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#BiomedicalKnowledge_stmt> a owl:Axiom ;
+    her2:confidence 0.6 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:ContextRetrieval ;
+    owl:annotatedTarget her2:BiomedicalKnowledge .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Control_Quality_Failure_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Indeterminate_ISH_Result_stmt> a owl:Axiom ;
+    her2:confidence 1.0 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Control_Quality_Failure ;
+    owl:annotatedTarget her2:Indeterminate_ISH_Result .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Control_fino_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#LLM_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Control_fino ;
+    owl:annotatedTarget her2:LLM .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Control_fino_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Nodo_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Control_fino ;
+    owl:annotatedTarget her2:Nodo .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Control_fino_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Relación_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Control_fino ;
+    owl:annotatedTarget her2:Relación .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Corpus_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#GraphRAG_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Corpus ;
+    owl:annotatedTarget her2:GraphRAG .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Corpus_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#HippoRAG_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Corpus ;
+    owl:annotatedTarget her2:HippoRAG .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Corpus_definedIn_http://digpatho.sinc.unl.edu.ar/ontology/her2#PathRAG_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:definedIn ;
+    owl:annotatedSource her2:Corpus ;
+    owl:annotatedTarget her2:PathRAG .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Corpus_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Neo4j_Cypher_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Corpus ;
+    owl:annotatedTarget her2:Neo4j_Cypher .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#CypherQuery_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#GraphRefresh_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:CypherQuery ;
+    owl:annotatedTarget her2:GraphRefresh .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cypher_Query_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Graph_Schema_stmt> a owl:Axiom ;
+    her2:confidence 0.7 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Cypher_Query ;
+    owl:annotatedTarget her2:Graph_Schema .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cypher_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Graph_Schema_stmt> a owl:Axiom ;
+    her2:confidence 0.85 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Cypher ;
+    owl:annotatedTarget her2:Graph_Schema .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cypher_hasQualityRequirement_http://digpatho.sinc.unl.edu.ar/ontology/her2#Neo4j_stmt> a owl:Axiom ;
+    her2:confidence 0.9 ;
+    owl:annotatedProperty her2:hasQualityRequirement ;
+    owl:annotatedSource her2:Cypher ;
+    owl:annotatedTarget her2:Neo4j .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cypher_leadsTo_http://digpatho.sinc.unl.edu.ar/ontology/her2#Neo4j_stmt> a owl:Axiom ;
+    her2:confidence 0.8 ;
+    owl:annotatedProperty her2:leadsTo ;
+    owl:annotatedSource her2:Cypher ;
+    owl:annotatedTarget her2:Neo4j .
+
+<http://digpatho.sinc.unl.edu.ar/ontology/her2#Cypher_requiresReflexTest_http://digpatho.sinc.unl.edu.ar/ontology/her2#Neo4j_stmt> a owl:Axiom ;
+    her2:confidence 0.95 ;
+    owl:annotatedProperty her2:requiresReflexTest ;
+    owl:annotatedSource her2:Cypher ;
+    owl:annotatedTarget her2:Neo4j .
+
+her2:Cypher_validation a her2:QualityMeasure ;
+    her2:confidence 0.9 ;
+    her2:definition "Validation of Cypher queries before execution" ;
+    her2:evidence_level "" ;
+    her2:label "Cypher validation" ;
+    her2:loinc_code "" ;
+    her2:source_doc "apendice_langchain_langgraph_c0086" ;
+    her2:source_quote "Usar `validate_cypher=True`" .
+

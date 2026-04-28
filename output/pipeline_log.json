@@ -1,0 +1,38 @@
+{
+  "run_timestamp": "2026-04-16T23:08:19.566894",
+  "llm_mode": "ollama",
+  "active_model": "ministral-3:8b",
+  "docs_dir": "./docs",
+  "chunks_processed": 266,
+  "entities_resolved": 916,
+  "relations_resolved": 842,
+  "neo4j_stats": {
+    "node_counts": {
+      "ClinicalCategory": 75,
+      "IHCScore": 32,
+      "ISHGroup": 23,
+      "TherapeuticAgent": 28,
+      "ClinicalTrial": 33,
+      "Guideline": 29,
+      "FractalMetric": 21,
+      "Assay": 108,
+      "DiagnosticDecision": 138,
+      "Chunk": 266,
+      "ToySpecimen": 6
+    },
+    "total_nodes": 759,
+    "total_relations": 901,
+    "algorithm_nodes": 27,
+    "algorithm_edges": 44
+  },
+  "validation": {
+    "total": 13,
+    "passed": 0,
+    "failed": 13,
+    "critical": 5,
+    "is_consistent": false
+  },
+  "is_consistent": false,
+  "errors": [],
+  "elapsed_seconds": 2631.0
+}
